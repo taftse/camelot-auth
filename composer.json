@@ -1,0 +1,23 @@
+{
+    "name": "twsweb-int/camolot-auth",
+    "description": "",
+    "authors": [
+        {
+            "name": "Timothy Seebus",
+            "email": "timothyseebus@twsweb-int.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "1.2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "TwswebInt\\CamolotAuth": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
