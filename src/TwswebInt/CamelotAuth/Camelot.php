@@ -6,7 +6,7 @@ use Config;
 class Camelot{
 
     /**
-     * The session store used by CamolotAuth
+     * The session store used by camelotauth
      *
      * @var Illuminate\Session\Store
      */
@@ -30,7 +30,7 @@ class Camelot{
     {
         echo 'loading';
         Log::info('This is some useful information.');
-        $this->supported_drivers = Config::get('camolotauth::camelotauth.provider_routing');
+        $this->supported_drivers = Config::get('camelotauth::camelotauth.provider_routing');
     }
 
    /* public function driver($driver = null)
@@ -63,7 +63,7 @@ class Camelot{
         if(is_null($driver))
         {
             // if detect_provider == true 
-            if(Config::get('camolotauth::camelotauth.detect_provider'))
+            if(Config::get('camelotauth::camelotauth.detect_provider'))
             {
 
             }
@@ -71,7 +71,7 @@ class Camelot{
             // if the driver is still null lets just load the default driver
             if(is_null($driver))
             {
-                $driver = Config::get('camolotauth::camelotauth.default_driver');
+                $driver = Config::get('camelotauth::camelotauth.default_driver');
             }
         }
 
