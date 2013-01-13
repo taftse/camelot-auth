@@ -26,8 +26,11 @@ class Camelot{
      */
     protected $driver = null;
 
-    public function __constructor()
+    protected $app;
+
+    public function __constructor($app)
     {
+        $this->app = $app;
         echo 'loading';
         Log::info('This is some useful information.');
         $this->supported_drivers = Config::get('camelotauth::camelotauth.provider_routing');
@@ -57,7 +60,7 @@ class Camelot{
         if()
     }*/
 
-    public static function loadDriver($driver = null)
+    public function loadDriver($driver = null)
     {
         // there is no driver specified lets try and detect the required driver
         if(is_null($driver))
@@ -74,7 +77,7 @@ class Camelot{
                 $driver = Config::get('camelotauth::camelotauth.default_driver');
             }
         }
-
+        echo $driver;
         // lets load the specified driver
 
 
@@ -82,15 +85,16 @@ class Camelot{
     }
 
     public function __call($method,$params)
-    {
-        echo "string";
-        return 'bla';
+    {      
         if(is_null($this->driver))
         {
+           var_dump($this->app['config']['camelot.provider_routing']);
             if(isset($params[0]) && isset($this->supported_drivers[ucfirst($params[0])]))
             {
+                echo "string";
                 $this->loadDriver($this->supported_drivers[ucfirst($params[0])]['Driver']);
             }else{
+                //echo "null";
                 $this->loadDriver(); 
             }
         }
@@ -101,8 +105,7 @@ class Camelot{
         }
     	else
         {
-            //throw new Exception("the requested function is not available for the requested driver", 1);      
-            return 'boer';//Response::error('555', 'the requested function is not available for the requested driver');   
+            throw new \Exception("the requested function is not available for the requested driver", 1);         
         }
     }
 }

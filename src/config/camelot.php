@@ -16,7 +16,7 @@ return array(
 		|
 		|
 		*/
-		'default_driver' = 'local',
+		'default_driver' => 'local',
 
         /*
         |--------------------------------------------------------------------------
@@ -31,7 +31,7 @@ return array(
         |
         |
         */
-        'detect_provider' = true,
+        'detect_provider' => true,
 
         /*
         |--------------------------------------------------------------------------
@@ -45,7 +45,7 @@ return array(
         |
         |
         */
-        'route_location' = 3,
+        'route_location' => 3,
 
         /*
         |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ return array(
         |
         |
         */
-		'provider_routing' = array('Local' => array('Driver'=>'local'),
+		'provider_routing' => array('Local' => array('Driver'=>'local'),
 								   'Google'=> array('Driver'=>'oauth2'),
                                    'Facebook'=> array('Driver'=>'oauth2'),
                                    'Foursquare' =>array('Driver'=>'oauth2'),
@@ -69,13 +69,13 @@ return array(
 
 
 
-        'login_uri' = 'account/login',
+        'login_uri' => 'account/login',
 
 
 
-        'registration_uri' = 'account/register',
+        'registration_uri' => 'account/register',
 
-        'verification_uri' = 'account/verify',
+        'verification_uri' => 'account/verify'
 
 
 

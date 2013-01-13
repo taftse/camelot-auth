@@ -1,6 +1,7 @@
 <?php namespace TwswebInt\CamelotAuth;
 
 use Illuminate\Support\ServiceProvider;
+use Config;
 
 class CamelotAuthServiceProvider extends ServiceProvider {
 
@@ -31,8 +32,18 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 
 		$this->app['camelot'] = $this->app->share(function($app)
 		{
-			return new Camelot();
+			return new Camelot($this->app);
 		});
+		//var_dump($this->app['config']);
+		var_dump(Config::get('camelot::camelot.provider_routing'));
+		var_dump(Config::get('camelot::Camelot.provider_routing'));
+		var_dump(Config::get('Camelot::camelot.provider_routing'));
+		var_dump(Config::get('Camelot::Camelot.provider_routing'));
+		var_dump(Config::get('CamelotAuth::camelot.provider_routing'));
+		var_dump(Config::get('CamelotAuth::Camelot.provider_routing'));
+		var_dump(Config::get('camelotauth::camelot.provider_routing'));
+		var_dump(Config::get('camelotauth::Camelot.provider_routing'));
+
 	}
 
 	/**
