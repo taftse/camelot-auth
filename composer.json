@@ -1,5 +1,5 @@
 {
-    "name": "twsweb-int/camolot-auth",
+    "name": "twsweb-int/camelot-auth",
     "description": "",
     "authors": [
         {
@@ -9,14 +9,14 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.0.*"
+        "illuminate/support": "4.0.x"
     },
     "autoload": {
         "classmap": [
             "src/migrations"
         ],
         "psr-0": {
-            "TwswebInt\\CamolotAuth": "src/"
+            "TwswebInt\\CamelotAuth": "src/"
         }
     },
     "minimum-stability": "dev"

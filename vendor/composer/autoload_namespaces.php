@@ -6,6 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'TwswebInt\\CamolotAuth' => $baseDir . '/src/',
+    'TwswebInt\\CamelotAuth' => $baseDir . '/src/',
     'Illuminate\\Support' => $vendorDir . '/illuminate/support/',
 );

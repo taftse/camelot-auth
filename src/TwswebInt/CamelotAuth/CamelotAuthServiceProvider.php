@@ -1,8 +1,8 @@
-<?php namespace TwswebInt\CamolotAuth;
+<?php namespace TwswebInt\CamelotAuth;
 
 use Illuminate\Support\ServiceProvider;
 
-class CamolotAuthServiceProvider extends ServiceProvider {
+class CamelotAuthServiceProvider extends ServiceProvider {
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -12,13 +12,27 @@ class CamolotAuthServiceProvider extends ServiceProvider {
 	protected $defer = false;
 
 	/**
+	 * Bootstrap the application events.
+	 *
+	 * @return void
+	 */
+	public function boot()
+	{
+		$this->package('twsweb-int/camelot-auth');
+	}
+
+	/**
 	 * Register the {{full_package}} service provider.
 	 *
 	 * @return void
 	 */
 	public function register()
 	{
-		$this->package('twsweb-int/camolot-auth');
+
+		$this->app['camelot'] = $this->app->share(function($app)
+		{
+			return new Camelot();
+		});
 	}
 
 	/**
@@ -28,7 +42,7 @@ class CamolotAuthServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array();
+		return array('camelot');
 	}
 
 }
