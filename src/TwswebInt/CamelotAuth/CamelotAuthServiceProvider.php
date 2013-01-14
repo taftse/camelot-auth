@@ -19,7 +19,7 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('twsweb-int/camelot-auth');
+		$this->package('twsweb-int/camelotauth');
 	}
 
 	/**
@@ -29,21 +29,19 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-
+		//$this->package('twsweb-int/camelot-auth');
+		$this->app['config']->package('twsweb-int/camelot-auth', __DIR__.'/../../config');
+		$app = $this->app;
 		$this->app['camelot'] = $this->app->share(function($app)
 		{
-			return new Camelot($this->app);
+			
+			return new Camelot($app);
 		});
-		//var_dump($this->app['config']);
-		var_dump(Config::get('camelot::camelot.provider_routing'));
-		var_dump(Config::get('camelot::Camelot.provider_routing'));
-		var_dump(Config::get('Camelot::camelot.provider_routing'));
-		var_dump(Config::get('Camelot::Camelot.provider_routing'));
-		var_dump(Config::get('CamelotAuth::camelot.provider_routing'));
-		var_dump(Config::get('CamelotAuth::Camelot.provider_routing'));
-		var_dump(Config::get('camelotauth::camelot.provider_routing'));
-		var_dump(Config::get('camelotauth::Camelot.provider_routing'));
-
+		
+		//var_dump(Config::get('camelot-auth::camelot.default_driver'));
+		//var_dump($this->app['config']->get('camelot-auth::camelot.default_driver'));
+		
+//
 	}
 
 	/**

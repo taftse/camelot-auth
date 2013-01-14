@@ -1,8 +1,6 @@
 <?php 
 
 return array(
-
-
 		/*
 		|--------------------------------------------------------------------------
 		| Default Authentication Driver
@@ -45,7 +43,7 @@ return array(
         |
         |
         */
-        'route_location' => 3,
+        'route_location' => 2,
 
         /*
         |--------------------------------------------------------------------------
@@ -64,7 +62,8 @@ return array(
 								   'Google'=> array('Driver'=>'oauth2'),
                                    'Facebook'=> array('Driver'=>'oauth2'),
                                    'Foursquare' =>array('Driver'=>'oauth2'),
-                                   'WindowsLive'=>array('Driver'=>'oauth2')
+                                   'Windowslive'=>array('Driver'=>'oauth2'),
+                                   'Edugate' => array('Driver'=>'saml')
                                    ),
 
 
