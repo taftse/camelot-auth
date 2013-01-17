@@ -1,5 +1,6 @@
 <?php namespace TwswebInt\CamelotAuth;
 
+use TwswebInt\CamelotAuth\Drivers;
 use Illuminate\Session\Store;
 use Config;
 
@@ -36,33 +37,9 @@ class Camelot{
         //var_dump(Config::get('camelot-auth::camelotauth.provider_routing'));
     }
 
-   /* public function driver($driver = null)
-    {
-    	if(is_null($driver)){
-    		$driver = Config::get('camelotauth.default_driver');
-    	}
-
-    	if(!isset($this->drivers[$driver]))
-    	{
-    		$this->drivers[$driver] = $this->loadDriver($driver);
-    	}
-    	return $this->drivers[$driver];
-    }*/
-
-  /*  public functiondriver($driver = null)
-    {
-        // if driver is not null then we want to set a new loaded driver
-        if(!is_null($driver) && (is_null($this->driver)) )
-        {
-            $this->loadDriver($driver);
-        }
-
-        if()
-    }*/
-
     public function loadDriver($driver = null)
     {
-        
+        $provider = null;
         // there is no driver specified lets try and detect the required driver
         if(is_null($driver))
         {
@@ -73,16 +50,17 @@ class Camelot{
                 
                 if(isset($segments[$this->app['config']['camelot-auth::camelot.route_location']-1]))
                 {
-                    $segment = $segments[$this->app['config']['camelot-auth::camelot.route_location']-1];
+                    $provider = $segments[$this->app['config']['camelot-auth::camelot.route_location']-1];
                 
-                    if(isset($this->supported_drivers[ucfirst($segment)]))
+                    if(isset($this->supported_drivers[ucfirst($provider)]))
                     {
-                       $driver = $this->supported_drivers[ucfirst($segment)]['Driver'];
+                       $driver = $this->supported_drivers[ucfirst($provider)]['Driver'];
                     }
                 }
             }
 
             // if the driver is still null lets just load the default driver
+           
             if(is_null($driver))
             {
                 $driver = $this->app['config']['camelot-auth::camelot.default_driver'];
@@ -90,9 +68,19 @@ class Camelot{
         }
         
         // lets load the specified driver
-        echo($driver);
-
-        //$this->driver = new $driver_class
+        $driverFile = __DIR__.'/Drivers/'.ucfirst($driver).'CamelotDriver.php';
+        if(!file_exists($driverFile))
+        {
+            throw new \Exception("Cannot Find the ".ucfirst($driver)." Driver");
+        }
+        include_once $driverFile;
+        
+        $driverClass ='TwswebInt\CamelotAuth\Drivers\\'.ucfirst($driver).'CamelotDriver';
+        if(!class_exists($driverClass,false))
+        {
+            throw new \Exception("Cannot Find Driver class");
+        }
+        $this->driver = new $driverClass($this->app,$provider);
     }
 
     public function __call($method,$params)
@@ -113,7 +101,7 @@ class Camelot{
         }
     	else
         {
-            //throw new \Exception("the requested function is not available for the requested driver", 1);         
+            throw new \Exception("the requested function is not available for the requested driver");         
         }
     }
 }

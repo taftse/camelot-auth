@@ -19,7 +19,7 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('twsweb-int/camelotauth');
+		$this->package('twsweb-int/camelot-auth');
 	}
 
 	/**

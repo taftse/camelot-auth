@@ -16,7 +16,8 @@
             "src/migrations"
         ],
         "psr-0": {
-            "TwswebInt\\CamelotAuth": "src/"
+            "TwswebInt\\CamelotAuth": "src/",
+            "TwswebInt\\CamelotAuth\\Drivers": "src/"
         }
     },
     "minimum-stability": "dev"
