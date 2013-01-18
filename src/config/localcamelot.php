@@ -3,7 +3,7 @@
 return array(
 
 	
-	'userIdentifierField'=>'Camelotusername',
+	'userIdentifierField'=>'username',
 	'userPasswordField'=>'password',
 	'loginSubmitField'=>'login',
 	);

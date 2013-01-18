@@ -1,6 +1,33 @@
 <?php 
 
 return array(
+        /*
+        |--------------------------------------------------------------------------
+        | Default Database Driver
+        |--------------------------------------------------------------------------
+        |
+        | This option controls the database driver that will be utilized.
+        | This drivers manages the retrieval of the users details
+        |
+        | Supported: "database", "eloquent"
+        |
+        */
+
+        'database_driver' => 'eloquent',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Authentication Model
+        |--------------------------------------------------------------------------
+        |
+        | When using the "Eloquent" authentication driver, we need to know which
+        | Eloquent model should be used to retrieve your users.
+        |
+        */
+
+        'model' => 'CamelotUser',
+
+
 		/*
 		|--------------------------------------------------------------------------
 		| Default Authentication Driver

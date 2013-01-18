@@ -4,6 +4,7 @@ use Config;
 use Input;
 use Validator;
 use Request;
+use TwswebInt\CamelotAuth\UserInterface as UserInterface;
 
 class LocalCamelotDriver extends CamelotDriver
 {
@@ -31,15 +32,25 @@ class LocalCamelotDriver extends CamelotDriver
 			if ($validation->passes())
 			{
 	   		 // The given data passed validation
-				
-			// get model by username
-
-			// test the password 
+				$user = $this->database->getByCredentials(array('Local_User_Username'=>$inputs[$userIdentifierField]));	
+				// get model by username
+				//var_dump($user);
+				if($user instanceof UserInterface)
+				{	
+					//var_dump($user->Local_User_Username);
+					if($user->getAuthPassword() === crypt($inputs[$userPasswordField],$user->getAuthPassword()))
+					{
+						var_dump($user->account);
+						$this->createSession($user->account());
+						return true;
+					}
+					
+				}
 
 			// create session
 			}
-
-			return $validation->messages();
+			$this->errors = $validation->messages();
+			return false;
 		}
 	}
 }

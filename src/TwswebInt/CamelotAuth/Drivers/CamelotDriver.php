@@ -2,6 +2,8 @@
 
 use Illuminate\Session\Store as SessionStore;
 use Illuminate\Foundation\Application;
+use TwswebInt\CamelotAuth\UserInterface;
+use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface as DatabaseDriverInterface;
 abstract class CamelotDriver{
 
 	/**
@@ -25,12 +27,24 @@ abstract class CamelotDriver{
 	 */
 	protected $provider;
 
+	/**
+	 * The Database Driver
+	 *
+	 * @var TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface
+	 */
+	protected $database;
 
-	public function __construct(Application $app,$provider)
+	/**
+	 * The errors generated
+	 *
+	 * @var TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface
+	 */
+	public $errors;
+
+	public function __construct(Application $app,DatabaseDriverInterface $database,$provider)
 	{
 		$this->app = $app;
-		$this->provider = $provider;
-		echo $this->provider;
+		$this->database = $database;
 	}
 
 	public function check()
@@ -55,12 +69,12 @@ abstract class CamelotDriver{
 
 		if(!is_null($id))
 		{
-
+			$user = $this->database->getByID($id);
 		}
 
 		if(is_null($user) && !is_null($cookieID = $this->getCookieID()))
 		{
-
+			$user = $this->database->getByID($cookieID);
 		}
 
 		return $this->user = $user;
@@ -74,9 +88,9 @@ abstract class CamelotDriver{
 
 	}
 
-	protected function createSession($accountID)
+	protected function createSession( $account)
 	{
-
+		//var_dump($account);
 	}
 
 	/**
@@ -98,4 +112,5 @@ abstract class CamelotDriver{
 	{
 		return 'rememberMe_'.md5(get_class($this));
 	}
+
 }

@@ -1,6 +1,7 @@
 <?php namespace TwswebInt\CamelotAuth;
 
 use TwswebInt\CamelotAuth\Drivers;
+use TwswebInt\CamelotAuth\DatabaseDrivers;
 use Illuminate\Session\Store;
 use Config;
 
@@ -34,7 +35,7 @@ class Camelot{
         $this->app = $app;
 
         $this->supported_drivers = $this->app['config']['camelot-auth::camelot.provider_routing'];
-        //var_dump(Config::get('camelot-auth::camelotauth.provider_routing'));
+        
     }
 
     public function loadDriver($driver = null)
@@ -80,7 +81,8 @@ class Camelot{
         {
             throw new \Exception("Cannot Find Driver class");
         }
-        $this->driver = new $driverClass($this->app,$provider);
+        $databaseDriver = $this->loadDatabaseDriver(ucfirst($driver));
+        $this->driver = new $driverClass($this->app,$databaseDriver,$provider);
     }
 
     public function __call($method,$params)
@@ -104,4 +106,13 @@ class Camelot{
             throw new \Exception("the requested function is not available for the requested driver");         
         }
     }
+
+   protected function loadDatabaseDriver($authDriver){
+
+       $driverName = $this->app['config']['camelot-auth::camelot.database_driver'];
+       $databaseDriverClass = 'TwswebInt\CamelotAuth\DatabaseDrivers\\'.ucfirst($driverName).'DatabaseDriver';
+       return new $databaseDriverClass($this->app,$authDriver);
+   }
+
+
 }

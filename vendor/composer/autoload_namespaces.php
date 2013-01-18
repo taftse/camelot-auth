@@ -8,5 +8,9 @@ $baseDir = dirname($vendorDir);
 return array(
     'TwswebInt\\CamelotAuth\\Drivers' => $baseDir . '/src/',
     'TwswebInt\\CamelotAuth' => $baseDir . '/src/',
+    'Symfony\\Component\\EventDispatcher\\' => $vendorDir . '/symfony/event-dispatcher/',
     'Illuminate\\Support' => $vendorDir . '/illuminate/support/',
+    'Illuminate\\Events' => $vendorDir . '/illuminate/events/',
+    'Illuminate\\Database' => $vendorDir . '/illuminate/database/',
+    'Illuminate\\Container' => $vendorDir . '/illuminate/container/',
 );
