@@ -23,7 +23,7 @@ class LocalCamelotModel extends Model implements UserInterface{
 
 	public function account()
 	{
-		return $this->belongsTo('TwswebInt\CamelotAuth\Models\CamelotAccount','Local_User_Account_ID')->getResults();
+		return $this->belongsTo('TwswebInt\CamelotAuth\Models\CamelotAccount','local_user_account_id');//getResults();
 	}
 
 	public function getAuthIdentifier()

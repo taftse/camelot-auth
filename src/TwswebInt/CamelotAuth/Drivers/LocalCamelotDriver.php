@@ -37,10 +37,11 @@ class LocalCamelotDriver extends CamelotDriver
 				//var_dump($user);
 				if($user instanceof UserInterface)
 				{	
-					//var_dump($user->Local_User_Username);
+					//var_dump($user->local_user_account_id);
 					if($user->getAuthPassword() === crypt($inputs[$userPasswordField],$user->getAuthPassword()))
 					{
-						var_dump($user->account);
+						//var_dump(\DB::connection('mysql')->getQueryLog());
+						var_dump($user->account->get());
 						$this->createSession($user->account());
 						return true;
 					}
