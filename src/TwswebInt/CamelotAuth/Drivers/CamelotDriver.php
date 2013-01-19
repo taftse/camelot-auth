@@ -37,9 +37,9 @@ abstract class CamelotDriver{
 	/**
 	 * The errors generated
 	 *
-	 * @var TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface
+	 * @var array
 	 */
-	public $errors;
+	public $errors = array();
 
 	public function __construct(Application $app,DatabaseDriverInterface $database,$provider)
 	{
@@ -63,7 +63,7 @@ abstract class CamelotDriver{
 		{
 			return $this->user;
 		}
-		$id = $this->session->get($this->getSessionID());
+		$id = $this->app['session']->get($this->getSessionID());
 
 		$user = null;
 
@@ -77,7 +77,7 @@ abstract class CamelotDriver{
 			$user = $this->database->getByID($cookieID);
 		}
 
-		return $this->user = $user;
+		return $this->user = $user->account;
 	}
 
 	abstract function authenticate();
@@ -88,9 +88,18 @@ abstract class CamelotDriver{
 
 	}
 
-	protected function createSession( $account)
+	protected function createSession($account,$remember = false)
 	{
 		//var_dump($account);
+		$id = $account->getAuthIdentifier();
+
+		$this->app['session']->put($this->getSessionID(),$id);
+
+		if($remember)
+		{
+			$this->app['cookie']->forever($this->getCookieID(),$id);
+		}
+		$this->user = $account;
 	}
 
 	/**
@@ -113,4 +122,21 @@ abstract class CamelotDriver{
 		return 'rememberMe_'.md5(get_class($this));
 	}
 
+
+	protected function returnResponse($responseType,$message,$details = null)
+	{
+		if($responseType == 'validation')
+		{
+			$this->errors['validation'] = $message;
+		}
+		else
+		{
+			$this->errors[$responseType][] = array('message' => $message,'details'=>$details);
+		}
+	}
+
+	public function getErrors()
+	{
+		return $this->errors;
+	}
 }

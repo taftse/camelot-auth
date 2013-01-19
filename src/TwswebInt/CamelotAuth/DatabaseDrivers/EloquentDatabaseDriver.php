@@ -33,6 +33,6 @@ class EloquentDatabaseDriver implements DatabaseDriverInterface
 				$query->where($key,$value);
 			}
 		}
-		return $query->with('account')->first();
+		return $query->first();
 	}
 }

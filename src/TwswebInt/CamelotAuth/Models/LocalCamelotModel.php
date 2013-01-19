@@ -11,28 +11,28 @@ class LocalCamelotModel extends Model implements UserInterface{
 	 *
 	 * @var string
 	 */
-	protected $table = 'auth_local_users';
+	protected $table = 'local_account';
 
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
 	 * @var array
 	 */
-	protected $hidden = array('password');
+	protected $hidden = array('password_hash');
 
 
 	public function account()
 	{
-		return $this->belongsTo('TwswebInt\CamelotAuth\Models\CamelotAccount','local_user_account_id');//getResults();
+		return $this->belongsTo('TwswebInt\CamelotAuth\Models\CamelotAccount','account_id');
 	}
 
 	public function getAuthIdentifier()
 	{
-		return "Local_User_Account_ID";
+		return "account_id";
 	}
 
 	public function getAuthPassword()
 	{
-		return $this->local_user_password_hash;
+		return $this->password_hash;
 	}
 }

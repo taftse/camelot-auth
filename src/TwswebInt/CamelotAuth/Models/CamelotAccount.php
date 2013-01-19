@@ -11,13 +11,13 @@ class CamelotAccount extends Model implements UserInterface{
 	 *
 	 * @var string
 	 */
-	protected $table = 'auth_account';
+	protected $table = 'account';
 
 
 
 	protected function localAccount()
 	{
-		return $this->hasOne('TwswebInt\CamelotAuth\Models\LocalCamelotModel', 'Local_User_Account_ID');
+		//return $this->hasOne('TwswebInt\CamelotAuth\Models\LocalCamelotModel', 'account_id');
 	}
 	/**
 	 * Get the unique identifier for the user.

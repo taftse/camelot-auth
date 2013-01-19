@@ -31,26 +31,42 @@ class LocalCamelotDriver extends CamelotDriver
 
 			if ($validation->passes())
 			{
-	   		 // The given data passed validation
-				$user = $this->database->getByCredentials(array('Local_User_Username'=>$inputs[$userIdentifierField]));	
+	   		 	// The given data passed validation
+				$user = $this->database->getByCredentials(array('username'=>$inputs[$userIdentifierField]));	
+				
 				// get model by username
-				//var_dump($user);
+				
 				if($user instanceof UserInterface)
 				{	
-					//var_dump($user->local_user_account_id);
+					//var_dump($user->account_id);
 					if($user->getAuthPassword() === crypt($inputs[$userPasswordField],$user->getAuthPassword()))
 					{
-						//var_dump(\DB::connection('mysql')->getQueryLog());
-						var_dump($user->account->get());
-						$this->createSession($user->account());
-						return true;
+
+						if(Config::get('camelot-auth::localcamelot.accountStatus') && $user->account->status != 'active')
+						{
+							$this->returnResponse('error','Your account is not active ',array('status'=>$user->account->status));
+						}
+						if(Config::get('camelot-auth::localcamelot.maxPasswordAge') >0 && (strtotime("+".Config::get('camelot-auth::localcamelot.maxPasswordAge')." day",$user->password_set_timestamp) <= time()))
+						{
+							$responseType ='warning';
+							if(Config::get('camelot-auth::localcamelot.enforcePasswordRules')){
+								$responseType = 'error';
+							}
+							$this->returnResponse($responseType,'Your Password has expired please change it ',array('dateSet'=>$user->password_set_timestamp,'expireData'=>strtotime("+".Config::get('camelot-auth::localcamelot.maxPasswordAge')." day",$user->password_set_timestamp)));
+						}
+						if(!isset($this->errors['error'])){
+							$this->createSession($user->account);
+							return true;
+						}else{
+							return false;
+						}
 					}
 					
 				}
 
 			// create session
 			}
-			$this->errors = $validation->messages();
+			$this->returnResponse('validation',$validation->messages());
 			return false;
 		}
 	}
