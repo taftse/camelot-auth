@@ -1,5 +1,7 @@
 <?php namespace TwswebInt\CamelotAuth;
 
+use TwswebInt\CamelotAuth\SessionDrivers\IlluminateSessionDriver;
+use TwswebInt\CamelotAuth\CookieDrivers\IlluminateCookieDriver;
 use Illuminate\Support\ServiceProvider;
 use Config;
 
@@ -34,8 +36,13 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 		$app = $this->app;
 		$this->app['camelot'] = $this->app->share(function($app)
 		{
-			
-			return new Camelot($app);
+			//var_dump($app['config']['camelot-auth::camelot']);
+			return new Camelot(
+				new IlluminateSessionDriver($app['session']),
+				new IlluminateCookieDriver($app['cookie']),
+				$app['config']['camelot-auth::camelot'],
+				$app['request']->path()
+				);
 		});
 		
 		//var_dump(Config::get('camelot-auth::camelot.default_driver'));

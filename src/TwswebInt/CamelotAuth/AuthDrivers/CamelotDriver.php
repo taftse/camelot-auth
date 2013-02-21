@@ -1,31 +1,33 @@
 <?php namespace TwswebInt\CamelotAuth\AuthDrivers;
 
-use Illuminate\Session\Store as SessionStore;
-use Illuminate\Foundation\Application;
-use TwswebInt\CamelotAuth\UserInterface;
+
+use TwswebInt\CamelotAuth\User\UserInterface;
+use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
+use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
+//use TwswebInt\CamelotAuth\UserInterface;
 use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface as DatabaseDriverInterface;
 abstract class CamelotDriver{
 
 	/**
-	 * The application instance.
-	 *
-	 * @var Illuminate\Foundation\Application
-	 */
-	protected $app;
-
-	/**
 	 * The currently authenticated user.
 	 *
-	 * @var User
+	 * @var TwswebInt\CamelotAuth\User\UserInterface
 	 */
 	protected $user;
 
 	/**
-	 * The Authentication provider
-	 *
-	 * @var string
-	 */
-	protected $provider;
+	* The Session Driver used by Camelot
+	*
+	* @var use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
+	*/
+	protected $session;
+
+	/**
+	* The Cookie Driver used by Camelot
+	*
+	* @var use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
+	*/
+	protected $cookie;
 
 	/**
 	 * The Database Driver
@@ -35,16 +37,27 @@ abstract class CamelotDriver{
 	protected $database;
 
 	/**
+	 * The Authentication provider
+	 *
+	 * @var string
+	 */
+	protected $providerName;
+
+	
+
+	/**
 	 * The errors generated
 	 *
 	 * @var array
 	 */
 	public $errors = array();
 
-	public function __construct(Application $app,DatabaseDriverInterface $database,$provider)
+	public function __construct(SessionDriverInterface $session,CookieDriverInterface $cookie,DatabaseDriverInterface $database,$providerName)
 	{
-		$this->app = $app;
+		$this->session = $session;
+		$this->cookie = $cookie;
 		$this->database = $database;
+		$this->providerName = $providerName;
 	}
 
 	public function check()
@@ -63,6 +76,7 @@ abstract class CamelotDriver{
 		{
 			return $this->user;
 		}
+
 		$id = $this->app['session']->get($this->getSessionID());
 
 		$user = null;
@@ -138,5 +152,10 @@ abstract class CamelotDriver{
 	public function getErrors()
 	{
 		return $this->errors;
+	}
+
+	public function getProviderName()
+	{
+		return $this->providerName;
 	}
 }

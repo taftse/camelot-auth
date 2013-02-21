@@ -1,18 +1,38 @@
 <?php namespace TwswebInt\CamelotAuth;
 
 use TwswebInt\CamelotAuth\AuthDrivers;
-use TwswebInt\CamelotAuth\DatabaseDrivers;
-use Illuminate\Session\Store;
-use Config;
+use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface;
+use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
+use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
 
 class Camelot{
 
     /**
-     * The session store used by camelotauth
-     *
-     * @var Illuminate\Session\Store
-     */
+    * The Session Driver used by Camelot
+    *
+    * @var use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
+    */
     protected $session;
+
+    /**
+    * The Cookie Driver used by Camelot
+    *
+    * @var use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
+    */
+    protected $cookie;
+
+    /**
+     * The Database Driver
+     *
+     * @var TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface
+     */
+    protected $database;
+
+    /**
+     * A Array Containing the cammelot settings
+     *
+     */
+    protected $settings;
 
     /**
      * A list of supported drivers 
@@ -22,81 +42,96 @@ class Camelot{
     protected $supported_drivers = array();
 
     /**
+     * The http Path
+     *
+     * @var string
+     */
+    protected $httpPath;
+
+    /**
      * Loaded Authentication Driver.
      *
-     * @return void
+     * @var TwswebInt\CamelotAuth\AuthDriver\CamelotDriver
      */
     protected $driver = null;
 
-    protected $app;
 
-    public function __construct($app)
+    public function __construct(SessionDriverInterface $session,CookieDriverInterface $cookie,array $config,$httpPath)
     {
-        $this->app = $app;
-
-        $this->supported_drivers = $this->app['config']['camelot-auth::camelot.provider_routing'];
-        
+        $this->session = $session;
+        $this->cookie = $cookie;
+        $this->config = $config;
+        $this->httpPath = $httpPath;
+        $this->supported_drivers = $config['provider_routing'];       
     }
 
-    public function loadDriver($driver = null)
+    public function loadDriver($driverName = null)
     {
         $provider = null;
         // there is no driver specified lets try and detect the required driver
-        if(is_null($driver))
+        if(is_null($driverName))
         {
             // if detect_provider == true 
-            if($this->app['config']['camelot-auth::camelot.detect_provider'])
+            if($this->config['detect_provider'])
             {
-                $segments = explode("/", $this->app['request']->path());
+                $segments = explode("/", $this->httpPath);
+
                 
-                if(isset($segments[$this->app['config']['camelot-auth::camelot.route_location']-1]))
+                if(isset($segments[$this->config['route_location']-1]))
                 {
-                    $provider = $segments[$this->app['config']['camelot-auth::camelot.route_location']-1];
-                
+                    $provider = $segments[$this->config['route_location']-1];
+               
                     if(isset($this->supported_drivers[ucfirst($provider)]))
                     {
-                       $driver = $this->supported_drivers[ucfirst($provider)]['Driver'];
+                       $driverName = $this->supported_drivers[ucfirst($provider)]['Driver'];
                     }
                 }
             }
 
             // if the driver is still null lets just load the default driver
-           
-            if(is_null($driver))
+            if(is_null($driverName))
             {
-                $driver = $this->app['config']['camelot-auth::camelot.default_driver'];
+                $driverName = $this->config['default_driver'];
             }
         }
         
         // lets load the specified driver
-        $driverFile = __DIR__.'/AuthDrivers/'.ucfirst($driver).'CamelotDriver.php';
+        $driverFile = __DIR__.'/AuthDrivers/'.ucfirst($driverName).'CamelotDriver.php';
         if(!file_exists($driverFile))
         {
-            throw new \Exception("Cannot Find the ".ucfirst($driver)." Driver");
+            throw new \Exception("Cannot Find the ".ucfirst($driverName)." Driver");
         }
         include_once $driverFile;
         
-        $driverClass ='TwswebInt\CamelotAuth\AuthDrivers\\'.ucfirst($driver).'CamelotDriver';
+        $driverClass ='TwswebInt\CamelotAuth\AuthDrivers\\'.ucfirst($driverName).'CamelotDriver';
         if(!class_exists($driverClass,false))
         {
             throw new \Exception("Cannot Find Driver class (".$driverClass.")");
         }
-        $databaseDriver = $this->loadDatabaseDriver(ucfirst($driver));
-        $this->driver = new $driverClass($this->app,$databaseDriver,$provider);
+        $databaseDriver = $this->loadDatabaseDriver(ucfirst($driverName));
+        $driver = new $driverClass(
+                $this->session,
+                $this->cookie,
+                $databaseDriver,
+                $provider
+                );
+        var_dump($driver->getProviderName());
+        return $driver;
     }
 
     public function __call($method,$params)
     {      
+        
         if(is_null($this->driver))
         {
             if(isset($params[0]) && isset($this->supported_drivers[ucfirst($params[0])]))
             {                
-                $this->loadDriver($this->supported_drivers[ucfirst($params[0])]['Driver']);
+                $this->driver = $this->loadDriver($this->supported_drivers[ucfirst($params[0])]['Driver']);
             }else{
-                $this->loadDriver(); 
+                $this->driver = $this->loadDriver(); 
             }
         }
-
+        
         if(method_exists($this->driver,$method))
         {
             return call_user_func_array(array($this->driver,$method), $params);
@@ -107,11 +142,11 @@ class Camelot{
         }
     }
 
-   protected function loadDatabaseDriver($authDriver){
+   protected function loadDatabaseDriver($authDriverName){
 
-       $driverName = $this->app['config']['camelot-auth::camelot.database_driver'];
+       $driverName = $this->config['database_driver'];
        $databaseDriverClass = 'TwswebInt\CamelotAuth\DatabaseDrivers\\'.ucfirst($driverName).'DatabaseDriver';
-       return new $databaseDriverClass($this->app,$authDriver);
+       return new $databaseDriverClass($authDriverName);
    }
 
 
