@@ -75,20 +75,20 @@ class Camelot{
             if($this->config['detect_provider'])
             {
                 $segments = explode("/", $this->httpPath);
+
                 
                 if(isset($segments[$this->config['route_location']-1]))
                 {
                     $provider = $segments[$this->config['route_location']-1];
-                
+               
                     if(isset($this->supported_drivers[ucfirst($provider)]))
                     {
-                       $driver = $this->supported_drivers[ucfirst($provider)]['Driver'];
+                       $driverName = $this->supported_drivers[ucfirst($provider)]['Driver'];
                     }
                 }
             }
 
             // if the driver is still null lets just load the default driver
-           
             if(is_null($driverName))
             {
                 $driverName = $this->config['default_driver'];
@@ -115,11 +115,13 @@ class Camelot{
                 $databaseDriver,
                 $provider
                 );
+        var_dump($driver->getProviderName());
         return $driver;
     }
 
     public function __call($method,$params)
     {      
+        
         if(is_null($this->driver))
         {
             if(isset($params[0]) && isset($this->supported_drivers[ucfirst($params[0])]))
@@ -129,7 +131,7 @@ class Camelot{
                 $this->driver = $this->loadDriver(); 
             }
         }
-
+        
         if(method_exists($this->driver,$method))
         {
             return call_user_func_array(array($this->driver,$method), $params);

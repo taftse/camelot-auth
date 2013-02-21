@@ -43,7 +43,7 @@ class CamelotTest extends PHPUnit_Framework_TestCase {
 				$this->session,
 				$this->cookie,
 				$config,
-				'login'
+				'login\local'
 				);
 
 	}
