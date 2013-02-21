@@ -4,7 +4,7 @@ use TwswebInt\CamelotAuth\UserInterface;
 use TwswebInt\CamelotAuth\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class LocalCamelotModel extends Model implements UserInterface{
+class Oauth2CamelotModel extends Model implements UserInterface{
 
 	/**
 	 * The database table used by the model.
