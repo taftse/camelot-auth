@@ -8,10 +8,9 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.3.0"
     },
-    "require-dev":
-    {
+    "require-dev": {
         "mockery/mockery": "0.7.2",
 
         "illuminate/support": "4.0.*",
