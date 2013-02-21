@@ -76,7 +76,6 @@ class Camelot{
             {
                 $segments = explode("/", $this->httpPath);
 
-                
                 if(isset($segments[$this->config['route_location']-1]))
                 {
                     $provider = $segments[$this->config['route_location']-1];
@@ -115,7 +114,6 @@ class Camelot{
                 $databaseDriver,
                 $provider
                 );
-        var_dump($driver->getProviderName());
         return $driver;
     }
 
