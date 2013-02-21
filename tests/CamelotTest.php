@@ -43,7 +43,7 @@ class CamelotTest extends PHPUnit_Framework_TestCase {
 				$this->session,
 				$this->cookie,
 				$config,
-				'login\local'
+				'login/local'
 				);
 
 	}
@@ -57,7 +57,7 @@ class CamelotTest extends PHPUnit_Framework_TestCase {
 	{
 		//$authDriver = m::mock('TwswebInt\CamelotAuth\AuthDriver\CamelotDriver');
 		$authDriver = $this->camelot->loadDriver();
-		$this->assertEquals('Local',$authDriver->getProviderName());
+		$this->assertEquals('local',$authDriver->getProviderName());
 	}
 
 	/*public function testLoggingInUser()

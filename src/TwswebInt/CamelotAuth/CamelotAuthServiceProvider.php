@@ -40,7 +40,9 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 			return new Camelot(
 				new IlluminateSessionDriver($app['session']),
 				new IlluminateCookieDriver($app['cookie']),
-				$app['config']['camelot-auth::camelot'],$app['request']->path());
+				$app['config']['camelot-auth::camelot'],
+				$app['request']->path()
+				);
 		});
 		
 		//var_dump(Config::get('camelot-auth::camelot.default_driver'));
