@@ -11,9 +11,9 @@ class EloquentDatabaseDriver implements DatabaseDriverInterface
 	protected $model;
 
 
-	public function __construct($authDriverName)
+	public function __construct($app,$authDriver)
 	{
-		$modelClass  = 'TwswebInt\CamelotAuth\Models\\'.ltrim($authDriverName.'CamelotModel','\\');
+		$modelClass  = 'TwswebInt\CamelotAuth\Models\\'.ltrim($authDriver.'CamelotModel','\\');
 
 		$this->model = new $modelClass;
 	}	
