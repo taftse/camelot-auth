@@ -1,9 +1,9 @@
 <?php namespace TwswebInt\CamelotAuth;
 
 use TwswebInt\CamelotAuth\AuthDrivers;
-use TwswebInt\CamelotAuth\DatabaseDrivers;
-
-use Config;
+use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface;
+use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
+use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
 
 class Camelot{
 
@@ -58,6 +58,8 @@ class Camelot{
 
     public function __construct(SessionDriverInterface $session,CookieDriverInterface $cookie,array $config,$httpPath)
     {
+        $this->session = $session;
+        $this->cookie = $cookie;
         $this->config = $config;
         $this->httpPath = $httpPath;
         $this->supported_drivers = $config['provider_routing'];       
@@ -107,13 +109,13 @@ class Camelot{
             throw new \Exception("Cannot Find Driver class (".$driverClass.")");
         }
         $databaseDriver = $this->loadDatabaseDriver(ucfirst($driverName));
-        $driver = $driverClass(
+        $driver = new $driverClass(
                 $this->session,
                 $this->cookie,
                 $databaseDriver,
                 $provider
                 );
-        return new $driver;
+        return $driver;
     }
 
     public function __call($method,$params)

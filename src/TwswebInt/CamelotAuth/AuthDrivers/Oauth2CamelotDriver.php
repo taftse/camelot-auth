@@ -11,6 +11,8 @@ class Oauth2CamelotDriver extends CamelotDriver
 
 	public function authenticate()
 	{
+		var_dump('test');
 		echo 'oauth2';
+		return 'oauth2';
 	}
 }

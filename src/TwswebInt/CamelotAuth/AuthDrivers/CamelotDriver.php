@@ -1,8 +1,9 @@
 <?php namespace TwswebInt\CamelotAuth\AuthDrivers;
 
-use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
+
 use TwswebInt\CamelotAuth\User\UserInterface;
 use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
+use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
 //use TwswebInt\CamelotAuth\UserInterface;
 use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface as DatabaseDriverInterface;
 abstract class CamelotDriver{
