@@ -1,4 +1,4 @@
-<?php namespace TwswebInt\CamelotAuth\Drivers;
+<?php namespace TwswebInt\CamelotAuth\AuthDrivers;
 
 use Config;
 use Input;

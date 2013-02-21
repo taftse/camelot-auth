@@ -1,6 +1,6 @@
 <?php namespace TwswebInt\CamelotAuth;
 
-use TwswebInt\CamelotAuth\Drivers;
+use TwswebInt\CamelotAuth\AuthDrivers;
 use TwswebInt\CamelotAuth\DatabaseDrivers;
 use Illuminate\Session\Store;
 use Config;
@@ -69,17 +69,17 @@ class Camelot{
         }
         
         // lets load the specified driver
-        $driverFile = __DIR__.'/Drivers/'.ucfirst($driver).'CamelotDriver.php';
+        $driverFile = __DIR__.'/AuthDrivers/'.ucfirst($driver).'CamelotDriver.php';
         if(!file_exists($driverFile))
         {
             throw new \Exception("Cannot Find the ".ucfirst($driver)." Driver");
         }
         include_once $driverFile;
         
-        $driverClass ='TwswebInt\CamelotAuth\Drivers\\'.ucfirst($driver).'CamelotDriver';
+        $driverClass ='TwswebInt\CamelotAuth\AuthDrivers\\'.ucfirst($driver).'CamelotDriver';
         if(!class_exists($driverClass,false))
         {
-            throw new \Exception("Cannot Find Driver class");
+            throw new \Exception("Cannot Find Driver class (".$driverClass.")");
         }
         $databaseDriver = $this->loadDatabaseDriver(ucfirst($driver));
         $this->driver = new $driverClass($this->app,$databaseDriver,$provider);

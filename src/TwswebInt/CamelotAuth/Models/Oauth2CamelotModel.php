@@ -11,7 +11,7 @@ class LocalCamelotModel extends Model implements UserInterface{
 	 *
 	 * @var string
 	 */
-	protected $table = 'local_account';
+	protected $table = 'oauth2_account';
 
 	/**
 	 * The attributes excluded from the model's JSON form.
