@@ -13,12 +13,8 @@ class CamelotAccount extends Model implements UserInterface{
 	 */
 	protected $table = 'account';
 
+	protected $primarykey = 'id';
 
-
-	protected function localAccount()
-	{
-		//return $this->hasOne('TwswebInt\CamelotAuth\Models\LocalCamelotModel', 'account_id');
-	}
 	/**
 	 * Get the unique identifier for the user.
 	 *
@@ -38,4 +34,15 @@ class CamelotAccount extends Model implements UserInterface{
 	{
 		return '';
 	}
-}
+
+
+	public function getId($value)
+	{
+		return base_convert($value, 10, 36);
+	}
+
+	public function setIdAttribute($value)
+	{
+		$this->attributes['id'] = intval($value,36);
+	}
+}	

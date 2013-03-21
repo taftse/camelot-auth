@@ -13,6 +13,6 @@ class Oauth2CamelotDriver extends CamelotDriver
 	{
 		
 		echo 'oauth2';
-		return 'oauth2';
+		return false;
 	}
 }

@@ -16,7 +16,8 @@
         "illuminate/support": "4.0.*",
         "illuminate/cookie": "4.0.*",
         "illuminate/database": "4.0.*",
-        "illuminate/session": "4.0.*"
+        "illuminate/session": "4.0.*",
+        "illuminate/validation": "4.0.*@dev"
     },
     "autoload": {
         "classmap": [

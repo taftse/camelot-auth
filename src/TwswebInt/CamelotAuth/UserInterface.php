@@ -16,4 +16,7 @@ interface UserInterface {
 	 */
 	public function getAuthPassword();
 
+
+	//public function getAuthInternalID();
+
 }

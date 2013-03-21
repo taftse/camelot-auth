@@ -13,26 +13,19 @@ class EloquentDatabaseDriver implements DatabaseDriverInterface
 
 	public function __construct($authDriverName)
 	{
-		$modelClass  = 'TwswebInt\CamelotAuth\Models\\'.ltrim($authDriverName.'CamelotModel','\\');
+		$modelClass  = '\\TwswebInt\CamelotAuth\Models\\'.ltrim($authDriverName.'CamelotModel','\\');
 
 		$this->model = new $modelClass;
 	}	
 
 	public function getByID($identifier)
 	{
-		return $this->model->newQuery()->find($identifier);
+		
+		return $this->model->newQuery()->with('account')->where('account_id','=',$identifier)->first();
 	}
 
 	public function getByCredentials(array $credentials)
 	{
-		$query = $this->model->newQuery();
-
-		foreach ($credentials as $key => $value) {
-			if(!str_contains($key,'password'))
-			{
-				$query->where($key,$value);
-			}
-		}
-		return $query->first();
+		return  $this->model->findByCredentials($credentials);
 	}
 }

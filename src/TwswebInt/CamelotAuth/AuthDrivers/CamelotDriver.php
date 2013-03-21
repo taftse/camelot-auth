@@ -43,6 +43,14 @@ abstract class CamelotDriver{
 	 */
 	protected $providerName;
 
+
+	/**
+	 * The Authentication providers model
+	 *
+	 * @var string
+	 */
+	protected $providerModel = null;
+
 	
 
 	/**
@@ -76,14 +84,14 @@ abstract class CamelotDriver{
 		{
 			return $this->user;
 		}
-
-		$id = $this->app['session']->get($this->getSessionID());
+		
+		$id = $this->session->get();
 
 		$user = null;
-
+		
 		if(!is_null($id))
 		{
-			$user = $this->database->getByID($id);
+			$user = $this->database->getByID($id);			
 		}
 
 		if(is_null($user) && !is_null($cookieID = $this->getCookieID()))
@@ -91,10 +99,17 @@ abstract class CamelotDriver{
 			$user = $this->database->getByID($cookieID);
 		}
 
-		return $this->user = $user->account;
+		if(!is_null($user)){
+			return $this->user = $user->account;
+		}
+
+		return null;
 	}
 
 	abstract function authenticate();
+
+	abstract function register();
+
 
 
 	protected function login()
@@ -104,18 +119,70 @@ abstract class CamelotDriver{
 
 	protected function createSession($account,$remember = false)
 	{
-		//var_dump($account);
+		
 		$id = $account->getAuthIdentifier();
 
-		$this->app['session']->put($this->getSessionID(),$id);
+		$this->session->put($id);
 
 		if($remember)
 		{
-			$this->app['cookie']->forever($this->getCookieID(),$id);
+			$this->cookie->forever($this->getCookieID(),$id);
 		}
 		$this->user = $account;
 	}
 
+	// all details should be checked before this function is called
+	/*protected function createAccount(array $credentials,array $accountDetails)
+	{
+
+		if($this->check())
+		{
+			
+			// if logged in add the account_id to the credentials
+			$credentials['account_id'] = $this->user->id;
+
+
+		}else {
+			// create a new account in the account table 
+			// asuming the details in the accountDetails array have been filtered
+			$account = new \TwswebInt\CamelotAuth\Models\CamelotAccount();
+			$account->fill($accountDetails);
+			$account->save();
+			//send email activation 
+
+			// add the returned account_id to the credentials
+			
+			$credentials['account_id'] = $account->id;
+		}
+
+		
+		$user = $this->createModel();
+		$user::create($credentials);
+		//$user->save();
+
+		return $user;
+	}*/
+
+	protected function createAccount(array $accountDetails ,$active = false)
+	{
+		if($this->check())
+		{
+			return $this->user->id;
+		}else{
+			$account = new \TwswebInt\CamelotAuth\Models\CamelotAccount();
+			$account->fill($accountDetails);
+			$account->save();
+			return $account->id;
+		}
+	}
+
+
+	public function logout()
+	{
+		$this->user = null;
+		$this->session->forget();
+		$this->cookie->forget();
+	}
 	/**
 	 * Get a unique identifier for this auth session ID value.
 	 *
@@ -157,5 +224,13 @@ abstract class CamelotDriver{
 	public function getProviderName()
 	{
 		return $this->providerName;
+	}
+
+	public function createModel()
+	{
+
+		$class = '\\'.ltrim($this->providerModel, '\\');
+
+		return new $class;
 	}
 }

@@ -60,7 +60,10 @@ class CamelotTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('local',$authDriver->getProviderName());
 	}
 
-	
+	public function testNonExistantMethod()
+	{
+		
+	}
 	/*public function testLoggingInUser()
 	{
 		$user = m::mock('TwswebInt\CamelotAuth\UserInterface');
