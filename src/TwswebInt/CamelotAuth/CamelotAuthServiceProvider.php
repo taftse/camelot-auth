@@ -44,11 +44,6 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 				$app['request']->path()
 				);
 		});
-		
-		//var_dump(Config::get('camelot-auth::camelot.default_driver'));
-		//var_dump($this->app['config']->get('camelot-auth::camelot.default_driver'));
-		
-//
 	}
 
 	/**
