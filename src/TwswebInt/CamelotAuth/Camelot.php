@@ -32,7 +32,7 @@ class Camelot{
      * A Array Containing the cammelot settings
      *
      */
-    protected $settings;
+    protected $config;
 
     /**
      * A list of supported drivers 
@@ -65,9 +65,8 @@ class Camelot{
         $this->supported_drivers = $config['provider_routing'];       
     }
 
-    public function loadDriver($driverName = null)
+    public function loadDriver($driverName = null,$provider = null)
     {
-        $provider = null;
         // there is no driver specified lets try and detect the required driver
         if(is_null($driverName))
         {
@@ -82,7 +81,7 @@ class Camelot{
                
                     if(isset($this->supported_drivers[ucfirst($provider)]))
                     {
-                       $driverName = $this->supported_drivers[ucfirst($provider)]['Driver'];
+                       $driverName = $this->supported_drivers[ucfirst($provider)]['driver'];
                     }
                 }
             }
@@ -95,24 +94,31 @@ class Camelot{
         }
         
         // lets load the specified driver
-        $driverFile = __DIR__.'/AuthDrivers/'.ucfirst($driverName).'CamelotDriver.php';
+        $driverFile = __DIR__.'/AuthDrivers/'.ucfirst($driverName).'AuthDriver.php';
         if(!file_exists($driverFile))
         {
             throw new \Exception("Cannot Find the ".ucfirst($driverName)." Driver");
         }
         include_once $driverFile;
         
-        $driverClass ='TwswebInt\CamelotAuth\AuthDrivers\\'.ucfirst($driverName).'CamelotDriver';
+        $driverClass ='TwswebInt\CamelotAuth\AuthDrivers\\'.ucfirst($driverName).'AuthDriver';
         if(!class_exists($driverClass,false))
         {
             throw new \Exception("Cannot Find Driver class (".$driverClass.")");
         }
+        // are there config settings set for this driver if not set it to blank
+        if(!isset($this->supported_drivers[ucfirst($provider)]['config']))
+        {
+            $this->supported_drivers[ucfirst($provider)]['config'] = array();
+        }
+
         $databaseDriver = $this->loadDatabaseDriver(ucfirst($driverName));
         $driver = new $driverClass(
                 $this->session,
                 $this->cookie,
                 $databaseDriver,
-                $provider
+                $provider,
+                $this->supported_drivers[ucfirst($provider)]['config'] 
                 );
         return $driver;
     }

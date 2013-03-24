@@ -9,7 +9,7 @@ interface CookieDriverInterface{
 	 *
 	 * @return string
 	 */
-	public function getCookieKey();
+	public function getKey();
 
 	/**
 	 * Put a value in the cookie.
@@ -26,7 +26,7 @@ interface CookieDriverInterface{
 	 * @param $value
 	 * @return void
 	 */
-	public function putForever($value);
+	public function forever($value);
 
 	/**
 	 * gets the cookie value
@@ -40,5 +40,5 @@ interface CookieDriverInterface{
 	 *
 	 * @return void
 	 */
-	public function remove();
+	public function forget();
 }

@@ -6,19 +6,19 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class IlluminateCookieDriver implements CookieDriverInterface
 {
-	protected $key = "cammelot-auth";
+	protected $key = "camelot-auth";
 
 	protected $cookieJar;
 
 	protected $cookie;
 
-	public function __construct(CookieJar $cookieJar,$key = "cammelot-auth")
+	public function __construct(CookieJar $cookieJar,$key = "camelot-auth")
 	{
 		$this->cookieJar = $cookieJar;
 		$this->key = $key;
 	}
 
-	public function getCookieKey()
+	public function getKey()
 	{
 		return $this->key;
 	}
@@ -28,17 +28,17 @@ class IlluminateCookieDriver implements CookieDriverInterface
 		$this->cookie = $this->cookieJar->make($this->key,$value,$minutes);
 	}
 
-	public function putForever($value)
+	public function forever($value)
 	{
 		$this->cookie = $this->cookieJar->forever($this->key,$value);
 	}
 
 	public function get()
 	{
-		return $this->cookieJar->get($this->key);
+		return $this->CookieJar->get($this->key);
 	}
 
-	public function remove()
+	public function forget()
 	{
 		$this->cookie = $this->cookieJar->forget($this->key);
 	}

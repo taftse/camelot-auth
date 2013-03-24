@@ -85,13 +85,110 @@ return array(
         |
         |
         */
-		'provider_routing' => array('Local' => array('Driver'=>'local'),
-								   'Google'=> array('Driver'=>'oauth2'),
-                                   'Facebook'=> array('Driver'=>'oauth2'),
-                                   'Foursquare' =>array('Driver'=>'oauth2'),
-                                   'Windowslive'=>array('Driver'=>'oauth2'),
-                                   'Edugate' => array('Driver'=>'saml')
-                                   ),
+		'provider_routing' => array('Local' => array('driver'=>'local',
+                                        'config' = array(
+                                            'userIdentifierField'=>'',
+                                            'userPasswordField'=>'',
+                                            'loginSubmitField'=>'',
+                                            )),
+								    'Google'=> array('driver'=>'oauth2',
+                                        'config'=>array(
+                                            'Client_ID' =>'',
+                                            'Client_Secret' =>'',
+                                            'CSRF_Supported' =>false,
+                                            'Force_Approval' =>false,
+                                            'Grant_Type' =>'',
+                                            'scopes' => array(
+                                                // Userinfo - Email
+                                                'https://www.googleapis.com/auth/userinfo.email',
+                                                // Userinfo - Profile
+                                                'https://www.googleapis.com/auth/userinfo.profile',  
+                                                // Adsense Management
+                             //                   'https://www.googleapis.com/auth/adsense',
+                                                // Google Affiliate Network
+                             //                   'https://www.googleapis.com/auth/gan',
+                                                // Analytics
+                             //                   'https://www.googleapis.com/auth/analytics.readonly',
+                                                // Google Books
+                             //                   'https://www.googleapis.com/auth/books',
+                                                // Blogger
+                             //                  'https://www.googleapis.com/auth/blogger',
+                                                // Calendar
+                             //                   'https://www.googleapis.com/auth/calendar',
+                                                // Google Cloud Storage
+                             //                   'https://www.googleapis.com/auth/devstorage.read_write',
+                                                // Contacts
+                             //                   'https://www.google.com/m8/feeds/',
+                                                // Content API for Shopping
+                             //                   'https://www.googleapis.com/auth/structuredcontent',
+                                                // Chrome Web Store
+                             //                   'https://www.googleapis.com/auth/chromewebstore.readonly',
+                                                // Documents List
+                             //                   'https://docs.google.com/feeds/',
+                                                // Google Drive
+                             //                   'https://www.googleapis.com/auth/drive.file',
+                                                // Gmail
+                             //                   'https://mail.google.com/mail/feed/atom',
+                                                // Google+
+                             //                   'https://www.googleapis.com/auth/plus.me',
+                                                // Groups Provisioning
+                             //                   'https://apps-apis.google.com/a/feeds/groups/',
+                                                // Google Latitude
+                             //                   'https://www.googleapis.com/auth/latitude.all.best',
+                             //                   'https://www.googleapis.com/auth/latitude.all.city',
+                                                // Moderator
+                             //                   'https://www.googleapis.com/auth/moderator',
+                                                // Nicknames Provisioning
+                             //                   'https://apps-apis.google.com/a/feeds/alias/',
+                                                // Orkut
+                             //                   'https://www.googleapis.com/auth/orkut',
+                                                // Picasa Web
+                             //                   'https://picasaweb.google.com/data/',
+                                                // Sites
+                             //                   'https://sites.google.com/feeds/',
+                                                // Spreadsheets
+                             //                   'https://spreadsheets.google.com/feeds/',
+                                                // Tasks
+                             //                   'https://www.googleapis.com/auth/tasks',
+                                                // URL Shortener
+                             //                   'https://www.googleapis.com/auth/urlshortener',
+                                                // User Provisioning
+                             //                   'https://apps-apis.google.com/a/feeds/user/',
+                                                // Webmaster Tools
+                             //                   'https://www.google.com/webmasters/tools/feeds/',
+                                                // YouTube
+                             //                   'https://gdata.youtube.com',
+                                                            ))),
+                                    'Facebook'=> array('driver'=>'oauth2',
+                                        'config'=>array(
+                                            'Client_ID' =>'',
+                                            'Client_Secret' =>'',
+                                            'CSRF_Supported' =>false,
+                                            'Force_Approval' =>false,
+                                            'Grant_Type' =>'',
+                                            'scopes' => array(
+                                                             )
+                                                        )),
+                                    'Foursquare' =>array('driver'=>'oauth2',
+                                        'config'=>array(
+                                            'Client_ID' =>'',
+                                            'Client_Secret' =>'',
+                                            'CSRF_Supported' =>false,
+                                            'Force_Approval' =>false,
+                                            'Grant_Type' =>'',
+                                            'scopes' => array()
+                                                        )),
+                                    'Windowslive'=>array('driver'=>'oauth2',
+                                        'config'=>array(
+                                            'Client_ID' =>'',
+                                            'Client_Secret' =>'',
+                                            'CSRF_Supported' =>false,
+                                            'Force_Approval' =>false,
+                                            'Grant_Type' =>'',
+                                            'scopes' => array()
+                                                        )),
+                                    'Edugate' => array('driver'=>'saml'),
+                                    ),
 
 
 
@@ -101,25 +198,6 @@ return array(
 
         'registration_uri' => 'account/register',
 
-        'verification_uri' => 'account/verify'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        'verification_uri' => 'account/verify',
 
 	);

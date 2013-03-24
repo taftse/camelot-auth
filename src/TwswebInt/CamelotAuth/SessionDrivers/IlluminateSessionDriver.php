@@ -5,21 +5,14 @@ use Illuminate\Session\Store  as SessionStore;
 class IlluminateSessionDriver implements SessionDriverInterface
 {
 
+	protected $key = "camelot-auth";
 
-	protected $key = "cammelot-auth";
+	protected $store;
 
-	/**
-	 * Session Store object
-	 *
-	 * @var Illuminate\Session\Store
-	 */
-	protected $session;
-
-	public function __construct(SessionStore $session,$key = "cammelot-auth")
+	public function __construct(SessionStore $store,$key = "camelot-auth")
 	{
-		$this->session = $session;
-
-		$this->key;
+		$this->store = $store;
+		$this->key = $key;
 	}
 
 	public function getKey()
@@ -29,16 +22,16 @@ class IlluminateSessionDriver implements SessionDriverInterface
 
 	public function put($value)
 	{
-		$this->session->put($this->key,$value);
+		$this->store->put($this->key,$value);
 	}
 
 	public function get()
 	{
-		return $this->session->get($this->key);
+		return $this->store->get($this->key);
 	}
 
 	public function forget()
 	{
-		$this->session->forget($this->key);
+		$this->store->forget($this->key);
 	}
 }
