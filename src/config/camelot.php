@@ -86,18 +86,16 @@ return array(
         |
         */
 		'provider_routing' => array('Local' => array('driver'=>'local',
-                                        'config' = array(
+                                        'config' => array(
                                             'userIdentifierField'=>'',
                                             'userPasswordField'=>'',
                                             'loginSubmitField'=>'',
                                             )),
 								    'Google'=> array('driver'=>'oauth2',
                                         'config'=>array(
-                                            'Client_ID' =>'',
-                                            'Client_Secret' =>'',
-                                            'CSRF_Supported' =>false,
-                                            'Force_Approval' =>false,
-                                            'Grant_Type' =>'',
+                                            'clientID' =>'',
+                                            'clientSecret' =>'',
+                                            'forceApproval' =>false,
                                             'scopes' => array(
                                                 // Userinfo - Email
                                                 'https://www.googleapis.com/auth/userinfo.email',
@@ -161,14 +159,13 @@ return array(
                                                             ))),
                                     'Facebook'=> array('driver'=>'oauth2',
                                         'config'=>array(
-                                            'Client_ID' =>'',
-                                            'Client_Secret' =>'',
-                                            'CSRF_Supported' =>false,
-                                            'Force_Approval' =>false,
-                                            'Grant_Type' =>'',
+                                            'clientID' =>'',
+                                            'clientSecret' =>'',
                                             'scopes' => array(
-                                                             )
-                                                        )),
+                                                'offline_access', 
+                                                'email', 
+                                                'read_stream'
+                                                             ))),
                                     'Foursquare' =>array('driver'=>'oauth2',
                                         'config'=>array(
                                             'Client_ID' =>'',
@@ -189,6 +186,11 @@ return array(
                                                         )),
                                     'Edugate' => array('driver'=>'saml'),
                                     ),
+               
+
+        'account_requirements' => array('table_field_name'=>array('form_field_name'=>'rule'),
+                                        'table_field_name'=>array('form_field_name'=>'rule'),
+                                       ),
 
 
 

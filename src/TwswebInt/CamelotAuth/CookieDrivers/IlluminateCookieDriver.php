@@ -23,24 +23,36 @@ class IlluminateCookieDriver implements CookieDriverInterface
 		return $this->key;
 	}
 
-	public function put($value,$minutes)
+	public function put($value,$minutes,$key= null)
 	{
-		$this->cookie = $this->cookieJar->make($this->key,$value,$minutes);
+		if(is_null($key))
+		{
+			$key = $this->getKey();
+		}
+		$this->cookie = $this->cookieJar->make($key,$value,$minutes);
 	}
 
 	public function forever($value)
 	{
-		$this->cookie = $this->cookieJar->forever($this->key,$value);
+		$this->cookie = $this->cookieJar->forever($this->getKey(),$value);
 	}
 
-	public function get()
+	public function get($key= null)
 	{
-		return $this->CookieJar->get($this->key);
+		if(is_null($key))
+		{
+			$key = $this->getKey();
+		}
+		return $this->cookieJar->get($key);
 	}
 
-	public function forget()
+	public function forget($key= null)
 	{
-		$this->cookie = $this->cookieJar->forget($this->key);
+		if(is_null($key))
+		{
+			$key = $this->getKey();
+		}
+		$this->cookie = $this->cookieJar->forget($key);
 	}
 
 	public function getCookie()

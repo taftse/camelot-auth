@@ -20,18 +20,30 @@ class IlluminateSessionDriver implements SessionDriverInterface
 		return $this->key;
 	}
 
-	public function put($value)
+	public function put($value,$key=null)
 	{
-		$this->store->put($this->key,$value);
+		if(is_null($key)){
+			$key = $this->key;
+		}
+		
+		$this->store->put($key,$value);
 	}
 
-	public function get()
+	public function get($key = null)
 	{
-		return $this->store->get($this->key);
+		if(is_null($key))
+		{
+			$key = $this->key;
+		}
+		return $this->store->get($key);
 	}
 
-	public function forget()
+	public function forget($key = null)
 	{
-		$this->store->forget($this->key);
+		if(is_null($key))
+		{
+			$key = $this->key;
+		}
+		$this->store->forget($key);
 	}
 }

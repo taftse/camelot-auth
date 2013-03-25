@@ -31,12 +31,10 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//$this->package('twsweb-int/camelot-auth');
 		$this->app['config']->package('twsweb-int/camelot-auth', __DIR__.'/../../config');
 		$app = $this->app;
 		$this->app['camelot'] = $this->app->share(function($app)
 		{
-			//var_dump($app['config']['camelot-auth::camelot']);
 			return new Camelot(
 				new IlluminateSessionDriver($app['session']),
 				new IlluminateCookieDriver($app['cookie']),

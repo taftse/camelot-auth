@@ -4,7 +4,7 @@ use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
 use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
 use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface;
 
-abstract class AuthDriver{
+abstract class AbstractAuthDriver{
 	/**
 	 * The currently authenticated user.
 	 *
@@ -34,13 +34,18 @@ abstract class AuthDriver{
 
 	protected $settings = array();
 
-	public function __construct(SessionDriverInterface $session,CookieDriverInterface $cookie,DatabaseDriverInterface $database,$providerName,array $settings)
+	protected $httpPath = '';
+
+	public function __construct(SessionDriverInterface $session,CookieDriverInterface $cookie,DatabaseDriverInterface $database,$providerName,array $settings,$httpPath)
 	{
 		$this->session = $session;
 		$this->cookie = $cookie;
 		$this->database = $database;
 		$this->providerName = $providerName;
+		$this->settings = $settings;
+		$this->httpPath = $httpPath;
 	}
+
 
 	public function check()
 	{

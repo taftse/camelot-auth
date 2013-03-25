@@ -18,7 +18,7 @@ interface CookieDriverInterface{
 	 * @param int $time in minutes
 	 * @return void
 	 */
-	public function put($value,$time);
+	public function put($value,$time,$key= null);
 
 	/**
 	 * puts a value in the cookie forever.
@@ -33,12 +33,12 @@ interface CookieDriverInterface{
 	 * 
 	 * @return mixed
 	 */
-	public function get();
+	public function get($key= null);
 
 	/**
 	 * removes the cookie
 	 *
 	 * @return void
 	 */
-	public function forget();
+	public function forget($key= null);
 }
