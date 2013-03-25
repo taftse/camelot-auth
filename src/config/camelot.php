@@ -91,10 +91,10 @@ return array(
                                             'userPasswordField'=>'',
                                             'loginSubmitField'=>'',
                                             )),
-								    'Google'=> array('driver'=>'oauth2',
+								    'Google'=> array('driver'=>'oauth2Client',
                                         'config'=>array(
-                                            'clientID' =>'',
-                                            'clientSecret' =>'',
+                                            'clientID' =>'881575521529-nnatthifivm2nak2il49c4srdm6kr27r.apps.googleusercontent.com',
+                                            'clientSecret' =>'uDcpbc040zJsNFYgmRfJTa3i',
                                             'forceApproval' =>false,
                                             'scopes' => array(
                                                 // Userinfo - Email
@@ -157,22 +157,19 @@ return array(
                                                 // YouTube
                              //                   'https://gdata.youtube.com',
                                                             ))),
-                                    'Facebook'=> array('driver'=>'oauth2',
+                                    'Facebook'=> array('driver'=>'oauth2Client',
                                         'config'=>array(
-                                            'clientID' =>'',
-                                            'clientSecret' =>'',
+                                            'clientID' =>'340444932663232',
+                                            'clientSecret' =>'3688b13e32bfd060f3bea409a421eb5f',
                                             'scopes' => array(
                                                 'offline_access', 
                                                 'email', 
                                                 'read_stream'
                                                              ))),
-                                    'Foursquare' =>array('driver'=>'oauth2',
+                                    'Foursquare' =>array('driver'=>'oauth2Client',
                                         'config'=>array(
-                                            'Client_ID' =>'',
-                                            'Client_Secret' =>'',
-                                            'CSRF_Supported' =>false,
-                                            'Force_Approval' =>false,
-                                            'Grant_Type' =>'',
+                                            'clientID' =>'',
+                                            'clientSecret' =>'',
                                             'scopes' => array()
                                                         )),
                                     'Windowslive'=>array('driver'=>'oauth2',

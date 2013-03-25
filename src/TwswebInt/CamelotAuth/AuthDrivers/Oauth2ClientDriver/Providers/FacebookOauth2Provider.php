@@ -1,9 +1,9 @@
-<?php namespace TwswebInt\CamelotAuth\AuthDrivers\Oauth2Driver\Providers;
+<?php namespace TwswebInt\CamelotAuth\AuthDrivers\Oauth2ClientDriver\Providers;
 
 use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
 use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
 use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface;
-use TwswebInt\CamelotAuth\AuthDrivers\Oauth2Driver\AccessToken;
+use TwswebInt\CamelotAuth\AuthDrivers\Oauth2ClientDriver\AccessToken;
 
 class FacebookOauth2Provider extends AbstractOauth2Provider
 {

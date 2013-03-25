@@ -4,9 +4,9 @@ use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
 use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
 use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface;
 
-use TwswebInt\CamelotAuth\AuthDrivers\Oauth2Driver\AbstractOauth2Provider;
+use TwswebInt\CamelotAuth\AuthDrivers\Oauth2ClientDriver\AbstractOauth2Provider;
 
-class Oauth2AuthDriver extends AbstractAuthDriver{
+class Oauth2ClientAuthDriver extends AbstractAuthDriver{
 
 	/**
 	* The Oauth 2 Provider 
@@ -25,7 +25,7 @@ class Oauth2AuthDriver extends AbstractAuthDriver{
 
 	protected function loadProvider($providerName)
 	{
-		$providerFile = __DIR__.'/Oauth2Driver/providers/'.ucfirst($providerName).'Oauth2Provider.php';
+		$providerFile = __DIR__.'/Oauth2ClientDriver/providers/'.ucfirst($providerName).'Oauth2Provider.php';
 		if(!file_exists($providerFile))
 		{
 			throw new \Exception("Cannot Find the ".ucfirst($providerName)." Oauth2 provider");
@@ -33,7 +33,7 @@ class Oauth2AuthDriver extends AbstractAuthDriver{
 
 		include_once $providerFile;
 
-		$providerClass = 'TwswebInt\CamelotAuth\AuthDrivers\Oauth2Driver\providers\\'.ucfirst($providerName).'Oauth2Provider';
+		$providerClass = 'TwswebInt\CamelotAuth\AuthDrivers\Oauth2ClientDriver\providers\\'.ucfirst($providerName).'Oauth2Provider';
 		if(!class_exists($providerClass,false))
 		{
 			throw new \Exception("Cannot Find the Provider class (".$providerName."Oauth2Provider)");
