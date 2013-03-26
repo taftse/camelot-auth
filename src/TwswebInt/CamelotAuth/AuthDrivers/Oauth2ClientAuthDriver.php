@@ -69,6 +69,6 @@ class Oauth2ClientAuthDriver extends AbstractAuthDriver{
 
 	protected function validateUser($userData)
 	{
-
+		
 	}
 }
