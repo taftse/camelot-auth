@@ -164,7 +164,8 @@ return array(
                                             'scopes' => array(
                                                 'offline_access', 
                                                 'email', 
-                                                'read_stream'
+                                                'read_stream',
+                                                'user_birthday'
                                                              ))),
                                     'Foursquare' =>array('driver'=>'oauth2Client',
                                         'config'=>array(

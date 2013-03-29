@@ -287,9 +287,21 @@ abstract class AbstractOauth2Provider
 		{
 			foreach($this->userDataMap as $key=>$map)
 	 		{	
-		 		if(isset($userdata->$map))
+		 		if(is_array($map))
 		 		{
-		 			$user[$key] = $userdata->$map;
+		 			$object = $userData;
+		 			foreach($map as $key2)
+		 			{
+		 				if(isset($object->$key2))
+		 				{
+		 					$object = $object->$key2;
+		 				}
+		 			}
+		 			$user[$key] = $object;
+		 		}
+		 		else if(isset($userData->$map))
+		 		{
+		 			$user[$key] = $userData->$map;
 		 		}elseif(is_null($map))
 		 		{
 		 			$user[$key] = null;

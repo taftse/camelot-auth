@@ -15,6 +15,31 @@ class FacebookOauth2Provider extends AbstractOauth2Provider
 	 */
 	protected $tokenExpires = 'expires';
 
+	/**
+	 * an array used to map the recieved data to the accepted camelot data
+	 *
+	 * @var array
+	 */
+	protected $userDataMap = array(
+		'user_id'=>'id',
+		'username'=>'username',
+		'first_name' =>'first_name',
+		'last_name'=>'last_name',
+		'email' =>'email',
+		'email_verified'=>'verified',
+		'address_1' => null,
+		'address_2'=> null,
+		'city'=> array('hometown','name'),
+		'zip_code'=> null,
+		'state_code'=> null,
+		'country_iso'=> null,
+		'dob'=>'birthday',
+		'phone'=> null,
+		'status'=>'active',
+		'gender' =>'gender',
+		'language_iso'=> 'locale',
+		);
+
 	public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,array $settings,$httpPath)
 	{	
 
@@ -60,17 +85,10 @@ class FacebookOauth2Provider extends AbstractOauth2Provider
 	 {
 	 	$url = 'https://graph.facebook.com/me?'.http_build_query(array('access_token' => $token->accessToken));
 
-	 	$userdata = json_decode(file_get_contents($url));
+	 	$userData = json_decode(file_get_contents($url));
 			
-			return (array)$userdata;
-			/*"id": "",
-   			"name": "Timothy Seebus",
-   			"first_name": "Timothy",
-   			"last_name": "Seebus",
-   			"link": "",
-   			"username": "Taftse",*/
-	 }
 
-
-	 
+	 		return $this->parseUserData($userData,$token);
+			
+	 }	 
 }
