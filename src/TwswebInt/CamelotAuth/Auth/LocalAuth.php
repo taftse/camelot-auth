@@ -12,7 +12,7 @@ class LocalAuth extends AbstractAuth{
 		$oauthUser->find(1);
 
 		
-		//var_dump();
+		
 	}
 
 

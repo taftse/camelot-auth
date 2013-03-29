@@ -29,7 +29,6 @@ class CreateAccountTable extends Migration {
 		    $table->boolean('phone_verified')->default(false);
 		    $table->enum('gender',array('male','female','other'));
 		    $table->enum('status',array('pending','active','deactive','deleted'))->default('pending');
-		    $table->string('token_verifier');
 		    $table->timestamp('last_login');
 		    $table->string('last_ip');
 		    $table->timestamps();

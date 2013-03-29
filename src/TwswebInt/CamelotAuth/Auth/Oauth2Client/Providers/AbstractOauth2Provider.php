@@ -46,7 +46,7 @@ abstract class AbstractOauth2Provider
 		/**
 		 * any addtional parameters to be used for remote request
 		 *
-		 * @var string
+		 * @var array
 		 */
 		protected $params = array();
 
@@ -106,6 +106,13 @@ abstract class AbstractOauth2Provider
 		*/
 		protected $cookie;
 
+		/**
+		 * an array used to map the recieved data to the accepted camelot data
+		 *
+		 * @var array
+		 */
+		protected $userDataMap = array();
+
 		public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,array $settings,$httpPath)
 		{	
 			$this->session = $session;
@@ -124,9 +131,11 @@ abstract class AbstractOauth2Provider
 			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 
 			$this->callbackUrl = $protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			$this->callbackUrl = rtrim($this->callbackUrl , '/');
 			if(strpos($this->callbackUrl,'?')!== false)
 			{
 				$this->callbackUrl = substr($this->callbackUrl, 0, strrpos($this->callbackUrl, '?'));
+				
 			}
 
 			foreach ($settings as $setting => $value) {
@@ -273,4 +282,22 @@ abstract class AbstractOauth2Provider
 			return new AccessToken($token);
 		}
 
+
+		protected function parseUserData($userData,$token)
+		{
+			foreach($this->userDataMap as $key=>$map)
+	 		{	
+		 		if(isset($userdata->$map))
+		 		{
+		 			$user[$key] = $userdata->$map;
+		 		}elseif(is_null($map))
+		 		{
+		 			$user[$key] = null;
+		 		}else{
+		 			$user[$key] = $map;
+		 		}
+	 		}
+	 		$user['token'] = $token;
+	 		return $user;
+		}
 }

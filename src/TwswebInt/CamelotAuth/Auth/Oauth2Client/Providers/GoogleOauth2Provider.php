@@ -21,6 +21,31 @@ class GoogleOauth2Provider extends AbstractOauth2Provider
 	 */
 	protected $scopeSeperator = ' '; 
 
+	/**
+	 * an array used to map the recieved data to the accepted camelot data
+	 *
+	 * @var array
+	 */
+	protected $userDataMap = array(
+		'user_id'=>'id',
+		'username'=>'email',
+		'first_name' =>'given_name',
+		'last_name'=>'family_name',
+		'email' =>'email',
+		'email_verified'=>'verified_email',
+		'address_1' => null,
+		'address_2'=> null,
+		'city'=> null,
+		'zip_code'=> null,
+		'state_code'=> null,
+		'country_iso'=> null,
+		'dob'=>'birthday',
+		'phone'=> null,
+		'status'=>'active',
+		'gender' =>'gender',
+		'language_iso'=> 'locale',
+		);
+
 	public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,array $settings,$httpPath)
 	{	
 
@@ -68,21 +93,9 @@ class GoogleOauth2Provider extends AbstractOauth2Provider
 	 {
 	 	$url = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&'.http_build_query(array('access_token' => $token->accessToken));
 
-	 	$userdata = json_decode(file_get_contents($url));
-			
-			return $userdata;
-			/*
-			 "id": "",
-			 "email": "",
-			 "verified_email": true,
-			 "name": "Timothy Seebus",
-			 "given_name": "Timothy",
-			 "family_name": "Seebus",
-			 "link": "",
-			 "gender": "male",
-			 "birthday": "",
-			 "locale": "en"
-			*/
+	 	$userData = json_decode(file_get_contents($url));
+	 		
+			return $this->parseUserData($userData,$token);
 	 }
 
 

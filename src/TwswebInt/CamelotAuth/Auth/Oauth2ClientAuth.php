@@ -57,7 +57,7 @@ class Oauth2ClientAuth extends AbstractAuth{
 			$token = $this->provider->callback();
 			$userData = $this->provider->getUserInfo($token);
 
-			$userData['IDProvider'] = $this->provider->name;
+			$userData['provider'] = $this->provider->name;
 			return $this->validateUser($userData);
 		}
 	}
@@ -69,6 +69,6 @@ class Oauth2ClientAuth extends AbstractAuth{
 
 	protected function validateUser($userData)
 	{
-		
+		var_dump($userData);
 	}
 }
