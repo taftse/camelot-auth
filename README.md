@@ -43,4 +43,4 @@ because of the driver based design additional authentication protocols can be ea
 
 fix csrf in oauth2client Driver
 fix problem with IlluminateCookieDriver
-fix problem with IlluminateSessionDriver
+fix problem with IlluminateSession

@@ -2,7 +2,7 @@
 
 use TwswebInt\CamelotAuth\AuthDrivers;
 use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface;
-use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
+use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
 
 class Camelot{
@@ -10,7 +10,7 @@ class Camelot{
     /**
     * The Session Driver used by Camelot
     *
-    * @var use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
+    * @var use TwswebInt\CamelotAuth\Session\SessionInterface;
     */
     protected $session;
 
@@ -56,7 +56,7 @@ class Camelot{
     protected $driver = null;
 
 
-    public function __construct(SessionDriverInterface $session,CookieDriverInterface $cookie,array $config,$httpPath)
+    public function __construct(SessionInterface $session,CookieDriverInterface $cookie,array $config,$httpPath)
     {
         $this->session = $session;
         $this->cookie = $cookie;

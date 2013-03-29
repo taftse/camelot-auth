@@ -1,6 +1,6 @@
 <?php namespace TwswebInt\CamelotAuth\AuthDrivers;
 
-use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
+use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
 use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface;
 
@@ -15,7 +15,7 @@ class Oauth2ClientAuthDriver extends AbstractAuthDriver{
 	*/
 	protected $provider;
 
-	public function __construct(SessionDriverInterface $session,CookieDriverInterface $cookie,DatabaseDriverInterface $database,$providerName,array $settings,$httpPath)
+	public function __construct(SessionInterface $session,CookieDriverInterface $cookie,DatabaseDriverInterface $database,$providerName,array $settings,$httpPath)
 	{
 		parent::__construct($session,$cookie,$database,$providerName,$settings,$httpPath);
 

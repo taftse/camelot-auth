@@ -1,6 +1,6 @@
 <?php namespace TwswebInt\CamelotAuth\AuthDrivers\Oauth2ClientDriver\Providers;
 
-use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
+use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
 use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface;
 use TwswebInt\CamelotAuth\AuthDrivers\Oauth2ClientDriver\AccessToken as AccessToken;
@@ -95,7 +95,7 @@ abstract class AbstractOauth2Provider
 		/**
     	* The Session Driver used by Camelot
     	*
-    	* @var use TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface;
+    	* @var use TwswebInt\CamelotAuth\Session\SessionInterface;
     	*/
    		protected $session;
 	
@@ -106,7 +106,7 @@ abstract class AbstractOauth2Provider
 		*/
 		protected $cookie;
 
-		public function __construct(SessionDriverInterface $session,CookieDriverInterface $cookie,DatabaseDriverInterface $database,array $settings,$httpPath)
+		public function __construct(SessionInterface $session,CookieDriverInterface $cookie,DatabaseDriverInterface $database,array $settings,$httpPath)
 		{	
 			$this->session = $session;
 			$this->cookie = $cookie;

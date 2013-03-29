@@ -17,7 +17,7 @@ class CamelotTest extends PHPUnit_Framework_TestCase {
 	public function setUp()
 	{
 		//$this->hasher = m::mock('');
-		$this->session = m::mock('TwswebInt\CamelotAuth\SessionDrivers\SessionDriverInterface');
+		$this->session = m::mock('TwswebInt\CamelotAuth\Session\SessionInterface');
 		$this->cookie = m::mock('TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface');
 
 

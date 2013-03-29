@@ -1,7 +1,7 @@
-<?php namespace TwswebInt\CamelotAuth\SessionDrivers;
+<?php namespace TwswebInt\CamelotAuth\Session;
 
 
-interface SessionDriverInterface{
+interface SessionInterface{
 
 	public function getKey();
 

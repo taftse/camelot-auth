@@ -1,8 +1,8 @@
-<?php namespace TwswebInt\CamelotAuth\SessionDrivers;
+<?php namespace TwswebInt\CamelotAuth\Session;
 
 use Illuminate\Session\Store  as SessionStore;
 
-class IlluminateSessionDriver implements SessionDriverInterface
+class IlluminateSession implements SessionInterface
 {
 
 	protected $key = "camelot-auth";
