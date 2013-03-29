@@ -84,12 +84,27 @@ class Oauth2ClientAuth extends AbstractAuth{
 		{
 			return $this->createSession($user->Account);
 		}
+		// else lets register a account
 		else
 		{
+			$newOauthUser = $this->database->createModel('oauth2User');
+			$newOauthUser->fill()
+
+			
+			// lets first check if the user is already logged in
+			// and we just want to add this authentication method to the account
+			if($this->check())
+			{
+
+			}else{
+
+			}
+
+			
 			echo 'register new account';
 		}
 		var_dump(\DB::getQueryLog());
-		// else lets register a account
+		
 
 	}
 }
