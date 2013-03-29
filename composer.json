@@ -16,8 +16,7 @@
         "illuminate/support": "4.0.*",
         "illuminate/cookie": "4.0.*",
         "illuminate/database": "4.0.*",
-        "illuminate/session": "4.0.*",
-        "illuminate/validation": "4.0.*@dev"
+        "illuminate/session": "4.0.*"
     },
     "autoload": {
         "classmap": [
@@ -25,7 +24,7 @@
         ],
         "psr-0": {
             "TwswebInt\\CamelotAuth": "src/",
-            "TwswebInt\\CamelotAuth\\Drivers": "src/"
+            "TwswebInt\\CamelotAuth\\Models": "src/"
         }
     },
     "minimum-stability": "dev"

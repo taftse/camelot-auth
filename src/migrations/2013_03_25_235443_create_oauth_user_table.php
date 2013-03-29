@@ -18,8 +18,8 @@ class CreateOauthUserTable extends Migration {
 		    $table->string('provider');
 		    $table->string('user_id');
 		    $table->string('username');
-		    $table->string('token');
-		    $table->string('token_verifier');
+		    $table->string('token')->nullable();
+		    $table->string('token_verifier')->nullable();
 		});
 	}
 

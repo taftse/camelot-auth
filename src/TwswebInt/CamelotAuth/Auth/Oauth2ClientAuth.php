@@ -69,6 +69,27 @@ class Oauth2ClientAuth extends AbstractAuth{
 
 	protected function validateUser($userData)
 	{
-		var_dump($userData);
+		//echo '<pre>';
+		//var_dump($userData);
+		// check to see if the oauth details match a db record
+		$oauthUser = $this->database->createModel('oauth2User');
+		$user = $oauthUser->where('provider','=',$userData['provider'])
+				  ->where('user_id','=',$userData['user_id'])
+				  ->where('username','=',$userData['username'])
+				  ->with('account')->first();
+	
+		
+		// if true create a new session 
+		if(!is_null($user))
+		{
+			return $this->createSession($user->Account);
+		}
+		else
+		{
+			echo 'register new account';
+		}
+		var_dump(\DB::getQueryLog());
+		// else lets register a account
+
 	}
 }

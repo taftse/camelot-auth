@@ -94,7 +94,7 @@ abstract class AbstractAuth{
 			$this->cookie->forever($id);
 		}
 
-		$this->user = $account;
+		return $this->user = $account;
 	}
 
 	abstract function authenticate();

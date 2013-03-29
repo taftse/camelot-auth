@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use TwswebInt\CamelotAuth\Models\Oauth2UserInterface;
+use TwswebInt\CamelotAuth\Models\Eloquent\Account;
 
 class Oauth2User extends Model implements Oauth2UserInterface
 {
@@ -9,6 +10,6 @@ class Oauth2User extends Model implements Oauth2UserInterface
 	
 	public function Account()
 	{
-		return $this->belongsTo('Account');
+		return $this->belongsTo('TwswebInt\CamelotAuth\Models\Eloquent\Account');
 	}
 }
