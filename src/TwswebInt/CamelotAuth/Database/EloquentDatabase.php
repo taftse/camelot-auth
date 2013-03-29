@@ -1,7 +1,7 @@
-<?php namespace TwswebInt\CamelotAuth\DatabaseDrivers;
+<?php namespace TwswebInt\ICamelotAuth\Database;
 
 use TwswebInt\CamelotAuth\Models\Eloquent;
-class EloquentDatabaseDriver implements DatabaseDriverInterface
+class EloquentDatabase implements DatabaseInterface
 {
 	
 

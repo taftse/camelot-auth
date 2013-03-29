@@ -2,7 +2,7 @@
 
 use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
-use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface;
+use TwswebInt\ICamelotAuth\Database\DatabaseInterface;
 use TwswebInt\CamelotAuth\AuthDrivers\Oauth2ClientDriver\AccessToken;
 
 class GoogleOauth2Provider extends AbstractOauth2Provider
@@ -21,7 +21,7 @@ class GoogleOauth2Provider extends AbstractOauth2Provider
 	 */
 	protected $scopeSeperator = ' '; 
 
-	public function __construct(SessionInterface $session,CookieDriverInterface $cookie,DatabaseDriverInterface $database,array $settings,$httpPath)
+	public function __construct(SessionInterface $session,CookieDriverInterface $cookie,DatabaseInterface $database,array $settings,$httpPath)
 	{	
 
 			$scopes = array(

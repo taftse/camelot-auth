@@ -2,7 +2,7 @@
 
 use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
-use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface;
+use TwswebInt\ICamelotAuth\Database\DatabaseInterface;
 
 abstract class AbstractAuthDriver{
 	/**
@@ -36,7 +36,7 @@ abstract class AbstractAuthDriver{
 
 	protected $httpPath = '';
 
-	public function __construct(SessionInterface $session,CookieDriverInterface $cookie,DatabaseDriverInterface $database,$providerName,array $settings,$httpPath)
+	public function __construct(SessionInterface $session,CookieDriverInterface $cookie,DatabaseInterface $database,$providerName,array $settings,$httpPath)
 	{
 		$this->session = $session;
 		$this->cookie = $cookie;

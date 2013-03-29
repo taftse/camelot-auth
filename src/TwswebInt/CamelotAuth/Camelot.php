@@ -1,7 +1,7 @@
 <?php namespace TwswebInt\CamelotAuth;
 
 use TwswebInt\CamelotAuth\AuthDrivers;
-use TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface;
+use TwswebInt\ICamelotAuth\Database\DatabaseInterface;
 use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
 
@@ -24,7 +24,7 @@ class Camelot{
     /**
      * The Database Driver
      *
-     * @var TwswebInt\CamelotAuth\DatabaseDrivers\DatabaseDriverInterface
+     * @var TwswebInt\ICamelotAuth\Database\DatabaseInterface
      */
     protected $database;
 
@@ -149,7 +149,7 @@ class Camelot{
    protected function loadDatabaseDriver($authDriverName){
 
        $driverName = $this->config['database_driver'];
-       $databaseDriverClass = 'TwswebInt\CamelotAuth\DatabaseDrivers\\'.ucfirst($driverName).'DatabaseDriver';
+       $databaseDriverClass = 'TwswebInt\ICamelotAuth\Database\\'.ucfirst($driverName).'DatabaseDriver';
        return new $databaseDriverClass($authDriverName);
    }
 
