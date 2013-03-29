@@ -1,7 +1,7 @@
 <?php namespace TwswebInt\CamelotAuth;
 
 use TwswebInt\CamelotAuth\Auth;
-use TwswebInt\ICamelotAuth\Database\DatabaseInterface;
+use TwswebInt\CamelotAuth\Database\DatabaseInterface;
 use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\Cookie\CookieInterface;
 
@@ -24,7 +24,7 @@ class Camelot{
     /**
      * The Database Driver
      *
-     * @var TwswebInt\ICamelotAuth\Database\DatabaseInterface
+     * @var TwswebInt\CamelotAuth\Database\DatabaseInterface
      */
     protected $database;
 
@@ -94,14 +94,14 @@ class Camelot{
         }
         
         // lets load the specified driver
-        $driverFile = __DIR__.'/Auth/'.ucfirst($driverName).'AuthDriver.php';
+        $driverFile = __DIR__.'/Auth/'.ucfirst($driverName).'Auth.php';
         if(!file_exists($driverFile))
         {
             throw new \Exception("Cannot Find the ".ucfirst($driverName)." Driver");
         }
         include_once $driverFile;
         
-        $driverClass ='TwswebInt\CamelotAuth\Auth\\'.ucfirst($driverName).'AuthDriver';
+        $driverClass ='TwswebInt\CamelotAuth\Auth\\'.ucfirst($driverName).'Auth';
         if(!class_exists($driverClass,false))
         {
             throw new \Exception("Cannot Find Driver class (".$driverClass.")");
@@ -149,7 +149,7 @@ class Camelot{
    protected function loadDatabaseDriver($authDriverName){
 
        $driverName = $this->config['database_driver'];
-       $databaseDriverClass = 'TwswebInt\ICamelotAuth\Database\\'.ucfirst($driverName).'DatabaseDriver';
+       $databaseDriverClass = 'TwswebInt\CamelotAuth\Database\\'.ucfirst($driverName).'Database';
        return new $databaseDriverClass($authDriverName);
    }
 

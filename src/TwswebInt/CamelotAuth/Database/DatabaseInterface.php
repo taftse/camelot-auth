@@ -1,4 +1,4 @@
-<?php namespace TwswebInt\ICamelotAuth\Database;
+<?php namespace TwswebInt\CamelotAuth\Database;
 
 
 interface DatabaseInterface{

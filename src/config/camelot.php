@@ -91,7 +91,7 @@ return array(
                                             'userPasswordField'=>'',
                                             'loginSubmitField'=>'',
                                             )),
-								    'Google'=> array('driver'=>'oauth2Client',
+								    'Google'=> array('driver'=>'Oauth2Client',
                                         'config'=>array(
                                             'clientID' =>'881575521529-nnatthifivm2nak2il49c4srdm6kr27r.apps.googleusercontent.com',
                                             'clientSecret' =>'uDcpbc040zJsNFYgmRfJTa3i',

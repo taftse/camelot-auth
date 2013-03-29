@@ -2,7 +2,7 @@
 
 use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\Cookie\CookieInterface;
-use TwswebInt\ICamelotAuth\Database\DatabaseInterface;
+use TwswebInt\CamelotAuth\Database\DatabaseInterface;
 
 class LocalAuth extends AbstractAuth{
 
@@ -12,7 +12,7 @@ class LocalAuth extends AbstractAuth{
 		$oauthUser->find(1);
 
 		
-		var_dump();
+		//var_dump();
 	}
 
 

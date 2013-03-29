@@ -2,23 +2,31 @@
 
 use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\Cookie\CookieInterface;
-use TwswebInt\ICamelotAuth\Database\DatabaseInterface;
+use TwswebInt\CamelotAuth\Database\DatabaseInterface;
 use TwswebInt\CamelotAuth\Auth\Oauth2Client\AccessToken;
 
-class FacebookOauth2Provider extends AbstractOauth2Provider
+class GoogleOauth2Provider extends AbstractOauth2Provider
 {
+	/**
+	 * the method used to request tokens 
+	 *
+	 * @var string
+	 */
+	public $method = 'POST';
 
 	/**
-	 * the name used for the experation time used by the identity provider in the auth_token
+	 * the scope seperator that should be used (specified by the provider)
 	 *
-	 * @var string 
+	 * @var  string  
 	 */
-	protected $tokenExpires = 'expires';
+	protected $scopeSeperator = ' '; 
 
 	public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,array $settings,$httpPath)
 	{	
 
-			$scopes = array('email');
+			$scopes = array(
+				'https://www.googleapis.com/auth/userinfo.profile',
+				'https://www.googleapis.com/auth/userinfo.email');
 			if(is_string($settings['scopes']))
 			{
 				$settings['scopes'] = explode(',',$settings['scopes']);
@@ -35,7 +43,7 @@ class FacebookOauth2Provider extends AbstractOauth2Provider
 	 */
 	public function authorizeUrl()
 	{
-		return 'https://www.facebook.com/dialog/oauth';
+		return 'https://accounts.google.com/o/oauth2/auth';
 	}
 
 	/**
@@ -45,7 +53,7 @@ class FacebookOauth2Provider extends AbstractOauth2Provider
 	 */
 	public function accessTokenUrl()
 	{
-		return 'https://graph.facebook.com/oauth/access_token';
+		return 'https://accounts.google.com/o/oauth2/token';
 	}
 
 
@@ -58,17 +66,23 @@ class FacebookOauth2Provider extends AbstractOauth2Provider
 	 */
 	 public function getUserInfo(AccessToken $token)
 	 {
-	 	$url = 'https://graph.facebook.com/me?'.http_build_query(array('access_token' => $token->accessToken));
+	 	$url = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&'.http_build_query(array('access_token' => $token->accessToken));
 
 	 	$userdata = json_decode(file_get_contents($url));
 			
-			return (array)$userdata;
-			/*"id": "",
-   			"name": "Timothy Seebus",
-   			"first_name": "Timothy",
-   			"last_name": "Seebus",
-   			"link": "",
-   			"username": "Taftse",*/
+			return $userdata;
+			/*
+			 "id": "",
+			 "email": "",
+			 "verified_email": true,
+			 "name": "Timothy Seebus",
+			 "given_name": "Timothy",
+			 "family_name": "Seebus",
+			 "link": "",
+			 "gender": "male",
+			 "birthday": "",
+			 "locale": "en"
+			*/
 	 }
 
 

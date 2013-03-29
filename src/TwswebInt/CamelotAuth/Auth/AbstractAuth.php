@@ -2,7 +2,7 @@
 
 use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\Cookie\CookieInterface;
-use TwswebInt\ICamelotAuth\Database\DatabaseInterface;
+use TwswebInt\CamelotAuth\Database\DatabaseInterface;
 
 abstract class AbstractAuth{
 	/**
