@@ -1,10 +1,10 @@
-<?php namespace TwswebInt\CamelotAuth\CookieDrivers;
+<?php namespace TwswebInt\CamelotAuth\Cookie;
 
 use Illuminate\Container\Container;
 use Illuminate\Cookie\CookieJar;
 use Symfony\Component\HttpFoundation\Cookie;
 
-class IlluminateCookieDriver implements CookieDriverInterface
+class IlluminateCookie implements CookieInterface
 {
 	protected $key = "camelot-auth";
 

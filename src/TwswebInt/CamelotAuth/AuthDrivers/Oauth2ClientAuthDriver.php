@@ -1,21 +1,21 @@
-<?php namespace TwswebInt\CamelotAuth\AuthDrivers;
+<?php namespace TwswebInt\CamelotAuth\Auth;
 
 use TwswebInt\CamelotAuth\Session\SessionInterface;
-use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
+use TwswebInt\CamelotAuth\Cookie\CookieInterface;
 use TwswebInt\ICamelotAuth\Database\DatabaseInterface;
 
-use TwswebInt\CamelotAuth\AuthDrivers\Oauth2ClientDriver\AbstractOauth2Provider;
+use TwswebInt\CamelotAuth\Auth\Oauth2Client\AbstractOauth2Provider;
 
-class Oauth2ClientAuthDriver extends AbstractAuthDriver{
+class Oauth2ClientAuth extends AbstractAuth{
 
 	/**
 	* The Oauth 2 Provider 
 	*
-	* @var use TwswebInt\CamelotAuth\AuthDrivers\Oauth2Driver\ProviderInterface;
+	* @var use TwswebInt\CamelotAuth\Auth\Oauth2Driver\ProviderInterface;
 	*/
 	protected $provider;
 
-	public function __construct(SessionInterface $session,CookieDriverInterface $cookie,DatabaseInterface $database,$providerName,array $settings,$httpPath)
+	public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,$providerName,array $settings,$httpPath)
 	{
 		parent::__construct($session,$cookie,$database,$providerName,$settings,$httpPath);
 
@@ -25,7 +25,7 @@ class Oauth2ClientAuthDriver extends AbstractAuthDriver{
 
 	protected function loadProvider($providerName)
 	{
-		$providerFile = __DIR__.'/Oauth2ClientDriver/providers/'.ucfirst($providerName).'Oauth2Provider.php';
+		$providerFile = __DIR__.'/Oauth2Client/providers/'.ucfirst($providerName).'Oauth2Provider.php';
 		if(!file_exists($providerFile))
 		{
 			throw new \Exception("Cannot Find the ".ucfirst($providerName)." Oauth2 provider");
@@ -33,7 +33,7 @@ class Oauth2ClientAuthDriver extends AbstractAuthDriver{
 
 		include_once $providerFile;
 
-		$providerClass = 'TwswebInt\CamelotAuth\AuthDrivers\Oauth2ClientDriver\providers\\'.ucfirst($providerName).'Oauth2Provider';
+		$providerClass = 'TwswebInt\CamelotAuth\Auth\Oauth2Client\providers\\'.ucfirst($providerName).'Oauth2Provider';
 		if(!class_exists($providerClass,false))
 		{
 			throw new \Exception("Cannot Find the Provider class (".$providerName."Oauth2Provider)");

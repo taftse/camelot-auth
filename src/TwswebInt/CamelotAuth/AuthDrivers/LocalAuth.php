@@ -1,10 +1,10 @@
-<?php namespace TwswebInt\CamelotAuth\AuthDrivers;
+<?php namespace TwswebInt\CamelotAuth\Auth;
 
 use TwswebInt\CamelotAuth\Session\SessionInterface;
-use TwswebInt\CamelotAuth\CookieDrivers\CookieDriverInterface;
+use TwswebInt\CamelotAuth\Cookie\CookieInterface;
 use TwswebInt\ICamelotAuth\Database\DatabaseInterface;
 
-class LocalAuthDriver extends AbstractAuthDriver{
+class LocalAuth extends AbstractAuth{
 
 	public function authenticate()
 	{

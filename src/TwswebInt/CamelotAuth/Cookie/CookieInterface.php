@@ -1,8 +1,8 @@
-<?php namespace TwswebInt\CamelotAuth\CookieDrivers;
+<?php namespace TwswebInt\CamelotAuth\Cookie;
 
 
 
-interface CookieDriverInterface{
+interface CookieInterface{
 
 	/**
 	 * Returnd the cookeis key.

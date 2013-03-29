@@ -1,7 +1,7 @@
 <?php namespace TwswebInt\CamelotAuth;
 
 use TwswebInt\CamelotAuth\Session\IlluminateSession;
-use TwswebInt\CamelotAuth\CookieDrivers\IlluminateCookieDriver;
+use TwswebInt\CamelotAuth\Cookie\IlluminateCookie;
 use Illuminate\Support\ServiceProvider;
 use Config;
 
@@ -37,7 +37,7 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 		{
 			return new Camelot(
 				new IlluminateSession($app['session']),
-				new IlluminateCookieDriver($app['cookie']),
+				new IlluminateCookie($app['cookie']),
 				$app['config']['camelot-auth::camelot'],
 				$app['request']->path()
 				);

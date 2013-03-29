@@ -1,4 +1,4 @@
-<?php namespace TwswebInt\CamelotAuth\AuthDrivers\Oauth2ClientDriver;
+<?php namespace TwswebInt\CamelotAuth\Auth\Oauth2Client;
 
 class AccessToken {
 
