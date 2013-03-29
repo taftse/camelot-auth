@@ -88,7 +88,7 @@ class Oauth2ClientAuth extends AbstractAuth{
 		else
 		{
 			$newOauthUser = $this->database->createModel('oauth2User');
-			$newOauthUser->fill()
+			//$newOauthUser->fill();
 
 			
 			// lets first check if the user is already logged in
@@ -108,3 +108,6 @@ class Oauth2ClientAuth extends AbstractAuth{
 
 	}
 }
+
+//TwswebInt\CamelotAuth\CamelotAuthServiceProvider
+//Camelot'		  => 'TwswebInt\CamelotAuth\Facades\Camelot

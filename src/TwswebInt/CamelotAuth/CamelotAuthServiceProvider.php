@@ -3,7 +3,6 @@
 use TwswebInt\CamelotAuth\Session\IlluminateSession;
 use TwswebInt\CamelotAuth\Cookie\IlluminateCookie;
 use Illuminate\Support\ServiceProvider;
-use Config;
 
 class CamelotAuthServiceProvider extends ServiceProvider {
 
@@ -13,7 +12,6 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 	 * @var bool
 	 */
 	protected $defer = false;
-
 	/**
 	 * Bootstrap the application events.
 	 *
@@ -25,7 +23,7 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Register the {{full_package}} service provider.
+	 * Register the service provider.
 	 *
 	 * @return void
 	 */

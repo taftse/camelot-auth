@@ -8,10 +8,10 @@ class LocalAuth extends AbstractAuth{
 
 	public function authenticate()
 	{
-		$oauthUser = $this->database->createModel('oauth2User');
+		/*$oauthUser = $this->database->createModel('oauth2User');
 		var_dump($oauthUser->find(1));
 
-		
+		*/
 		
 	}
 
