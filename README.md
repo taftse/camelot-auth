@@ -23,7 +23,8 @@ Camelot-Auth is provided as a Composer package which can be installed by adding 
 Camelot Auth (will) support the following authentication protocols 
 
 * Local(form) Authentication
-* Oauth V1 and V2 Authentication
+* Oauth V1 Authentication
+* Oauth V2 Authentication
 * SAML V2 Authentication
 * LDAP (ActiveDirectory) 
 * OpenID
@@ -41,6 +42,6 @@ because of the driver based design additional authentication protocols can be ea
 ##To Do 
 ==================
 
-fix csrf in oauth2client Driver
-fix problem with IlluminateCookie
-fix problem with IlluminateSession
+* fix csrf in oauth2client Driver
+* fix problem with IlluminateCookie
+* fix problem with IlluminateSession
