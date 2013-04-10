@@ -1,8 +1,9 @@
-### Login a user (by detecting the authentication provider)
+### Authenticate a user (by detecting the authentication provider)
 
 in this instanece camelot auth expects the url to contain the name of authentication provider you want to call for example 
-http://www.domain.com/login/facebook 
-will call login page and call the oauth2 driver with the provided facebook settings  
+`http://www.domain.com/login/facebook` 
+will call the `login` page and call the `oauth2` driver with the settings for the `facebook` authentication provider
+
 ----------------------------------
 #### Example 
 
@@ -20,13 +21,13 @@ will call login page and call the oauth2 driver with the provided facebook setti
 
 ```
 
-### Login a user (by specifying the auhentication provider)
+### Authenticate a user (by specifying the auhentication provider)
 
 in this instanec you will specify the required driver and authentication provider 
 and then try to authenticate 
 
 ----------------------------------
-##### Example
+#### Example
 
 ```php
 	try
@@ -40,15 +41,15 @@ and then try to authenticate
 	{
 			echo 'user could not be logged in';
 	}
+```
+----------------------------------
+### Authenticate a user (by providing credentials)
+
+some drivers (such as the form driver) expect credentials to be provided to be able to authenticate a user 
 
 ----------------------------------
-### Login a user (by providing credentials)
 
-some drivers (such as the form driver) expect credentials to be provided to authenticate a user 
-
-----------------------------------
-
-##### Example
+#### Example
 
 ```php
 	try
@@ -67,5 +68,5 @@ some drivers (such as the form driver) expect credentials to be provided to auth
 	{
 			echo 'user could not be logged in';
 	}
-
+```
 ----------------------------------
