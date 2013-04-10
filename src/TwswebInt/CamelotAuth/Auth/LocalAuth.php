@@ -16,7 +16,7 @@ class LocalAuth extends AbstractAuth{
 	}
 
 
-	public function register()
+	public function register(array $userDetails = array())
 	{
 
 	}

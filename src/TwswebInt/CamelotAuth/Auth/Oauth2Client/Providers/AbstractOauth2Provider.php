@@ -302,10 +302,8 @@ abstract class AbstractOauth2Provider
 		 		else if(isset($userData->$map))
 		 		{
 		 			$user[$key] = $userData->$map;
-		 		}elseif(is_null($map))
+		 		}elseif(!is_null($map))
 		 		{
-		 			$user[$key] = null;
-		 		}else{
 		 			$user[$key] = $map;
 		 		}
 	 		}

@@ -59,6 +59,12 @@ class AccessToken {
 		return (string) $this->accessToken;
 	}
 
+
+	public function __ToArray()
+	{
+		return array(''=>$this->accessToken);
+	}
+
 		/**
 		 * Return the value of any protected class variable.
 		 *
