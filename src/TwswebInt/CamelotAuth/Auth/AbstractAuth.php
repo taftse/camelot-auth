@@ -97,9 +97,9 @@ abstract class AbstractAuth{
 		return $this->user = $account;
 	}
 
-	abstract function authenticate();
+	abstract function authenticate(array $credentials = array(),$remember = false, $login = true);
 
-	abstract function register();
+	abstract function register(array $userDetails = array());
 
 	public function logout()
 	{

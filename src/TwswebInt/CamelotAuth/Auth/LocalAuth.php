@@ -6,7 +6,7 @@ use TwswebInt\CamelotAuth\Database\DatabaseInterface;
 
 class LocalAuth extends AbstractAuth{
 
-	public function authenticate()
+	public function authenticate(array $credentials = array(),$remember = false, $login = true)
 	{
 		/*$oauthUser = $this->database->createModel('oauth2User');
 		var_dump($oauthUser->find(1));

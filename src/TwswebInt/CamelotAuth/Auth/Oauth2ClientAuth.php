@@ -48,7 +48,7 @@ class Oauth2ClientAuth extends AbstractAuth{
                 );
 	}
 
-	public function authenticate()
+	public function authenticate(array $credentials = array(),$remember = false, $login = true)
 	{
 		if(strpos($this->httpPath,"callback")=== false)
 		{
@@ -58,16 +58,16 @@ class Oauth2ClientAuth extends AbstractAuth{
 			$userData = $this->provider->getUserInfo($token);
 
 			$userData['provider'] = $this->provider->name;
-			return $this->validateUser($userData);
+			return $this->validateUser($userData,$remember);
 		}
 	}
 
-	public function register()
+	public function register(array $userDetails = array())
 	{
-		return $this->authenticate();
+		return $this->authenticate($userDetails);
 	}
 
-	protected function validateUser($userData)
+	protected function validateUser($userData,$remember = false)
 	{
 		//echo '<pre>';
 		//var_dump($userData);
