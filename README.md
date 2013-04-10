@@ -32,12 +32,13 @@ Camelot Auth (will) support the following authentication protocols
 
 because of the driver based design additional authentication protocols can be easily added 
 
-## How To Use
+## installation
 =================
-### Laravel 4 
-	
 
+Installation of Camelot-Auth is quite simple. but just in case we have created a number of tutorials to help you get CamelotAuth up and running in no time
 
+1. installing for [Laravel 4] (http://support.twsweb-int.com/projects/camelot/docs/installation/laravel4)
+2. native install  (http://support.twsweb-int.com/projects/camelot/docs/installation/native) 
 
 ##To Do 
 ==================
