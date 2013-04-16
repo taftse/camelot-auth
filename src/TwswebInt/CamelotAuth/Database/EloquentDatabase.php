@@ -34,4 +34,9 @@ class EloquentDatabase implements DatabaseInterface
 		return new $modelClass;
 
 	}
+
+	public function getByID($accountID)
+	{
+		return $this->createModel('Account')->newQuery()->find($accountID);
+	}
 }

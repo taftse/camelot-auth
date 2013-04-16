@@ -82,6 +82,7 @@ class Oauth2ClientAuth extends AbstractAuth{
 		// if true create a new session 
 		if(!is_null($user))
 		{
+			// update token 
 			return $this->createSession($user->Account);
 		}
 		// else lets register a account
@@ -99,6 +100,8 @@ class Oauth2ClientAuth extends AbstractAuth{
 			if($this->check())
 			{
 				$newOauthUser->account_id = $this->user()->id;
+				$newOauthUser->save();
+				return $this->user();
 			}else{
 				
 				// lets check if a user with the same email exists if yes throw exception
@@ -114,17 +117,12 @@ class Oauth2ClientAuth extends AbstractAuth{
 				$newUser->save();
 
 				$newOauthUser->account_id = $newUser->id;
-			
+				$newOauthUser->save();
+
+				return $this->createSession($newUser);
 			}
 
-			$newOauthUser->save();
-			
-
 		}
-		return $this->createSession($newUser);
 
 	}
 }
-
-//TwswebInt\CamelotAuth\CamelotAuthServiceProvider
-//Camelot'		  => 'TwswebInt\CamelotAuth\Facades\Camelot

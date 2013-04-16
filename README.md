@@ -31,6 +31,7 @@ Camelot Auth (will) support the following authentication protocols
     * Youtube
     * GitHub
     * Windows Live
+* Oauth V2 Server Authentication
 * SAML V2 Authentication
 * LDAP (ActiveDirectory) 
 * OpenID

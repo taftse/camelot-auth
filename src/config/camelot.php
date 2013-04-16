@@ -173,14 +173,18 @@ return array(
                                             'clientSecret' =>'',
                                             'scopes' => array()
                                                         )),
-                                    'Windowslive'=>array('driver'=>'oauth2',
+                                    'Windowslive'=>array('driver'=>'oauth2Client',
                                         'config'=>array(
-                                            'Client_ID' =>'',
-                                            'Client_Secret' =>'',
-                                            'CSRF_Supported' =>false,
-                                            'Force_Approval' =>false,
-                                            'Grant_Type' =>'',
+                                            'clientID' =>'',
+                                            'clientSecret' =>'',
+                                            'grantType' =>'',
                                             'scopes' => array()
+                                                        )),
+                                    'Github'=>array('driver'=>'oauth2Client',
+                                        'config'=>array(
+                                            'clientID'=>'6e5f2f14f7c8e0366331',
+                                            'clientSecret'=>'50b37d9edf4da371f35a329fca8fa3ece2a48e14',
+                                            'scopes' => array('user')
                                                         )),
                                     'Edugate' => array('driver'=>'saml'),
                                     ),
