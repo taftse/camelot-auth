@@ -25,7 +25,7 @@ class Oauth2ClientAuth extends AbstractAuth{
 
 	protected function loadProvider($providerName)
 	{
-		$providerFile = __DIR__.'/Oauth2Client/providers/'.ucfirst($providerName).'Oauth2Provider.php';
+		$providerFile = __DIR__.'/Oauth2Client/Providers/'.ucfirst($providerName).'Oauth2Provider.php';
 		if(!file_exists($providerFile))
 		{
 			throw new \Exception("Cannot Find the ".ucfirst($providerName)." Oauth2 provider");
@@ -33,7 +33,7 @@ class Oauth2ClientAuth extends AbstractAuth{
 
 		include_once $providerFile;
 
-		$providerClass = 'TwswebInt\CamelotAuth\Auth\Oauth2Client\providers\\'.ucfirst($providerName).'Oauth2Provider';
+		$providerClass = 'TwswebInt\CamelotAuth\Auth\Oauth2Client\Providers\\'.ucfirst($providerName).'Oauth2Provider';
 		if(!class_exists($providerClass,false))
 		{
 			throw new \Exception("Cannot Find the Provider class (".$providerName."Oauth2Provider)");
