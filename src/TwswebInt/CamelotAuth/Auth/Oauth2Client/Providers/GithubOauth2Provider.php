@@ -85,8 +85,17 @@ public function __construct(SessionInterface $session,CookieInterface $cookie,Da
 	 public function getUserInfo(AccessToken $token)
 	 {
 	 	$url = 'https://api.github.com/user?'.http_build_query(array('access_token' => $token->accessToken));
+	 	
+		$opts = array(
+		  'http'=>array(
+		    'method'=>"GET",
+		    'header'=>"Accept-language: en\r\n" .
+		             "User-Agent:Taftse/Camelot-Auth Host ".$this->callbackUrl." \r\n"
+		  )
+		);
+		$context = stream_context_create($opts);
 
-	 	$userData = json_decode(file_get_contents($url));
+	 	$userData = json_decode(file_get_contents($url,false,$context));
 			
 	 		return $this->parseUserData($userData,$token);
 			
