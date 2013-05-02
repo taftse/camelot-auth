@@ -128,7 +128,7 @@ class Camelot{
         
         if(is_null($this->driver))
         {
-            if(isset($params[0]) && isset($this->supported_drivers[ucfirst($params[0])]))
+            if(isset($params[0]) && is_string($params[0])&& isset($this->supported_drivers[ucfirst($params[0])]))
             {                
                 $this->driver = $this->loadDriver($this->supported_drivers[ucfirst($params[0])]['Driver']);
             }else{
