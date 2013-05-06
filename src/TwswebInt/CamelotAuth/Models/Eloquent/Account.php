@@ -19,4 +19,13 @@ class Account extends Model implements AccountInterface
 	{
 		$this->attributes['dob'] = \DateTime::createFromFormat('m/d/Y',$value);
 	}
+
+	public function isActive()
+	{
+		if($this->attributes['status'] =='active')
+		{
+			return true;
+		}
+		return false;
+	}
 }

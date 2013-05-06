@@ -3,5 +3,5 @@
 
 interface AccountInterface
 {
-	
+	public function isActive();
 }
