@@ -6,6 +6,7 @@ use TwswebInt\CamelotAuth\Database\DatabaseInterface;
 
 use TwswebInt\CamelotAuth\Auth\Oauth2Client\AbstractOauth2Provider;
 
+use TwswebInt\CamelotAuth\Auth\Local\Exceptions\AccountNotActiveException;
 class Oauth2ClientAuth extends AbstractAuth{
 
 	/**
@@ -82,6 +83,11 @@ class Oauth2ClientAuth extends AbstractAuth{
 		// if true create a new session 
 		if(!is_null($user))
 		{
+			if(!$user->Account->isActive())
+			{
+				throw new AccountNotActiveException("This account is not active");
+			}
+
 			// update token 
 			return $this->createSession($user->Account);
 		}
