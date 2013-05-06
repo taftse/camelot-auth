@@ -3,6 +3,7 @@
 use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\Cookie\CookieInterface;
 use TwswebInt\CamelotAuth\Database\DatabaseInterface;
+use TwswebInt\CamelotAuth\Events\DispatcherInterface;
 
 abstract class AbstractAuth{
 	/**
@@ -25,6 +26,13 @@ abstract class AbstractAuth{
 	* @var use TwswebInt\CamelotAuth\Cookie\CookieInterface;
 	*/
 	protected $cookie;
+
+	/**
+	* The event dispatcher instance.
+	*
+	* @var TwswebInt\CamelotAuth\Events\DispatcherInterface;
+	*/
+	protected $events;
 
 	/**
 	* The name of the authentication provider
@@ -107,4 +115,24 @@ abstract class AbstractAuth{
 		$this->session->forget();
 		$this->cookie->forget();
 	}
+
+	/**
+    * Get the event dispatcher instance.
+    *
+    * @return TwswebInt\CamelotAuth\Events\DispatcherInterface
+    */
+    public function getEventDispatcher()
+    {
+        return $this->events;
+    }
+
+    /**
+    * Set the event dispatcher instance.
+    *
+    * @param TwswebInt\CamelotAuth\Events\DispatcherInterface
+    */
+    public function setEventDispatcher(DispatcherInterface $events)
+    {
+        $this->events = $events;
+    }
 }

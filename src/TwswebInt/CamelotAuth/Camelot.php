@@ -4,6 +4,7 @@ use TwswebInt\CamelotAuth\Auth;
 use TwswebInt\CamelotAuth\Database\DatabaseInterface;
 use TwswebInt\CamelotAuth\Session\SessionInterface;
 use TwswebInt\CamelotAuth\Cookie\CookieInterface;
+use TwswebInt\CamelotAuth\Events\DispatcherInterface;
 
 class Camelot{
 
@@ -33,6 +34,13 @@ class Camelot{
      *
      */
     protected $config;
+
+    /**
+    * The event dispatcher instance.
+    *
+    * @var TwswebInt\CamelotAuth\Events\DispatcherInterface;
+    */
+    protected $events;
 
     /**
      * A list of supported drivers 
@@ -153,5 +161,31 @@ class Camelot{
        return new $databaseDriverClass($authDriverName);
    }
 
+    /**
+    * Get the event dispatcher instance.
+    *
+    * @return TwswebInt\CamelotAuth\Events\DispatcherInterface
+    */
+    public function getEventDispatcher()
+    {
+         if(!is_null($this->driver))
+         {
+            return $this->driver->getEventDispatcher();
+         }   
+        return $this->events;
+    }
 
+    /**
+    * Set the event dispatcher instance.
+    *
+    * @param TwswebInt\CamelotAuth\Events\DispatcherInterface
+    */
+    public function setEventDispatcher(DispatcherInterface $events)
+    {
+        $this->events = $events;
+        if(!is_null($this->driver))
+         {
+            return $this->driver->setEventDispatcher($events);
+         }  
+    }
 }
