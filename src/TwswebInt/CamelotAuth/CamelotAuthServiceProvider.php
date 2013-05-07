@@ -29,8 +29,8 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['config']->package('twsweb-int/camelot-auth', __DIR__.'/../../config');
-		$app = $this->app;
+		//$this->app['config']->package('twsweb-int/camelot-auth', __DIR__.'/../../config');
+		//$app = $this->app;
 		$this->app['camelot'] = $this->app->share(function($app)
 		{
 			return new Camelot(
