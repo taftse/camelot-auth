@@ -97,7 +97,4 @@ class GoogleOauth2Provider extends AbstractOauth2Provider
 	 		
 			return $this->parseUserData($userData,$token);
 	 }
-
-
-	 
 }

@@ -169,7 +169,6 @@ abstract class AbstractOauth2Provider
 		 */
 		abstract public function getUserInfo(AccessToken $token);
 
-
 		/**
 		 *
 		 *

@@ -21,7 +21,9 @@ class Oauth2ClientAuth extends AbstractAuth{
 		parent::__construct($session,$cookie,$database,$providerName,$settings,$httpPath);
 
 		// load the provider here 
-		$this->provider = $this->loadProvider($providerName);
+		if(isset($providerName)){
+			$this->provider = $this->loadProvider($providerName);
+		}
 	}
 
 	protected function loadProvider($providerName)
@@ -49,7 +51,7 @@ class Oauth2ClientAuth extends AbstractAuth{
                 );
 	}
 
-	public function authenticate(array $credentials = array(),$remember = false, $login = true)
+	public function authenticate(array $credentials = array(),$redirect_to = null,$remember = false, $login = true)
 	{
 		if(strpos($this->httpPath,"callback")=== false)
 		{
@@ -59,7 +61,8 @@ class Oauth2ClientAuth extends AbstractAuth{
 			$userData = $this->provider->getUserInfo($token);
 
 			$userData['provider'] = $this->provider->name;
-			return $this->validateUser($userData,$remember);
+			$user = $this->validateUser($userData,$remember);
+			
 		}
 	}
 
@@ -131,4 +134,12 @@ class Oauth2ClientAuth extends AbstractAuth{
 		}
 
 	}
+
+	public function getLoginButton()
+	{
+		
+		return $this->provider->getLoginButton();
+	}
+
+
 }
