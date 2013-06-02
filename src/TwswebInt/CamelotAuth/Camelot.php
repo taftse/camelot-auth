@@ -70,7 +70,10 @@ class Camelot{
         $this->cookie = $cookie;
         $this->config = $config;
         $this->httpPath = $httpPath;
-        $this->supported_drivers = $config['provider_routing'];       
+        $this->supported_drivers = $config['provider_routing'];   
+
+        $this->session->put($this->session->get('current_url'),'previous_url');
+        $this->session->put($this->httpPath,'current_url');    
     }
 
     public function loadDriver($driverName = null,$provider = null)
@@ -117,40 +120,44 @@ class Camelot{
         // are there config settings set for this driver if not set it to blank
         if(!isset($this->supported_drivers[ucfirst($provider)]['config']))
         {
-            $this->supported_drivers[ucfirst($provider)]['config'] = array();
+            $this->config['provider_routing'][ucfirst($provider)]['config'] = array();
         }
 
         $databaseDriver = $this->loadDatabaseDriver(ucfirst($driverName));
-        return $driver = new $driverClass(
+        return new $driverClass(
                 $this->session,
                 $this->cookie,
                 $databaseDriver,
                 $provider,
-                $this->supported_drivers[ucfirst($provider)]['config'],
+                $this->config,
                 $this->httpPath
                 );
     }
 
     public function __call($method,$params)
     {      
-        
-        if(is_null($this->driver))
-        {
-            if(isset($params[0]) && is_string($params[0])&& isset($this->supported_drivers[ucfirst($params[0])]))
-            {                
-                $this->driver = $this->loadDriver($this->supported_drivers[ucfirst($params[0])]['Driver']);
-            }else{
-                $this->driver = $this->loadDriver(); 
-            }
+        if(isset($params[0]) && is_string($params[0]) && isset($this->supported_drivers[ucfirst($params[0])]))
+        {                
+                $driver = $this->loadDriver($this->supported_drivers[ucfirst($params[0])]['driver']);
+                echo $params[0];
         }
-        
-        if(method_exists($this->driver,$method))
+
+        if(!isset($driver) || is_null($driver)) 
         {
-            return call_user_func_array(array($this->driver,$method), $params);
+            if(is_null($this->driver))
+            {
+               $this->driver = $this->loadDriver();             
+            }  
+             $driver = $this->driver;
+        }
+     
+        if(method_exists($driver,$method))
+        {
+            return call_user_func_array(array($driver,$method), $params);
         }
     	else
         {
-            throw new \Exception("the requested function is not available for the requested driver");         
+            throw new \Exception("the requested function (".$method.") is not available for the requested driver ");         
         }
     }
 
@@ -188,4 +195,5 @@ class Camelot{
             return $this->driver->setEventDispatcher($events);
          }  
     }
+
 }
