@@ -7,7 +7,7 @@ interface SessionInterface{
 
 	public function put($value,$key= null);
 
-	public function get($key= null);
+	public function get($key= null,$default = null);
 
 	public function forget($key= null);
 }

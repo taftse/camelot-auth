@@ -29,13 +29,13 @@ class IlluminateSession implements SessionInterface
 		$this->store->put($key,$value);
 	}
 
-	public function get($key = null)
+	public function get($key = null,$default = null)
 	{
 		if(is_null($key))
 		{
 			$key = $this->key;
 		}
-		return $this->store->get($key);
+		return $this->store->get($key,$default);
 	}
 
 	public function forget($key = null)
