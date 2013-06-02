@@ -19,8 +19,25 @@ class LocalAuth extends AbstractAuth{
 	*/
 	protected $throteller;
 
-	public function authenticate(array $credentials = array(),$remember = false, $login = true)
+
+	/**
+	* The hashing provider
+	*
+	* @var TwswebInt\CamelotAuth\Hasher\HasherInterface
+	*/
+	protected $hasher;
+
+
+	public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,$providerName,array $config,$httpPath)
 	{
+		parent::__construct($session,$cookie,$database,$providerName,$config,$httpPath);
+
+		//$this->loadHasher($this->settings['hasher']);
+	}
+
+	public function authenticate(array $credentials = array(),$redirect_to = null,$remember = false, $login = true)
+	{
+
 			// check that the required fields have been filled in 
 				// if not all required fields returned return logonFieldRequired exception
 			// check if a throteller has been enabled 
@@ -44,11 +61,11 @@ class LocalAuth extends AbstractAuth{
 			//check that the required fields have been filled in 
 			if(!(isset($credentials['username'])|| isset($credentials['email'])))
 			{
-				throw new LoginRequiredException(" username or email attribute is required");
+				throw new LoginRequiredException("username_required");
 			}
 			if(!isset($credentials['password']))
 			{
-				throw new PasswordRequiredException('a password attribute is required.');
+				throw new PasswordRequiredException('password_required.');
 			}
 
 			//check if a throteller has been enabled 
@@ -71,7 +88,7 @@ class LocalAuth extends AbstractAuth{
 						$this->throteller->addLoginAttempt();
 					}
 
-					throw new UserNotFoundException("no user found with the given username");
+					throw new UserNotFoundException("username_not_found");
 				}
 			}
 			else if(isset($credentials['email']))
@@ -85,7 +102,7 @@ class LocalAuth extends AbstractAuth{
 						$this->throteller->addLoginAttempt();
 					}
 
-					throw new UserNotFoundException("no user found with the given email address");
+					throw new UserNotFoundException("email_not_found");
 				}
 			
 
@@ -98,18 +115,26 @@ class LocalAuth extends AbstractAuth{
 				{
 						$this->throteller->addLoginAttempt();
 				}
-				throw new PasswordIncorrectException("The provided password does not mach the account password");
+				throw new PasswordIncorrectException("password_incorrect");
 			}
 
 			
 
 			if(!$localUser->Account->isActive())
 			{
-				throw new AccountNotActiveException("This account is not active");
+				throw new AccountNotActiveException("account_not_active");
 			}
 
-			return $this->createSession($localUser->Account);
+			if($this->events)
+			{
+				$this->event->fire('camelot.auth.login',array($localUser->Account,$remember));
 			}
+			if($login){
+				 $this->createSession($localUser->Account,$remember);
+				 $this->redirect();
+			}
+			return true;
+		}
 	}
 
 
@@ -117,4 +142,21 @@ class LocalAuth extends AbstractAuth{
 	{
 
 	}
+
+
+	public function forgotPassword($email)
+	{
+			$query = $this->database->createModel('Account')->newQuery();
+			$query->where('email','=',$email);
+			if(!$account = $query->first())
+			{
+				throw new UserNotFoundException("email_not_found");
+			}
+	}
+
+	public function changePassword($oldPassword,$newPassword)
+	{
+
+	}
+	
 }

@@ -42,22 +42,37 @@ abstract class AbstractAuth{
 
 	protected $settings = array();
 
+	protected $config = array();
+
 	protected $httpPath = '';
 
-	public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,$providerName,array $settings,$httpPath)
+	public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,$providerName,array $config,$httpPath)
 	{
 		$this->session = $session;
 		$this->cookie = $cookie;
 		$this->database = $database;
 		$this->providerName = $providerName;
-		$this->settings = $settings;
+		$this->config = $config;
+		$this->settings = $config['provider_routing'][ucfirst($providerName)]['config'];
 		$this->httpPath = $httpPath;
 	}
 
 
-	public function check()
+
+	public function check($redirect = false)
 	{
-		return !is_null($this->user());
+		if(!is_null($this->user()))
+		{
+			return true;
+		}
+		else if($redirect)
+		{
+			// set return url
+			$this->session->put($this->httpPath,'return_uri');
+			//redirect to login page
+			return $this->redirect($this->config['login_uri']);
+		}
+		return false;
 	}
 
 	public function user()
@@ -86,11 +101,6 @@ abstract class AbstractAuth{
 		return null;
 	}
 
-	/*protected function createAccount($accountModel)
-	{
-
-	}*/
-
 	protected function createSession($account,$remember = false)
 	{
 		$id = $account->id;
@@ -105,7 +115,7 @@ abstract class AbstractAuth{
 		return $this->user = $account;
 	}
 
-	abstract function authenticate(array $credentials = array(),$remember = false, $login = true);
+	abstract function authenticate(array $credentials = array(),$redirect_to = null,$remember = false, $login = true);
 
 	abstract function register(array $userDetails = array());
 
@@ -116,6 +126,37 @@ abstract class AbstractAuth{
 		$this->cookie->forget();
 	}
 
+	public function redirect($to = null,$force = false)
+	{
+		/*var_dump($this->session->get('current_url'));
+		var_dump($this->session->get('previous_url'));
+		var_dump($this->session->get('redirect_url'));*/
+		if(is_null($to))
+		{
+
+			$to = $this->session->get('redirect_url',$this->config['login_success_route']);
+		}
+
+		if($this->httpPath != $to)
+		{
+
+			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+			$host  = $_SERVER['HTTP_HOST'];
+			$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+			$uri = str_replace($this->httpPath, '', $_SERVER['REQUEST_URI']);
+			
+			header("Location: ".$protocol.$host.$uri.$to);
+			exit;
+		}
+
+		/*	1. check if a to route has been set in session
+			2. check if a redirect to uri has been provided
+			3. else send to default route
+		*/	
+		
+			
+	}
 	/**
     * Get the event dispatcher instance.
     *
@@ -134,5 +175,5 @@ abstract class AbstractAuth{
     public function setEventDispatcher(DispatcherInterface $events)
     {
         $this->events = $events;
-    }
+    }   
 }

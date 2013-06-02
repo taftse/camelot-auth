@@ -73,6 +73,18 @@ return array(
         'route_location' => 2,
 
         /*
+        |-------------------------------------------------------------------------
+        | Redirect To Route
+        |-------------------------------------------------------------------------
+        |
+        | This option controlls where a user is sent after successfull login if no 
+        | destination route is provided
+        |
+        |
+        */
+        'login_success_route' => 'dashboard',
+
+        /*
         |--------------------------------------------------------------------------
         | Route to Driver 
         |--------------------------------------------------------------------------
@@ -87,9 +99,7 @@ return array(
         */
 		'provider_routing' => array('Local' => array('driver'=>'local',
                                         'config' => array(
-                                            'userIdentifierField'=>'',
-                                            'userPasswordField'=>'',
-                                            'loginSubmitField'=>'',
+                                            'hasher'=>'Bcrypt',
                                             )),
 								    'Google'=> array('driver'=>'Oauth2Client',
                                         'config'=>array(
@@ -190,13 +200,9 @@ return array(
                                     ),
                
 
-        'account_requirements' => array('table_field_name'=>array('form_field_name'=>'rule'),
-                                        'table_field_name'=>array('form_field_name'=>'rule'),
-                                       ),
 
 
-
-        'login_uri' => 'account/login',
+        'login_uri' => 'login',
 
 
 
