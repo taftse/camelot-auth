@@ -1,7 +1,7 @@
 ### Installing in Laravel 4 (with Composer)
 
 ##### Step 1
-Start by adding "twsweb-int/camelot-auth": "*" to the require attribute in your composer.json file.
+Start by adding " t4s/camelot-auth": "*" to the require attribute in your composer.json file.
 
 ```javascript
 {
