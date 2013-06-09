@@ -1,4 +1,5 @@
 {
+
     "name": "t4s/camelot-auth",
     "description": "Modular Authentication system supprting a number of authentication methods",
     "keywords": ["Authentication","oauth","oauth2","SAML2","LDAP","Active Directory"],
