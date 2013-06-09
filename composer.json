@@ -1,6 +1,8 @@
 {
-    "name": "twsweb-int/camelot-auth",
-    "description": "",
+    "name": "t4s/camelot-auth",
+    "description": "Modular Authentication system supprting a number of authentication methods",
+    "keywords": ["Authentication","oauth","oauth2","SAML2","LDAP","Active Directory"],
+    "homepage": "https://github.com/taftse/camelot-auth/",
     "authors": [
         {
             "name": "Timothy Seebus",
@@ -14,7 +16,7 @@
     },
     "autoload": {
         "psr-0": {
-            "TwswebInt\\CamelotAuth": "src/"
+            "t4s\\CamelotAuth": "src/"
         }
     },
     "minimum-stability": "dev"

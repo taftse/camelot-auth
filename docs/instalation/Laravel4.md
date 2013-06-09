@@ -6,7 +6,7 @@ Start by adding "twsweb-int/camelot-auth": "*" to the require attribute in your 
 ```javascript
 {
 	"require": {
-		"twsweb-int/camelot-auth": "*"
+		"t4s/camelot-auth": "*"
 	}
 }
 ```
@@ -15,7 +15,7 @@ Start by adding "twsweb-int/camelot-auth": "*" to the require attribute in your 
 Run `php composer.phar update` from the command line  
 
 ##### Step 3
-Add `'TwswebInt\CamelotAuth\CamelotAuthServiceProvider'` to the `providers` array in app/config/app.php
+Add `'T4s\CamelotAuth\CamelotAuthServiceProvider'` to the `providers` array in app/config/app.php
 
 ##### Step 4 *(optional)*
-Add `'Camelot' => 'TwswebInt\CamelotAuth\Facades\Camelot',` to the `aliases` array also in app/config/app.php
+Add `'Camelot' => 'T4s\CamelotAuth\Facades\Camelot',` to the `aliases` array also in app/config/app.php
