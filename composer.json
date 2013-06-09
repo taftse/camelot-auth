@@ -1,5 +1,5 @@
 {
-    "name": "twsweb-int/camelot-auth",
+    "name": "T4s/camelot-auth",
     "description": "",
     "authors": [
         {
@@ -24,7 +24,7 @@
             "src/migrations"
         ],
         "psr-0": {
-            "TwswebInt\\CamelotAuth": "src/",
+            "T4s\\CamelotAuth": "src/",
             "TwswebInt\\CamelotAuth\\Drivers": "src/"
         }
     },
