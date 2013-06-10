@@ -203,6 +203,14 @@ return array(
                 'scopes' => array('user')
             )
         ),
+        'Twitter'=>array('driver'=>'oauth1Client',
+            'config'=>array(
+                'clientID'=>'zBW0Sz2bgVgswo0GKO7rMA',
+                'clientSecret'=>'aVvEp0gqDXrnNBEV0XjmHOKedHk1qgstXWmVSYe7o',
+                'signature'=>'HMAC-SHA1',
+                'scopes' => array('user')
+            )
+        ),
         'Edugate' => array('driver'=>'saml'),
     ),
     'login_uri' => 'login',
