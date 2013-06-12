@@ -14,6 +14,8 @@ class Oauth1ClientAuth extends AbstarctAuth{
 	*/
 	protected $provider;
 
+	public static $version = '1.0';
+
 	public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,$providerName,array $settings,$httpPath)
 	{
 		parent::__construct($session,$cookie,$database,$providerName,$settings,$httpPath);
@@ -51,7 +53,7 @@ class Oauth1ClientAuth extends AbstarctAuth{
 
 	public function authenticate(array $credentials = array(),$redirect_to = null,$remember = false, $login = true)
 	{
-		
+		$requestToken = $this->provider->requestToken();
 	}
 
 

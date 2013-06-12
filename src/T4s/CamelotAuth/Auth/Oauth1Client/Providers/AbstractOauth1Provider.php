@@ -165,6 +165,18 @@ abstract class AbstractOauth1Provider
 		 */
 		abstract public function accessTokenUrl();
 
+		public function requestToken()
+		{
+			$request = new Oauth1Request('GET',$this->requestTokenUrl(),
+				array(
+					'oauth_consumer_key'=>$this->clientID,
+					'oauth_callback'=>$this->callbackUrl,
+					'scope'=>$this->scopes,
+					));
+
+			$request->sign($this->signature);
+		}
+
 		/**
 		 * returns a users details as registred on the identity provider
 		 * 

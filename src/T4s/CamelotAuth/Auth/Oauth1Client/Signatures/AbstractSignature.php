@@ -7,6 +7,8 @@ abstract class AbstractSignature
 
 	protected $clientSecret;
 
+	protected $name;
+
 	public function __constructor($clientSecret)
 	{
 		$this->clientSecret = $clientSecret;
