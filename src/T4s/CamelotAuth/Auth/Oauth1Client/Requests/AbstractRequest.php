@@ -1,9 +1,9 @@
-<?php namespace T4s\CamelotAuth\Auth\Oauth1Client\Request;
+<?php namespace T4s\CamelotAuth\Auth\Oauth1Client\Requests;
 
 use T4s\CamelotAuth\Auth\Oauth1Client\Oauth1Tools;
+use T4s\CamelotAuth\Auth\Oauth1Client\Signatures\AbstractSignature;
 
-
-class Request
+class AbstractRequest
 {
 
 	/**
@@ -11,14 +11,16 @@ class Request
 	 *
 	 * @var string 
 	 */
-	protected $methoud 'GET';
+	protected $methoud = 'GET';
 
 	/**
 	 * The request url
 	 *
 	 * @var string
 	 */
-	protected $url
+	protected $url;
+
+	protected $required = array();
 
 	/**
 	 * an array of additional request parameters
@@ -27,7 +29,54 @@ class Request
 	 */
 	protected $params = array();
 
-	public function __constructor($method,$url,array $requiredParams= null,array $params = null)
+	
+	public function __constructor($method,$url)
+	{
+		$this->method = strtoupper($method);
+
+		list($this->url,$defaultParams) = Oauth1Tools::parseUrl($url);
+
+		if($this->required('oauth_version') AND !isset($this->params['oauth_version']))
+		{
+			$this->params['oauth_version'] = Oauth1Client::$version;
+		}
+
+		if($this->required('oauth_timestamp') AND !isset($this->params['oauth_timestamp']))
+		{
+			$this->params['oauth_timestamp'] = time();
+		}
+
+		if($this->required('oauth_nonce') AND !isset($this->params['oauth_nonce']))
+		{
+			$this->params['oauth_nonce'] = $this->getNonce();
+		}
+	}
+
+
+	public function required($key,$value = null)
+	{
+		if($value === null)
+		{
+			return ! empty($this->required[$param]);
+		}
+
+	}
+
+	public function getNonce()
+	{
+		$pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		return substr(str_shuffle(str_repeat($pool, ceil(40 / strlen($pool)))), 0, 40);
+	}
+
+	public function sign(AbstractSignature $signature,$token = null)
+	{
+		$this->params['oauth_signature_method']= $signature->name;
+
+		$this->params['oauth_signature'] = $signature->sign($token);
+	}
+
+
+	/*public function __constructor($method,$url,array $requiredParams= null,array $params = null)
 	{
 		$this->method = strtoupper($method);
 
@@ -60,11 +109,7 @@ class Request
 	}
 
 
-	public function getNonce()
-	{
-		$pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		return substr(str_shuffle(str_repeat($pool, ceil(40 / strlen($pool)))), 0, 40);
-	}
+	
 
 	public function sign(AbstractSignature $signer)
 	{
@@ -73,6 +118,6 @@ class Request
 		$this->params['oauth_signature'] = $signer->sign($this);
 
 	}
+*/
 
-	
 }

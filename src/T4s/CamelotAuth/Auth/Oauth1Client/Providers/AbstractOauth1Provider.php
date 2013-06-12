@@ -6,6 +6,14 @@ use T4s\CamelotAuth\Database\DatabaseInterface;
 
 abstract class AbstractOauth1Provider
 {
+
+		/** 
+		 * Protocol Version
+		 *
+		 * @var string
+		 */
+		public $version = '1.0';
+
 		/**
 		 * the name of the identity provider
 		 *
@@ -63,20 +71,6 @@ abstract class AbstractOauth1Provider
 		protected $method = 'GET';
 
 		/**
-    	* The Session Driver used by Camelot
-    	*
-    	* @var use T4s\CamelotAuth\Session\SessionInterface;
-    	*/
-   		protected $session;
-	
-		/**
-		* The Cookie Driver used by Camelot
-		*
-		* @var use T4s\CamelotAuth\Cookie\CookieInterface;
-		*/
-		protected $cookie;
-
-		/**
 		 * an array used to map the recieved data to the accepted camelot data
 		 *
 		 * @var array
@@ -114,18 +108,14 @@ abstract class AbstractOauth1Provider
             	}
         	}
 
-        	if(!is_object($this->signature))
-        	{
-        		$this->signature = $this->loadSignature($this->signature);
-        	}
 		}
 
 
-		protected function loadSignature($signatureName)
+		protected function loadSignature($signatureName,AbstractRequest $request)
 		{
 			$signatureName = str_replace('-', '', $signatureName);
 
-			$signatureFile = __DIR__.'../Signatures/'.$signatureName.'Signature.php';
+			$signatureFile = __DIR__.'/../Signatures/'.$signatureName.'Signature.php';
 			if(!file_exists($signatureFile))
 			{
 				throw new \Exception("Cannot Find the ".$signatureName." Signer file");
@@ -135,14 +125,30 @@ abstract class AbstractOauth1Provider
 			$signatureClass = 'T4s\CamelotAuth\Auth\Oauth1Client\Signatures\\'.$signatureName.'Signature';
 			if(!class_exists($signatureClass,false))
 			{
-				throw new \Exception("Cannot Find the Signature class (".$signatureName."Signature)"));
+				throw new \Exception("Cannot Find the Signature class (".$signatureName."Signature)");
 			}
 
-			return new $signatureClass($this->clientSecret);				
+			return new $signatureClass($request,$this->clientSecret);				
 		}
 
+		protected function newRequest($requestName,$method,$url,array $parameters = array())
+		{
+			$requestFile = __DIR__.'/../Requests/'.$requestName.'Request.php';
+			var_dump($requestFile);
+			if(!file_exists($requestFile))
+			{
+				throw new \Exception("Cannot Find the ".$requestName." Request file");
+			}
+			include_once $requestFile;
 
+			$requestClass = 'T4s\CamelotAuth\Auth\Oauth1Client\Request\\'.$requestName.'Request';
+			if(!class_exists($requestClass,false))
+			{
+				throw new \Exception("Cannot Find the Request class (".$requestName."Signature)");
+			}
 
+			return new $requestClass($method,$url,$paremeters);	
+		}
 		/**
 		 * Returns the Request Token URL for the provider.
 		 *
@@ -167,6 +173,17 @@ abstract class AbstractOauth1Provider
 
 		public function requestToken()
 		{
+				
+				$request = $this->newRequest('RequestToken','GET',$this->requestTokenUrl());
+
+				$signature = $this->loadSignature('HMAC-SHA1',$request);
+
+				$request->sign($signature);
+
+				$request->execute();
+			
+
+			/*
 			$request = new Oauth1Request('GET',$this->requestTokenUrl(),
 				array(
 					'oauth_consumer_key'=>$this->clientID,
@@ -174,7 +191,7 @@ abstract class AbstractOauth1Provider
 					'scope'=>$this->scopes,
 					));
 
-			$request->sign($this->signature);
+			$request->sign($this->signature);*/
 		}
 
 		/**
@@ -185,3 +202,5 @@ abstract class AbstractOauth1Provider
 		 * @return array
 		 */
 		abstract public function getUserInfo(AccessToken $token);
+
+	}

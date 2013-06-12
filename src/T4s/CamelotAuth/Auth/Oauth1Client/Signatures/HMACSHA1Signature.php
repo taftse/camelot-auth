@@ -6,12 +6,12 @@ class HMACSHA1Signature extends AbstractSignature
 {
 	protected $name ='HMAC-SHA1';
 
-	public function sign($request,$token = null)
+	public function sign($token = null)
 	{
 		$key = $this->key($token);
 
-		$base_string = $request->baseString();
+		$baseString = $this->request->baseString();
 
-		return base64_encode(hash_hmac('sha1',$base_string, $key,TRUE));
+		return base64_encode(hash_hmac('sha1',$baseString, $key,TRUE));
 	}
 }

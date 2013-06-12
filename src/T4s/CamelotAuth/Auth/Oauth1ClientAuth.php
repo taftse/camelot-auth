@@ -5,7 +5,7 @@ use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Database\DatabaseInterface;
 
 
-class Oauth1ClientAuth extends AbstarctAuth{
+class Oauth1ClientAuth extends AbstractAuth{
 
 	/**
 	* The Oauth 2 Provider 
@@ -36,10 +36,10 @@ class Oauth1ClientAuth extends AbstarctAuth{
 
 		include_once $providerFile;
 
-		$providerClass = 'T4s\CamelotAuth\Auth\Oauth2Client\Providers\\'.ucfirst($providerName).'Oauth1Provider';
+		$providerClass = 'T4s\CamelotAuth\Auth\Oauth1Client\Providers\\'.ucfirst($providerName).'Oauth1Provider';
 		if(!class_exists($providerClass,false))
 		{
-			throw new \Exception("Cannot Find the Provider class (".$providerName."Oauth1Provider)");
+			throw new \Exception("Cannot Find the Provider class (".ucfirst($providerName)."Oauth1Provider)");
 		}
 
 		return $provider = new $providerClass(
@@ -57,4 +57,9 @@ class Oauth1ClientAuth extends AbstarctAuth{
 	}
 
 
+
+	public function register(array $userDetails = array())
+	{
+
+	}
 }
