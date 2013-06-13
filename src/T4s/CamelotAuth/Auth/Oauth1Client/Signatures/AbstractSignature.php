@@ -37,7 +37,7 @@ abstract class AbstractSignature
 
 		if($token)
 		{
-			$key .=Oauth1Tools::urlencode($token->secret);
+			$key .=Oauth1Tools::urlencode($token['oauth_token_secret']);
 		}
 
 		return $key;

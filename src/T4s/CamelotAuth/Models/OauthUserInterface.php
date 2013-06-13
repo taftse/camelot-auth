@@ -1,6 +1,6 @@
 <?php namespace T4s\CamelotAuth\Models;
 
-interface Oauth2UserInterface
+interface OauthUserInterface
 {
 	public function Account();
 

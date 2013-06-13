@@ -76,7 +76,7 @@ class Oauth2ClientAuth extends AbstractAuth{
 		//echo '<pre>';
 		//var_dump($userData);
 		// check to see if the oauth details match a db record
-		$oauthUser = $this->database->createModel('oauth2User')->newQuery();
+		$oauthUser = $this->database->createModel('oauthUser')->newQuery();
 		$user = $oauthUser->where('provider','=',$userData['provider'])
 				  ->where('user_id','=',$userData['user_id'])
 				  ->where('username','=',$userData['username'])

@@ -195,6 +195,11 @@ class AbstractRequest
 		return $params;
 	}
 
+	public function asURL()
+	{
+		return $this->url.'?'.$this->getQuery(true);
+	}
+
 	public function check()
 	{
 
@@ -226,7 +231,6 @@ class AbstractRequest
 			}
 			$headers[] = 'Authorization: '.$this->getHeader();
 			$options[CURLOPT_HTTPHEADER] = $headers;
-			var_dump($headers);
 		}
 		
 

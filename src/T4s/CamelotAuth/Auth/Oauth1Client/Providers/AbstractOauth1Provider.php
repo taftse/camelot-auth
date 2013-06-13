@@ -3,6 +3,8 @@
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Database\DatabaseInterface;
+
+use T4s\CamelotAuth\Auth\Oauth1Client\Oauth1Tools;
 use T4s\CamelotAuth\Auth\Oauth1Client\Requests\AbstractRequest;
 
 abstract class AbstractOauth1Provider
@@ -177,32 +179,50 @@ abstract class AbstractOauth1Provider
 
 		public function requestToken()
 		{
+			//var_dump($this->callbackUrl);
 				
 				$request = $this->newRequest('RequestToken','GET',$this->requestTokenUrl(),array(
 						'oauth_consumer_key' => $this->clientID,
-						//'oauth_callback' => $this->callbackUrl,
-						  //'scope'=>is_array($this->scopes) ? implode($this->scopeSeperator, $this->scopes) : $this->scopes,
+						'oauth_callback' => $this->callbackUrl.'/callback',
+						'scope'=>is_array($this->scopes) ? implode($this->scopeSeperator, $this->scopes) : $this->scopes,
 						  ));
 
 				$signature = $this->loadSignature('HMAC-SHA1',$request);
 
 				$request->sign($signature);
 
-				$request->execute();
-			
+				return Oauth1Tools::ParseParams($request->execute());
+		}
 
-			/*
-			$request = new Oauth1Request('GET',$this->requestTokenUrl(),
-				array(
-					'oauth_consumer_key'=>$this->clientID,
-					'oauth_callback'=>$this->callbackUrl,
-					'scope'=>$this->scopes,
-					));
+		public function authorize($token)
+		{
+			$request = $this->newRequest('Authorize','GET',$this->authorizeUrl(),array(
+						'oauth_token' => $token['oauth_token'],
+						'oauth_callback' => $this->callbackUrl,
+						));
 
-			$request->sign($this->signature);*/
+			header('Location: ' . $request->asURL());
+			exit;
 		}
 
 
+		public function accessToken(array $token)
+		{
+			$request = $this->newRequest('AccessToken','GET',$this->accessTokenUrl(),array(
+						'oauth_consumer_key' => $this->clientID,	
+						'oauth_token' => $token['oauth_token'],
+						'oauth_verifier' => $token['oauth_verifier'],
+						'oauth_callback' => $this->callbackUrl,
+						));
+
+			$signature = $this->loadSignature('HMAC-SHA1',$request);
+
+			$token['secret'] = $this->clientSecret;
+
+			$request->sign($signature,$token);
+
+			return Oauth1Tools::ParseParams($request->execute());
+		}
 
 		/**
 		 * returns a users details as registred on the identity provider
@@ -211,6 +231,6 @@ abstract class AbstractOauth1Provider
 		 * 
 		 * @return array
 		 */
-		abstract public function getUserInfo(AccessToken $token);
+		abstract public function getUserInfo(array $token);
 
 	}

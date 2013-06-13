@@ -1,10 +1,10 @@
 <?php namespace T4s\CamelotAuth\Models\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
-use T4s\CamelotAuth\Models\Oauth2UserInterface;
+use T4s\CamelotAuth\Models\OauthUserInterface;
 use T4s\CamelotAuth\Models\Eloquent\Account;
 
-class Oauth2User extends Model implements Oauth2UserInterface
+class OauthUser extends Model implements OauthUserInterface
 {
 	protected $table = 'oauth_users';
 	
