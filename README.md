@@ -22,14 +22,14 @@ Camelot-Auth is provided as a Composer package which can be installed by adding 
 ==================
 Camelot Auth (will) support the following authentication protocols 
 
-* Local(form) Authentication
+* Local(form) authentication
 * Oauth V1 Authentication
-    * Twitter
+    * Twitter					(complete)
 * Oauth V2 Authentication
-    * Facebook
-    * Google
-    * Youtube
-    * GitHub
+    * Facebook					(complete)
+    * Google					(complete)
+    * Youtube					(complete)
+    * github 					(complete)
     * Windows Live
 * Oauth V2 Server Authentication
 * SAML V2 Authentication
