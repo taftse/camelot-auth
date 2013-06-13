@@ -3,6 +3,7 @@
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Database\DatabaseInterface;
+use T4s\CamelotAuth\Auth\Oauth1Client\Requests\AbstractRequest;
 
 abstract class AbstractOauth1Provider
 {
@@ -77,6 +78,10 @@ abstract class AbstractOauth1Provider
 		 */
 		protected $userDataMap = array();
 
+		protected $clientID ='';
+
+		protected $clientSecret ='';
+
 		public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,array $settings,$httpPath)
 		{
 			$this->session = $session;
@@ -101,7 +106,7 @@ abstract class AbstractOauth1Provider
 				$this->callbackUrl = substr($this->callbackUrl, 0, strrpos($this->callbackUrl, '?'));
 				
 			}
-
+			
 			foreach ($settings as $setting => $value) {
             	if (isset($this->{$setting})) {
               		$this->{$setting} = $value;
@@ -128,26 +133,25 @@ abstract class AbstractOauth1Provider
 				throw new \Exception("Cannot Find the Signature class (".$signatureName."Signature)");
 			}
 
-			return new $signatureClass($request,$this->clientSecret);				
+			return new $signatureClass($request , $this->clientSecret);				
 		}
 
 		protected function newRequest($requestName,$method,$url,array $parameters = array())
 		{
 			$requestFile = __DIR__.'/../Requests/'.$requestName.'Request.php';
-			var_dump($requestFile);
 			if(!file_exists($requestFile))
 			{
 				throw new \Exception("Cannot Find the ".$requestName." Request file");
 			}
 			include_once $requestFile;
 
-			$requestClass = 'T4s\CamelotAuth\Auth\Oauth1Client\Request\\'.$requestName.'Request';
+			$requestClass = 'T4s\CamelotAuth\Auth\Oauth1Client\Requests\\'.$requestName.'Request';
 			if(!class_exists($requestClass,false))
 			{
-				throw new \Exception("Cannot Find the Request class (".$requestName."Signature)");
+				throw new \Exception("Cannot Find the Request class (".$requestName."Request)");
 			}
 
-			return new $requestClass($method,$url,$paremeters);	
+			return new $requestClass($method,$url,$parameters);	
 		}
 		/**
 		 * Returns the Request Token URL for the provider.
@@ -174,7 +178,11 @@ abstract class AbstractOauth1Provider
 		public function requestToken()
 		{
 				
-				$request = $this->newRequest('RequestToken','GET',$this->requestTokenUrl());
+				$request = $this->newRequest('RequestToken','GET',$this->requestTokenUrl(),array(
+						'oauth_consumer_key' => $this->clientID,
+						//'oauth_callback' => $this->callbackUrl,
+						  //'scope'=>is_array($this->scopes) ? implode($this->scopeSeperator, $this->scopes) : $this->scopes,
+						  ));
 
 				$signature = $this->loadSignature('HMAC-SHA1',$request);
 
@@ -193,6 +201,8 @@ abstract class AbstractOauth1Provider
 
 			$request->sign($this->signature);*/
 		}
+
+
 
 		/**
 		 * returns a users details as registred on the identity provider

@@ -24,6 +24,11 @@ class Oauth1ClientAuth extends AbstractAuth{
 		if(isset($providerName)){
 			$this->provider = $this->loadProvider($providerName);
 		}
+
+		if(function_exists('curl_version')==false)
+		{
+			throw new \Exception("The Oauth1 driver requires curl please install or enabe curl and try again");
+		}
 	}
 
 	protected function loadProvider($providerName)

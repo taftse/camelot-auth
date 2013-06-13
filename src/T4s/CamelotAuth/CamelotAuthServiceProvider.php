@@ -40,6 +40,11 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 				$app['request']->path()
 				);
 		});
+
+		if($this->app->environment() !== 'production')
+		{
+			define('ENVIRONMENT', 'development');
+		}
 	}
 
 	/**

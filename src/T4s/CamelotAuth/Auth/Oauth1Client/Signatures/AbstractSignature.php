@@ -1,7 +1,7 @@
 <?php namespace T4s\CamelotAuth\Auth\Oauth1Client\Signatures;
 
-use T4s\CamelotAuth\Auth\Oauth1Client\Request\AbstractRequest;
-
+use T4s\CamelotAuth\Auth\Oauth1Client\Requests\AbstractRequest;
+use T4s\CamelotAuth\Auth\Oauth1Client\Oauth1Tools;
 abstract class AbstractSignature
 {
 
@@ -9,11 +9,10 @@ abstract class AbstractSignature
 
 	protected $name;
 
-	protected $request
+	protected $request;
 
-	public function __constructor(AbstractRequest $request,$clientSecret)
+	public function __construct(AbstractRequest $request,$clientSecret)
 	{
-		
 		$this->request = $request;
 		$this->clientSecret = $clientSecret;
 	}
@@ -34,11 +33,11 @@ abstract class AbstractSignature
 
 	public function key($token = null)
 	{
-		$key = rawurlencode($this->clientSecret).'&';
+		$key = Oauth1Tools::urlencode($this->clientSecret).'&';
 
 		if($token)
 		{
-			$key .=rawurlencode($token->secret);
+			$key .=Oauth1Tools::urlencode($token->secret);
 		}
 
 		return $key;
@@ -46,6 +45,6 @@ abstract class AbstractSignature
 
 	abstract public function sign($token = null);
 
-	abstract public function verify($signature,$request,$token = null);
+	abstract public function verify($signature,$token = null);
 }
 

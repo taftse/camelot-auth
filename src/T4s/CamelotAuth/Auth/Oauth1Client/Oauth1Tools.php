@@ -4,11 +4,20 @@
 class Oauth1Tools 
 
 {
+	public static function urlencode($value)
+	{
+		if(is_array($value))
+		{
+			return array_map(array('T4s\CamelotAuth\Auth\Oauth1Client\Oauth1Tools', 'urlencode'),$value);
+		}
+		return rawurlencode($value);
+	}
+
 	public static function urldecode($value)
 	{
 		if(is_array($value))
 		{
-			return array_map(array('Oauth1Tools', 'urldecode'),$value);
+			return array_map(array('T4s\CamelotAuth\Auth\Oauth1Client\Oauth1Tools', 'urldecode'),$value);
 		}
 		return rawurldecode($value);
 	}
@@ -63,5 +72,43 @@ class Oauth1Tools
 		}
 
 		return $parsed;
+	}
+
+	public static function normalizeParameters(array $parameters = null)
+	{
+		if(!$parameters)
+		{
+			return '';
+		}
+
+		$keys = Oauth1Tools::urlencode(array_keys($parameters));
+		$values = Oauth1Tools::urlencode(array_values($parameters));
+
+		$parameters = array_combine($keys, $values);
+
+		uksort($parameters, 'strcmp');
+
+		$query = array();
+
+		foreach ($parameters as $key => $value)
+		{
+			if (is_array($value))
+			{
+				// OAuth Spec 9.1.1 (1)
+				// "If two or more parameters share the same name, they are sorted by their value."
+				$value = natsort($value);
+
+				foreach ($value as $duplicate)
+				{
+					$query[] = $key.'='.$duplicate;
+				}
+			}
+			else
+			{
+				$query[] = $key.'='.$value;
+			}
+		}
+
+		return implode('&', $query);
 	}
 }
