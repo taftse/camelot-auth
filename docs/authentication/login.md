@@ -2,12 +2,14 @@
 
 in this instanece camelot auth expects the url to contain the name of authentication provider you want to call for example 
 `http://www.domain.com/login/facebook` 
-will call the `login` page and call the `oauth2` driver with the settings for the `facebook` authentication provider
+this route will call the `login` page and call the `oauth2` driver with the settings for the `facebook` authentication provider
 
 ----------------------------------
 #### Example 
 
 ```php
+
+Route::any('login/{provider?}/{callback?}',function(){
 	try
 	{
 		Camelot::authenticate();
@@ -20,6 +22,7 @@ will call the `login` page and call the `oauth2` driver with the settings for th
 	{
 			echo 'user could not be logged in';
 	}
+});
 
 ```
 
@@ -32,6 +35,7 @@ and then try to authenticate
 #### Example
 
 ```php
+Route::any('login/{provider?}/{callback?}',function(){
 	try
 	{
 		Camelot::loadDriver('oauth2client','facebook');
@@ -45,6 +49,7 @@ and then try to authenticate
 	{
 			echo 'user could not be logged in';
 	}
+});
 ```
 ----------------------------------
 ### Authenticate a user (by providing credentials)
@@ -56,6 +61,7 @@ some drivers (such as the form driver) expect credentials to be provided to be a
 #### Example
 
 ```php
+Route::post('login',function(){
 	try
 	{
 		// lets specify the local form authentication driver
@@ -74,5 +80,7 @@ some drivers (such as the form driver) expect credentials to be provided to be a
 	{
 			echo 'user could not be logged in';
 	}
+});
+
 ```
 ----------------------------------
