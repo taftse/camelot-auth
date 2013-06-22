@@ -98,7 +98,7 @@ class Oauth2ClientAuth extends AbstractAuth{
 		else
 		{
 		
-			$newOauthUser = $this->database->createModel('oauth2User');
+			$newOauthUser = $this->database->createModel('oauthUser');
 			$newOauthUser->provider = $userData['provider'];
 			$newOauthUser->username = $userData['username'];
 			$newOauthUser->user_id = $userData['user_id'];
