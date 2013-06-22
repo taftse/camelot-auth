@@ -124,7 +124,7 @@ class Camelot{
         }
 
         $databaseDriver = $this->loadDatabaseDriver(ucfirst($driverName));
-        return new $driverClass(
+        return $this->driver =  new $driverClass(
                 $this->session,
                 $this->cookie,
                 $databaseDriver,

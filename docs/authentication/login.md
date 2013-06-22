@@ -12,7 +12,9 @@ will call the `login` page and call the `oauth2` driver with the settings for th
 	{
 		Camelot::authenticate();
 
-		echo 'Welcome'.Camelot::User()->first_name.' '.Camelot::User()->last_name.' you have been successfully logged in';
+		if(Camelot::check()){
+			echo 'Welcome'.Camelot::User()->first_name.' '.Camelot::User()->last_name.' you have been successfully logged in';
+		}
 	}
 	catch(\Exception $e)
 	{
@@ -32,10 +34,12 @@ and then try to authenticate
 ```php
 	try
 	{
-		Camelot::loadDriver('oauth2','facebook');
+		Camelot::loadDriver('oauth2client','facebook');
 		Camelot::authenticate();
 
-		echo 'Welcome'.Camelot::User()->first_name.' '.Camelot::User()->last_name.' you have been successfully logged in';
+		if(Camelot::check()){
+			echo 'Welcome'.Camelot::User()->first_name.' '.Camelot::User()->last_name.' you have been successfully logged in';
+		}
 	}
 	catch(\Exception $e)
 	{
@@ -61,7 +65,9 @@ some drivers (such as the form driver) expect credentials to be provided to be a
 
 		Camelot::authenticate($credentials);
 
-		echo 'Welcome'.Camelot::User()->first_name.' '.Camelot::User()->last_name.' you have been successfully logged in';
+		if(Camelot::check()){
+			echo 'Welcome'.Camelot::User()->first_name.' '.Camelot::User()->last_name.' you have been successfully logged in';
+		}
 		
 	}
 	catch(\Exception $e)
