@@ -44,7 +44,7 @@ because of the driver based design additional authentication protocols can be ea
 
 Installation of Camelot-Auth is quite simple. but just in case we have created a number of tutorials to help you get Camelot-Auth up and running in no time
 
-1. [Laravel 4 Installation] (https://github.com/taftse/camelot-auth/wiki/Laravel-4-Instalation)
+1. [Laravel 4 Installation] (https://github.com/taftse/camelot-auth/wiki/Laravel-4-Installation)
 2. [Native Installation]  (http://support.twsweb-int.com/projects/camelot/docs/installation/native) 
 
 ## Usage
