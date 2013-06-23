@@ -200,7 +200,10 @@ abstract class AbstractOauth2Provider
 			{
 				throw new \Exception("csrf code does not match the provided state code", 1);
 			}*/
-
+			if(isset($get['error']))
+			{
+				throw new \Exception($get['error'].' - '.$get['error_description']);
+			}
 			if(isset($get['code']))
 			{
 				return $this->authenticate($get['code']);	
@@ -291,7 +294,16 @@ abstract class AbstractOauth2Provider
 		 			$object = $userData;
 		 			foreach($map as $key2)
 		 			{
-		 				if(isset($object->$key2))
+		 				if(is_array($key2))
+		 				{	
+		 					foreach ($key2 as $key3) {
+		 						if(isset($key2->$key3))
+		 						{
+		 							$object = $key2->$key3;
+		 						}
+		 					}
+		 				}
+		 				else if(isset($object->$key2))
 		 				{
 		 					$object = $object->$key2;
 		 				}

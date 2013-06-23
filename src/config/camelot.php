@@ -190,10 +190,13 @@ return array(
         ),
         'Windowslive'=>array('driver'=>'oauth2Client',
             'config'=>array(
-                'clientID' =>'',
-                'clientSecret' =>'',
-                'grantType' =>'',
-                'scopes' => array()
+                'clientID' =>'000000004C0F7A4B',
+                'clientSecret' =>'7qMsA2vrp8cUm1LN4k9UupzWsTxsEven',
+                'scopes' => array(
+                    'wl.basic',
+                    'wl.emails',
+                    'wl.signin'
+                )
             )
         ),
         'Github'=>array('driver'=>'oauth2Client',

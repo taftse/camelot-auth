@@ -58,11 +58,12 @@ class Oauth2ClientAuth extends AbstractAuth{
 			return $this->provider->authorize();
 		}else{
 			$token = $this->provider->callback();
-			$userData = $this->provider->getUserInfo($token);
+			if($token != null){
+				$userData = $this->provider->getUserInfo($token);
 
-			$userData['provider'] = $this->provider->name;
-			$user = $this->validateUser($userData,$remember);
-			
+				$userData['provider'] = $this->provider->name;
+				$user = $this->validateUser($userData,$remember);
+			}
 		}
 	}
 
