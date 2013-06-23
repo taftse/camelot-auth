@@ -183,8 +183,8 @@ return array(
         ),
         'Foursquare' =>array('driver'=>'oauth2Client',
             'config'=>array(
-                'clientID' =>'',
-                'clientSecret' =>'',
+                'clientID' =>'VPFG500ZMZ4LVBXRYLFOKDB42ADM1EESBFURU1EGH3V55VBM',
+                'clientSecret' =>'GP1TR12RWHJTLSUFZYJMIBSZIBAXQKQQMYV3VUGP1IQC3VZW',
                 'scopes' => array()
             )
         ),

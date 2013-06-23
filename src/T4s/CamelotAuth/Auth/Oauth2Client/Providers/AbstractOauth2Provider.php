@@ -267,17 +267,17 @@ abstract class AbstractOauth2Provider
 
 			$token['accessToken'] = $return['access_token'];
 
-			if(isset($this->tokenExpires))
+			if(isset($this->tokenExpires) && isset($return[$this->tokenExpires]))
 			{
 				$token['expires'] =time() + ((int)$return[$this->tokenExpires]);
 			}
 
-			if(isset($this->uid))
+			if(isset($this->uid) && isset($return[$this->tokenUId]))
 			{
 				$token['uid'] = $return[$this->tokenUId];
 			}	
 
-			if(isset($return['refresh_token']))
+			if(isset($return['refresh_token']) && isset($return['refresh_token']))
 			{
 				$token['refreshToken'] = $return['refresh_token'];
 			}
