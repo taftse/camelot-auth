@@ -27,10 +27,11 @@ Camelot Auth (will) support the following authentication protocols
     * Twitter					(complete)
 * Oauth V2 Authentication
     * Facebook					(complete)
-    * Google					(complete)
-    * Youtube					(complete)
-    * github 					(complete)
+    * Google (G+, YouTube, etc)	(complete)
+    * GitHub 					(complete)
     * Windows Live
+    * Foursquare				
+
 * Oauth V2 Server Authentication
 * SAML V2 Authentication
 * LDAP (ActiveDirectory) 
@@ -45,7 +46,11 @@ because of the driver based design additional authentication protocols can be ea
 Installation of Camelot-Auth is quite simple. but just in case we have created a number of tutorials to help you get Camelot-Auth up and running in no time
 
 1. [Laravel 4 Installation] (https://github.com/taftse/camelot-auth/wiki/Laravel-4-Installation)
-2. [Native Installation]  (http://support.twsweb-int.com/projects/camelot/docs/installation/native) 
+2. [Native Installation] (https://github.com/taftse/camelot-auth/wiki/Native-Instalation) 
+
+## Driver Setup
+=================
+* [Setting up an Oauth2 Provider] (https://github.com/taftse/camelot-auth/wiki/Setting-up-an-OAuth2-Provider)
 
 ## Usage
 =================

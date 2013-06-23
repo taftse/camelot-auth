@@ -19,8 +19,8 @@ class CreateOauthUserTable extends Migration {
 		    $table->string('user_id');
 		    $table->string('username');
 		    $table->string('token')->nullable();
-				$table->string('token_verifier')->nullable();
-				$table->timestamps();
+			$table->string('token_verifier')->nullable();
+			$table->timestamps();
 		});
 	}
 
