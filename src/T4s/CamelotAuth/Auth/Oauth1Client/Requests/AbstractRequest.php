@@ -211,7 +211,7 @@ class AbstractRequest
 
 		$url = $this->url;
 
-			if (ENVIRONMENT === 'development')
+			if (defined('ENVIRONMENT') && ENVIRONMENT === 'development')
 			{
 				$options[CURLOPT_SSL_VERIFYPEER] = false;
 			}

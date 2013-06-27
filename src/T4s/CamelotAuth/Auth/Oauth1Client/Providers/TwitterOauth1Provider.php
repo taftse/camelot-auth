@@ -38,7 +38,7 @@ class TwitterOauth1Provider extends AbstractOauth1Provider
 
 		public function getUserInfo(array $token)
 		{
-			$request = $this->newRequest('resource','GET','http://api.twitter.com/1.1/users/lookup.json',array(
+			$request = $this->newRequest('Resource','GET','http://api.twitter.com/1.1/users/lookup.json',array(
 						'oauth_consumer_key' => $this->clientID,	
 						'oauth_token' => $token['oauth_token'],
 						'user_id' => $token['user_id'],
