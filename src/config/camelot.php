@@ -214,6 +214,17 @@ return array(
                 'scopes' => array('user')
             )
         ),
+        'Linkedin'=> array('driver' =>'oauth2Client',
+            'config'=> array(
+                'clientID' =>'d0utnde98m9i',
+                'clientSecret'=>'5jZ2OijrqhMvscNM',
+                'scopes'=> array(
+                   /* 'r_basicprofile',
+                    'r_emailaddress',
+                    'r_contactinfo'*/
+                    )
+                )
+            ),
         'Edugate' => array('driver'=>'saml'),
     ),
     'login_uri' => 'login',

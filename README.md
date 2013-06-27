@@ -29,8 +29,9 @@ Camelot Auth (will) support the following authentication protocols
     * Facebook					(complete)
     * Google (G+, YouTube, etc)	(complete)
     * GitHub 					(complete)
-    * Windows Live
-    * Foursquare				
+    * Windows Live				(complete)
+    * Foursquare				(complete)
+    * LinkedIn					(complete)
 
 * Oauth V2 Server Authentication
 * SAML V2 Authentication
