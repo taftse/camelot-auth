@@ -58,6 +58,21 @@ return array(
         */
         'detect_provider' => true,
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default registration account status
+        |--------------------------------------------------------------------------
+        |
+        | This option controls whether the account is active or pending
+        |
+        | if this value is set to pending then the user can not logon untill the  
+        | acount is activated
+        |
+        */
+
+        'default_status' =>'pending',
+
         /*
         |--------------------------------------------------------------------------
         | URI to Route

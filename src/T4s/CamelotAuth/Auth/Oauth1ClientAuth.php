@@ -149,6 +149,12 @@ class Oauth1ClientAuth extends AbstractAuth{
 					throw new \Exception("a user with email address ".$userData['email']." already exists", 1);
 				}
 				
+				$userData['status'] = $this->config['default_status'];
+
+				if(isset($this->settings['default_status']))
+				{
+					$userData['status'] = $this->settings['default_status'];
+				}
 
 				$newUser = $this->database->createModel('account');
 				$newUser->fill($userData);
