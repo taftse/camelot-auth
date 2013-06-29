@@ -6,7 +6,7 @@ use PHPUnit_Framework_TestCase;
 
 class IlluminateCookieTest extends PHPUnit_Framework_TestCase
 {
-	protected $cookieJar
+	protected $cookieJar;
 
 	protected $cookie;
 
