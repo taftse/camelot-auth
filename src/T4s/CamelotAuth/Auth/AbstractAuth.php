@@ -114,7 +114,7 @@ abstract class AbstractAuth{
 		}
 		if(isset($this->events))
 		{
-			$this->events->fire('CamelotAuth.login',array($account,$remember));
+			$this->events->fire('camelot.auth.'.$this->providerName.'.login',array($account,$remember));
 		}
 		return $this->user = $account;
 	}
@@ -129,7 +129,7 @@ abstract class AbstractAuth{
 
 		if(isset($this->events))
 		{
-			$this->events->fire('CamelotAuth.logout',array($this->user()));
+			$this->events->fire('camelot.auth.logout',array($this->user()));
 		}
 		$this->session->forget();
 		$this->cookie->forget();

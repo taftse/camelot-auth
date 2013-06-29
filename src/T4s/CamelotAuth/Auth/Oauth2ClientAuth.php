@@ -76,7 +76,7 @@ class Oauth2ClientAuth extends AbstractAuth{
 	{
 		if(isset($this->events))
 		{
-			$this->events->fire('CamelotAuth.authenticated',array($this->provider->name,$userData));
+			$this->events->fire('Camelot.auth.authenticated',array($this->provider->name,$userData));
 		}
 		//echo '<pre>';
 		//var_dump($userData);

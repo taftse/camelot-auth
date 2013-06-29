@@ -1,1 +1,1 @@
-CamelotAuth.logout fired when a user is logged out
+camelot.auth.logout fired when a user is logged out

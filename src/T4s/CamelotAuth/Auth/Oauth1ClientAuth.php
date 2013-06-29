@@ -107,9 +107,9 @@ class Oauth1ClientAuth extends AbstractAuth{
 	{
 		if(isset($this->events))
 		{
-			$this->events->fire('CamelotAuth.authenticated',array($this->provider->name,$userData));
+			$this->events->fire('camelot.auth.authenticated',array($this->provider->name,$userData));
 		}
-		
+
 		$oauthUser = $this->database->createModel('oauthUser')->newQuery();
 		$user = $oauthUser->where('provider','=',$userData['provider'])
 				  ->where('user_id','=',$userData['user_id'])
