@@ -13,7 +13,6 @@ class LaravelDispatcher implements DispatcherInterface
 
 		public function fire($event, $payload = array(), $halt = false)
 		{
-			var_dump($payload);
 			$this->dispatcher->fire($event, $payload);
 		}
 }
