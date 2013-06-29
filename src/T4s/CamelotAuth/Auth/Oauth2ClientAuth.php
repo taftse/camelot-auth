@@ -74,6 +74,10 @@ class Oauth2ClientAuth extends AbstractAuth{
 
 	protected function validateUser($userData,$remember = false)
 	{
+		if(isset($this->events))
+		{
+			$this->events->fire('CamelotAuth.authenticated',array($this->provider->name,$userData));
+		}
 		//echo '<pre>';
 		//var_dump($userData);
 		// check to see if the oauth details match a db record

@@ -1,8 +1,19 @@
-<?php namespace T4s\CamelotAuth\Events
+<?php namespace T4s\CamelotAuth\Events;
 
 use Illuminate\Events\Dispatcher;
 
-class LaravelDispatcher extends Dispatcher implements DispatcherInterface
+class LaravelDispatcher implements DispatcherInterface
 {
-	
+		protected $dispatcher;
+
+		public function __construct(Dispatcher $eventDispatcher)
+		{
+			$this->dispatcher = $eventDispatcher;
+		}
+
+		public function fire($event, $payload = array(), $halt = false)
+		{
+			var_dump($payload);
+			$this->dispatcher->fire($event, $payload);
+		}
 }

@@ -1,4 +1,4 @@
-<?php namespace T4s\CamelotAuth\Events
+<?php namespace T4s\CamelotAuth\Events;
 
 interface DispatcherInterface
 {

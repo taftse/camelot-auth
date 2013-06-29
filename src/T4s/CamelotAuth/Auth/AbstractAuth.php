@@ -63,6 +63,7 @@ abstract class AbstractAuth{
 	{
 		if(!is_null($this->user()))
 		{
+
 			return true;
 		}
 		else if($redirect)
@@ -111,7 +112,10 @@ abstract class AbstractAuth{
 		{
 			$this->cookie->forever($id);
 		}
-
+		if(isset($this->events))
+		{
+			$this->events->fire('CamelotAuth.login',array($account,$remember));
+		}
 		return $this->user = $account;
 	}
 
@@ -121,9 +125,16 @@ abstract class AbstractAuth{
 
 	public function logout()
 	{
-		$this->user = null;
+		
+
+		if(isset($this->events))
+		{
+			$this->events->fire('CamelotAuth.logout',array($this->user()));
+		}
 		$this->session->forget();
 		$this->cookie->forget();
+
+		$this->user = null;
 	}
 
 	public function redirect($to = null,$force = false)
