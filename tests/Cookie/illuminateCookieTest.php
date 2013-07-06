@@ -29,7 +29,7 @@ class IlluminateCookieTest extends PHPUnit_Framework_TestCase
 
 	public function testForever()
 	{
-		$this->cookieJar->shouldReceive('forever','cookie')->once();
+		$this->cookieJar->shouldReceive('forever')->with('camelot-auth-cookie','cookie')->once();
 		$this->cookie->forever('cookie');
 	}
 }
