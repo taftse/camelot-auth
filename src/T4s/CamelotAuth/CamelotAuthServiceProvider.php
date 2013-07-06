@@ -32,9 +32,10 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 	{
 		//$this->app['config']->package('twsweb-int/camelot-auth', __DIR__.'/../../config');
 		//$app = $this->app;
+		var_dump($app['config']);
 		$this->app['camelot'] = $this->app->share(function($app)
 		{
-			$camelot =  new Camelot(
+			/*$camelot =  new Camelot(
 				new IlluminateSession($app['session']),
 				new IlluminateCookie($app['cookie']),
 				$app['config']['camelot-auth::camelot'],
@@ -43,7 +44,7 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 
 			$camelot->setEventDispatcher(new LaravelDispatcher($app['events']));
 
-			return $camelot;
+			return $camelot;*/
 		});
 
 		if($this->app->environment() !== 'production')
