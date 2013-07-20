@@ -2,7 +2,6 @@
 
 use T4s\CamelotAuth\Auth;
 use T4s\CamelotAuth\Database\DatabaseInterface;
-use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Events\DispatcherInterface;
@@ -31,9 +30,8 @@ class Camelot{
     protected $database;
 
     /**
-     * The Config driver
+     * A Array Containing the cammelot settings
      *
-     * @var T4s\CamelotAuth\Config\ConfigInterface
      */
     protected $config;
 
@@ -66,13 +64,13 @@ class Camelot{
     protected $driver = null;
 
 
-    public function __construct(SessionInterface $session,CookieInterface $cookie,ConfigInterface $config,$httpPath)
+    public function __construct(SessionInterface $session,CookieInterface $cookie,array $config,$httpPath)
     {
         $this->session = $session;
         $this->cookie = $cookie;
         $this->config = $config;
         $this->httpPath = $httpPath;
-        $this->supported_drivers = $this->config->get('camelot.provider_routing');   
+        $this->supported_drivers = $config['provider_routing'];   
 
         $this->session->put($this->session->get('current_url'),'previous_url');
         $this->session->put($this->httpPath,'current_url');    
@@ -84,13 +82,13 @@ class Camelot{
         if(is_null($driverName))
         {
             // if detect_provider == true 
-            if($this->config->get('camelot.detect_provider'))
+            if($this->config['detect_provider'])
             {
                 $segments = explode("/", $this->httpPath);
 
-                if(isset($segments[$this->config->get('camelot.route_location')-1]))
+                if(isset($segments[$this->config['route_location']-1]))
                 {
-                    $provider = $segments[$this->config->get('camelot.route_location')-1];
+                    $provider = $segments[$this->config['route_location']-1];
                
                     if(isset($this->supported_drivers[ucfirst($provider)]))
                     {
@@ -102,7 +100,7 @@ class Camelot{
             // if the driver is still null lets just load the default driver
             if(is_null($driverName))
             {
-                $driverName = $this->config->get('camelot.default_driver');
+                $driverName = $this->config['default_driver'];
             }
         }
         
@@ -122,7 +120,7 @@ class Camelot{
         // are there config settings set for this driver if not set it to blank
         if(!isset($this->supported_drivers[ucfirst($provider)]['config']))
         {
-            $this->config->get('camelot.provider_routing')[ucfirst($provider)]['config'] = array();
+            $this->config['provider_routing'][ucfirst($provider)]['config'] = array();
         }
 
         $databaseDriver = $this->loadDatabaseDriver(ucfirst($driverName));
