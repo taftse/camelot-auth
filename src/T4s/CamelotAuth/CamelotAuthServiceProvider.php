@@ -2,6 +2,7 @@
 
 use T4s\CamelotAuth\Session\IlluminateSession;
 use T4s\CamelotAuth\Cookie\IlluminateCookie;
+use T4s\CamelotAuth\Config\LaravelConfig;
 use T4s\CamelotAuth\Events\LaravelDispatcher;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,17 +32,20 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		//$this->app['config']->package('twsweb-int/camelot-auth', __DIR__.'/../../config');
-		//$app = $this->app;
+		$app = $this->app;
+
 		$this->app['camelot'] = $this->app->share(function($app)
 		{
+
 			$camelot =  new Camelot(
 				new IlluminateSession($app['session']),
 				new IlluminateCookie($app['cookie']),
-				$app['config']['camelot-auth::camelot'],
+				new LaravelConfig($app['config']),
+				//$app['config']['camelot-auth::camelot'],
 				$app['request']->path()
 				);
 
-			$camelot->setEventDispatcher(new LaravelDispatcher($app['events']));
+			//$camelot->setEventDispatcher(new LaravelDispatcher($app['events']));
 
 			return $camelot;
 		});
