@@ -1,7 +1,7 @@
 <?php namespace T4s\CamelotAuth\Auth;
 
 
-abstract AbstractAuth{
+abstract class AbstractAuth{
 
 	/**
 	 * The currentley authenticated user
