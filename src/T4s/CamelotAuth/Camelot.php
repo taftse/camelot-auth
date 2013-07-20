@@ -57,7 +57,7 @@ class Camelot{
     protected $httpPath;
 
     /**
-     * Loaded Authentication Driver.
+     * Loaded Authentication Driver
      *
      * @var T4s\CamelotAuth\AuthDriver\CamelotDriver
      */
