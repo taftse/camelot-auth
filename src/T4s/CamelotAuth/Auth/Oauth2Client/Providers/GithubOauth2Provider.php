@@ -39,20 +39,17 @@ class GithubOauth2Provider extends AbstractOauth2Provider
 		'language_iso'=> null,
 		);
 
-
-public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,array $settings,$httpPath)
+	public function __construct(SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,array $settings,$httpPath)
 	{	
+		$scopes = array('user');
+		if(is_string($settings['scopes']))
+		{
+			$settings['scopes'] = explode(',',$settings['scopes']);
+		}
 
-			$scopes = array('user','user:email');
-			if(is_string($settings['scopes']))
-			{
-				$settings['scopes'] = explode(',',$settings['scopes']);
-			}
-
-			$settings['scopes'] = $settings['scopes'] + $scopes;	
-			parent::__construct($session,$cookie,$database,$settings,$httpPath);
+		$settings['scopes'] = $settings['scopes'] + $scopes;
+		parent::__construct($session,$cookie,$database,$settings,$httpPath);
 	}
-
 
 	/**
 	 * Returns the authorization URL for the provider.
@@ -74,7 +71,6 @@ public function __construct(SessionInterface $session,CookieInterface $cookie,Da
 		return 'https://github.com/login/oauth/access_token';
 	}
 
-
 	/**
 	 * returns a users details as registred on the identity provider
 	 * 
@@ -82,24 +78,25 @@ public function __construct(SessionInterface $session,CookieInterface $cookie,Da
 	 * 
 	 * @return array
 	 */
-	 public function getUserInfo(AccessToken $token)
-	 {
-	 	$url = 'https://api.github.com/user?'.http_build_query(array('access_token' => $token->accessToken));
-	 	
+	public function getUserInfo(AccessToken $token)
+	{
 		$opts = array(
 		  'http'=>array(
 		    'method'=>"GET",
 		    'header'=>"Accept-language: en\r\n" .
-		             "User-Agent:Taftse/Camelot-Auth Host ".$this->callbackUrl." \r\n"
+		              "User-Agent:Taftse/Camelot-Auth Host ".$this->callbackUrl." \r\n"
 		  )
 		);
 		$context = stream_context_create($opts);
 
+	 	$url = 'https://api.github.com/user?'.http_build_query(array('access_token' => $token->accessToken));
 	 	$userData = json_decode(file_get_contents($url,false,$context));
-			
-	 		return $this->parseUserData($userData,$token);
-			
-	 }
+
+	 	$url = 'https://api.github.com/user/emails?'.http_build_query(array('access_token' => $token->accessToken));
+	 	$userEmail = json_decode(file_get_contents($url,false,$context));
+		$userData->email = current($userEmail);
+
+	 	return $this->parseUserData($userData,$token);
+	}
 
 }
-  
