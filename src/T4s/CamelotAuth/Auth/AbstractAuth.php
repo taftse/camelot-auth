@@ -27,9 +27,16 @@ abstract class AbstractAuth{
 	/**
 	 * The data handeler interface
 	 *
-	 * @var \T4s\CamelotAuth\repository\RepositoryInterface
+	 * @var \T4s\CamelotAuth\database\databaseInterface
 	 */
-	protected $repository;
+	protected $database;
+
+	 /**
+	 * The account handeler interface
+	 *
+	 * @var \T4s\CamelotAuth\repository\AccountRepositoryInterface
+	 */
+	protected $accountRepository;
 
 	/**
 	 * The event dispatcher instance
@@ -52,12 +59,13 @@ abstract class AbstractAuth{
 	 */
 	protected $loggedOut = false;
 
-	public function __construct(ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,RepositoryInterface $repository)
+	public function __construct(ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database)
 	{
 		$this->config 		= $config;
 		$this->session 		= $session;
 		$this->cookie 		= $cookie;
-		$this->repository 	= $repository;
+		$this->database 	= $database;
+
 	}
 
 	/**
@@ -107,6 +115,13 @@ abstract class AbstractAuth{
 
 		$id= $this->session->get();
 		
+		$user = null;
+
+		if(!is_null($id))
+		{
+			return $this->user = $this->accountRepository->getByID($id);
+		}
+
 	}
 
 }

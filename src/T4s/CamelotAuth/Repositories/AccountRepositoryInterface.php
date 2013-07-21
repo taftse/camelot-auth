@@ -4,4 +4,6 @@
 interface AccountRepositoryInterface
 {
 	public function isActive();
+
+	public function getByID($account_ID);
 }

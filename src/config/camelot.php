@@ -9,11 +9,11 @@ return array(
         | This option controls the database driver that will be utilized.
         | This drivers manages the retrieval of the users details
         |
-        | Supported: "database", "eloquent"
+        | Supported: "database", "Eloquent"
         |
         */
 
-        'database_driver' => 'eloquent',
+        'database_driver' => 'Eloquent',
 
         /*
         |--------------------------------------------------------------------------
@@ -25,7 +25,7 @@ return array(
         |
         */
 
-        'model' => 'CamelotUser',
+        'model' => 'T4s\CamelotAuth\Repositories\Eloquent\Account',
 
 
         /*
