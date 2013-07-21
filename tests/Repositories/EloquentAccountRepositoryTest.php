@@ -13,10 +13,17 @@ class EloquentAccountRepositoryTest extends PHPUnit_Framework_TestCase
 			$this->repository = m::mock('AccountRepositoryInterface');
 	}
 
-	public function testIsActiveUser()
+	public function testIsActiveAccount()
 	{
-		$this->repository->shouldReceive('isActive')->once()->andReturn('active');
+		$this->repository->shouldReceive('isActive')->once()->andReturn(true);
 
-		$this->assertEquals('active',$this->repository->isActive());
+		$this->assertEquals(true,$this->repository->isActive());
+	}
+
+	public function testIsNotActiveAccount()
+	{
+		$this->repository->shouldReceive('isActive')->once()->andReturn(false);
+
+		$this->assertEquals(false,$this->repository->isActive());
 	}
 }
