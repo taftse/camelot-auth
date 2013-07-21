@@ -15,7 +15,7 @@ class EloquentAccountRepositoryTest extends PHPUnit_Framework_TestCase
 
 	public function testIsActiveUser()
 	{
-		$this->repository->shouldRecieve('isActive')->once()->andReturn('active');
+		$this->repository->shouldReceive('isActive')->once()->andReturn('active');
 
 		$this->assertEquals('active',$this->repository->isActive());
 	}
