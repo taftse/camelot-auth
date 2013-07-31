@@ -1,5 +1,10 @@
 <?php namespace T4s\CamelotAuth\Auth;
 
+use T4s\CamelotAuth\Database\DatabaseInterface;
+use T4s\CamelotAuth\Config\ConfigInterface;
+use T4s\CamelotAuth\Session\SessionInterface;
+use T4s\CamelotAuth\Cookie\CookieInterface;
+use T4s\CamelotAuth\Events\DispatcherInterface;
 
 abstract class AbstractAuth{
 
@@ -122,6 +127,33 @@ abstract class AbstractAuth{
 			return $this->user = $this->accountRepository->getByID($id);
 		}
 
+	}
+
+
+	protected function createSession(AccountRepositoryInterface $account,$remember = false)
+	{
+		$id = $account->getID();
+	}
+
+	/**
+	 * Logout the user 
+	 *
+	 * @return void
+	 */
+
+	public function logout()
+	{
+		if(isset($this->dispatcher))
+		{
+			$this->dispatcher->dispatch('camelot.auth.logout',array($this->user()));
+		}
+
+		$this->session->forget();
+		$this->cookie->forget();
+
+		$this->user = null;
+
+		$this->loggedOut = true;
 	}
 
 }

@@ -1,9 +1,8 @@
 <?php namespace T4s\CamelotAuth\Repositories;
 
+use T4s\CamelotAuth\Models\AccountInterface;
 
-interface AccountRepositoryInterface
+interface AccountProviderInterface
 {
-	public function isActive();
-
 	public function getByID($account_ID);
 }

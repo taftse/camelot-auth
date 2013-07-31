@@ -74,7 +74,7 @@ class Camelot{
         $this->httpPath = $httpPath;
         $this->supported_drivers = $this->config->get('camelot.provider_routing');   
 
-        $database = $this->loadDatabaseDriver($this->config->get('camelot.database_driver'));
+        $this->database = $this->loadDatabaseDriver($this->config->get('camelot.database_driver'));
 
 
         $this->session->put($this->session->get('current_url'),'previous_url');
@@ -130,11 +130,12 @@ class Camelot{
 
        
         $this->driver =  new $driverClass(
+                $this->config,
                 $this->session,
                 $this->cookie,
                 $this->database,
                 $provider,
-                $this->config,
+                
                 $this->httpPath
                 );
 
@@ -176,7 +177,7 @@ class Camelot{
    protected function loadDatabaseDriver($authDriverName){
 
        
-       $databaseDriverClass = 'T4s\CamelotAuth\Database\\'.ucfirst($driverName).'Database';
+       $databaseDriverClass = 'T4s\CamelotAuth\Database\\'.ucfirst($authDriverName).'Database';
        return new $databaseDriverClass();
    }
 

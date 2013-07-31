@@ -1,12 +1,12 @@
 <?php namespace T4s\CamelotAuth\Models\Eloquent;
 
 
-class Account extends Model implements AccountInterface
+class OauthUser extends Model implements UserInterface
 {
 	/**
 	 * The Database table used by the model
 	 * 
-	 * @var string
+	 - @var string
 	 */
 
 	protected $table = 'account';
@@ -19,10 +19,6 @@ class Account extends Model implements AccountInterface
 
 	public function isActive()
 	{
-	 	if($this->attributes['status']=='active')
-	 	{
-	 		return true;
-	 	}
-	 	return false;
+		
 	}
 }

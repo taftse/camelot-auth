@@ -5,8 +5,10 @@ use T4s\CamelotAuth\Auth\LocalAuth\Throttler;
 use T4s\CamelotAuth\Event\DispatcherInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
+use T4s\CamelotAuth\Config\ConfigInterface;
+use T4s\CamelotAuth\Database\DatabaseInterface;
 
-class LocalAuth extends AbstractAuth{
+class LocalAuth extends AbstractAuth implements AuthInterface{
 
 		/**
 		 * The Throttler provider
@@ -23,8 +25,12 @@ class LocalAuth extends AbstractAuth{
 		protected $hasher;
 
 
-		public function __construct(ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,RepositoryInterface $repository)
+		public function __construct(ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database)
 		{
-			# code...
+			parent::__construct($config,$session,$cookie,$database);
+
+			$hasher = '\\'.ltrim($this->config->get('camelot'));
 		}
+
+
 }

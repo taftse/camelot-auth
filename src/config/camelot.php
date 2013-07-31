@@ -25,7 +25,7 @@ return array(
         |
         */
 
-        'model' => 'T4s\CamelotAuth\Repositories\Eloquent\Account',
+        'model' => 'Account',
 
 
         /*
@@ -112,6 +112,24 @@ return array(
         |
         |
         */
+
+
+        'provider_routing'  => array(
+                'Local'         => array('driver'=>'local'),
+                'Google'        => array('driver'=>'Oauth2Client'),
+                'Youtube'       => array('driver'=>'Oauth2Client','provider'=>'Google'),
+                'Facebook'      => array('driver'=>'oauth2Client'),
+                'Foursquare'    => array('driver'=>'oauth2Client'),
+                'Windowslive'   => array('driver'=>'oauth2Client'),
+                'Github'        => array('driver'=>'oauth2Client'),
+                'Linkedin'      => array('driver'=>'oauth2Client'),
+                'Twitter'       => array('driver'=>'oauth1Client'),
+                'Edugate'       => array('driver'=>'saml'),
+             ),
+
+
+/*
+
         'provider_routing' => array('Local' => array('driver'=>'local',
             'config' => array(
                 'hasher'=>'Bcrypt',
@@ -237,11 +255,13 @@ return array(
                    /* 'r_basicprofile',
                     'r_emailaddress',
                     'r_contactinfo'*/
-                    )
+             /*       )
                 )
             ),
         'Edugate' => array('driver'=>'saml'),
     ),
+
+*/
     'login_uri' => 'login',
     'registration_uri' => 'account/register',
     'verification_uri' => 'account/verify',
