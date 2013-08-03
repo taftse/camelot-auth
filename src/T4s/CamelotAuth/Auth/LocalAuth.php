@@ -29,7 +29,20 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 		{
 			parent::__construct($config,$session,$cookie,$database);
 
-			$hasher = '\\'.ltrim($this->config->get('camelot'));
+			//$hasher = '\\'.ltrim($this->config->get('camelot'));
+
+			$account = $this->database->loadRepository('User',$this->config->get('localcamelot.model'));
+			var_dump($account->getByID(61));
+		}
+
+		public function authenticate(array $credentials = null ,bool $remember = null, bool $login = null)
+		{
+
+		}
+
+		public function register(array $accountDetails = array())
+		{
+
 		}
 
 

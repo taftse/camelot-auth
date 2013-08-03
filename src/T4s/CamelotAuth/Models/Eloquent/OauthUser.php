@@ -17,8 +17,4 @@ class OauthUser extends Model implements UserInterface
 		return $this->getKey();
 	}
 
-	public function isActive()
-	{
-		
-	}
 }

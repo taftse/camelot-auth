@@ -4,10 +4,12 @@
 class EloquentDatabase implements DatabaseInterface
 {
 
-	public function loadModel($model)
+	public function loadRepository($repository,$model = null)
 	{
-		
-	}
 
+		$class = 'T4s\CamelotAuth\Repositories\Eloquent\\'.ltrim($repository,'\\').'provider';
+
+		return new $class($model);
+	}
 	
 }

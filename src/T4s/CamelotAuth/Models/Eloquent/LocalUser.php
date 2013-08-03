@@ -1,5 +1,8 @@
 <?php namespace T4s\CamelotAuth\Models\Eloquent;
 
+use illuminate\Database\Eloquent\Model;
+
+use T4s\CamelotAuth\Models\UserInterface;
 
 class LocalUser extends Model implements UserInterface
 {
@@ -11,6 +14,11 @@ class LocalUser extends Model implements UserInterface
 
 	protected $table = 'local_account';
 
+	/**
+	 * The attributes excluded from the json form 
+	 *
+	 * @var array
+	 */
 
 	protected $hidden = array('password_hash');
 
@@ -24,5 +32,10 @@ class LocalUser extends Model implements UserInterface
 		return $this->getKey();
 	}
 
+
+	public function getByAccountID($accountIdentifier)
+	{
+		
+	}
 	
 }

@@ -178,8 +178,13 @@ class Camelot{
 
        
        $databaseDriverClass = 'T4s\CamelotAuth\Database\\'.ucfirst($authDriverName).'Database';
-       return new $databaseDriverClass();
+       return new $databaseDriverClass($this->config);
    }
+
+
+
+
+
 
     /**
     * Get the event dispatcher instance.

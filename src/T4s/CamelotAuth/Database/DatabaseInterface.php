@@ -4,7 +4,7 @@
 interface DatabaseInterface
 {
 
-	public function loadModel($model);
+	//public function loadModel($model);
 
 	
 }

@@ -6,9 +6,12 @@ class EloquentProvider
 
 	protected $model;
 
-	public function __construct($model)
+	public function __construct($model = null)
 	{
-		$this->model = $model;
+		if(isset($model))
+		{
+			$this->model = $model;
+		}
 	}
 
 	public function createModel()
