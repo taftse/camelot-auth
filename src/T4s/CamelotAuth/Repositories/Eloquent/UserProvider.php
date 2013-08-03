@@ -17,12 +17,21 @@ class UserProvider extends EloquentProvider implements UserProviderInterface
 
 	public function getByAccountID($accountIdentifier)
 	{
-		return $this->createModel()->newQuery()->getByAccountID($accountIdentifier);
+		return $this->createModel()->getByAccountID($accountIdentifier);
 	}
 
 	public function getByCredentials(array $credentials)
 	{
-		return $this->createModel()->newQuery()->where($credentials)->first();
+		
+		$query = $this->createModel()->newQuery();
+		foreach ($credentials as $key => $value) {
+
+			if(!str_contains($key,'password'))
+			{
+				$query->where($key,$value);
+			}
+		}
+		return $query->first();
 	}
 
 	//public function validateCredentials(UserProviderInterface $user,array $credentials);

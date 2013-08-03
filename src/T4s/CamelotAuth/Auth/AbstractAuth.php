@@ -130,7 +130,7 @@ abstract class AbstractAuth{
 	}
 
 
-	protected function createSession(AccountRepositoryInterface $account,$remember = false)
+	protected function createSession(AccountProviderInterface $account,$remember = false)
 	{
 		$id = $account->getID();
 	}

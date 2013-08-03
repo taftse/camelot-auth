@@ -22,7 +22,7 @@ class CreateAccountTable extends Migration {
 		    $table->string('address_2')->nullable();
 			$table->string('city')->nullable();
 		    $table->string('zip_code')->nullable();
-		    $table->string('state_code')->nullable();
+		    $table->string('state')->nullable();
 		    $table->string('country_iso',3)->nullable();
 		    $table->timestamp('dob')->nullable();
 		    $table->integer('phone')->nullable();

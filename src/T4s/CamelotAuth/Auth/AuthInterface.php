@@ -8,7 +8,7 @@ interface AuthInterface
 
 	public function guest();
 
-	public function authenticate(array $credentials,bool $remember = null, bool $login = null);
+	public function authenticate(array $credentials, $remember = false,$login = true);
 
 	public function register(array $accountDetails = array());
 

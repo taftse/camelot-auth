@@ -25,7 +25,7 @@ return array(
         |
         */
 
-        'model' => 'Account',
+        'model' => 'T4s\CamelotAuth\Models\Eloquent\Account',
 
 
         /*
@@ -128,6 +128,31 @@ return array(
              ),
 
 
+        /*
+        |----------------------------------------------------------------------------
+        | Required Registration fields
+        |----------------------------------------------------------------------------
+        |
+        | This option allows you to specify the Account details required 
+        | to complete an account registration 
+        |
+        | uncomment any required attributes 
+        */
+
+        'required_account_details' =>array(
+                'first_name',
+                'last_name',
+                'email',
+                //'address_1',
+                //'address_2', // address 2 is optional 
+                //'city',
+                //'zip_code', // not all countries have zip codes
+                //'state',
+                //'country_iso',
+                //'dob',// date of birth
+                //'phone',
+                //'gender',
+            ),
 /*
 
         'provider_routing' => array('Local' => array('driver'=>'local',

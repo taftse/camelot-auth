@@ -1,5 +1,4 @@
-<?php namespace T4s\CamelotAuth\Auth\LocalAuth\Throttler;
-
+<?php namespace T4s\CamelotAuth\Repositories;
 
 interface ThrottlerProviderInterface
 {
@@ -22,5 +21,7 @@ interface ThrottlerProviderInterface
 	public function status();
 
 	public function save();
+
+	public function isEnabled();
 
 }

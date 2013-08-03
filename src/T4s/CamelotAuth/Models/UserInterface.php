@@ -7,5 +7,5 @@ interface UserInterface
 	public function getAuthIdentifier();
 	
 	//public function getByAccountID($accountIdentifier);
-
+	public function getByCredentials($credentials);
 }

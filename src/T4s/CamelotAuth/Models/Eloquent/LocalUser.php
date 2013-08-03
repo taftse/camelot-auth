@@ -33,9 +33,10 @@ class LocalUser extends Model implements UserInterface
 	}
 
 
-	public function getByAccountID($accountIdentifier)
+	public function getByCredentials($credentials)
 	{
-		
+		//$query = $this->newQuery();
+		return $this->getAuthIdentifier();
 	}
 	
 }
