@@ -59,9 +59,4 @@ Installation of Camelot-Auth is quite simple. but just in case we have created a
 * [User Authentication] (https://github.com/taftse/camelot-auth/wiki/Authentication)
 * [User Logout] (https://github.com/taftse/camelot-auth/wiki/Login)
 
-##To Do 
-==================
 
-* fix csrf in oauth2client Driver
-* fix problem with IlluminateCookie
-* fix problem with IlluminateSession
