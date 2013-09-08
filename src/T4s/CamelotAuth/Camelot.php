@@ -5,6 +5,7 @@ use T4s\CamelotAuth\Database\DatabaseInterface;
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
+use T4s\CamelotAuth\Messaging\MessagingInterface;
 use T4s\CamelotAuth\Events\DispatcherInterface;
 
 class Camelot{
@@ -91,7 +92,7 @@ class Camelot{
             // is this authentication provider an alias of another authentication provider
             if(isset($this->supported_drivers[ucfirst($params[0])]['provider'])) 
             {
-                $provider = $this->supported_drivers[ucfirst($params[0])]['provider']
+                $provider = $this->supported_drivers[ucfirst($params[0])]['provider'];
             }
             // load the driver
             $driver = $this->loadAuthDriver($this->supported_drivers[ucfirst($params[0])]['driver']);
@@ -159,10 +160,10 @@ class Camelot{
          // is this authentication provider an alias of another authentication provider
         if(isset($this->supported_drivers[ucfirst($provider)]['provider'])) 
         {
-            $provider = $this->supported_drivers[ucfirst($provider)]['provider']
+            $provider = $this->supported_drivers[ucfirst($provider)]['provider'];
         }
 
-        return $this->loadAuthDriver($driverName,$provider)
+        return $this->loadAuthDriver($driverName,$provider);
     }
 
 
@@ -185,11 +186,11 @@ class Camelot{
 
         $this->driver = new $driverClass(
             $provider,
-            $this->session;
-            $this->cookie;
-            $this->database;
-            $this->messaging;
-            $this->path;
+            $this->session,
+            $this->cookie,
+            $this->database,
+            $this->messaging,
+            $this->path
             );
 
         if(isset($this->dispatcher))
