@@ -3,6 +3,7 @@
 use T4s\CamelotAuth\Session\IlluminateSession;
 use T4s\CamelotAuth\Cookie\IlluminateCookie;
 use T4s\CamelotAuth\Config\LaravelConfig;
+use T4s\CamelotAuth\Messaging\IlluminateMessaging;
 use T4s\CamelotAuth\Events\LaravelDispatcher;
 use Illuminate\Support\ServiceProvider;
 
@@ -41,6 +42,7 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 				new IlluminateSession($app['session']),
 				new IlluminateCookie($app['cookie']),
 				new LaravelConfig($app['config']), 
+				new IlluminateMessaging($app['mailer']),
 				$app['request']->path()
 				);
 

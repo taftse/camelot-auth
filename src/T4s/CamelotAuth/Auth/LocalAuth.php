@@ -7,11 +7,12 @@ use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Database\DatabaseInterface;
+use T4s\CamelotAuth\Messaging\MessagingInterface;
 
-use T4s\CamelotAuth\Auth\Local\Exeptions\LoginRequiredExeption;
-use T4s\CamelotAuth\Auth\Local\Exeptions\PasswordRequiredExeption;
-use T4s\CamelotAuth\Auth\Local\Exeptions\IncorrectPasswordException;
-use T4s\CamelotAuth\Auth\Local\Exeptions\UserNotFoundException;
+use T4s\CamelotAuth\Auth\Local\Exceptions\LoginRequiredExeption;
+use T4s\CamelotAuth\Auth\Local\Exceptions\PasswordRequiredExeption;
+use T4s\CamelotAuth\Auth\Local\Exceptions\IncorrectPasswordException;
+use T4s\CamelotAuth\Exceptions\UserNotFoundException;
 
 class LocalAuth extends AbstractAuth implements AuthInterface{
 
@@ -35,16 +36,16 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 		protected $accountProvider;
 
 
-		public function __construct(ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database)
+		public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,MessagingInterface $messaging,$path)
 		{
-			parent::__construct($config,$session,$cookie,$database);
+			parent::__construct($provider,$config,$session,$cookie,$database,$messaging,$path);
 
 
 			$this->userProvider =  $this->database->loadRepository('User',$this->config->get('localcamelot.model'));
 
 			$this->accountProvider =  $this->database->loadRepository('Account',$this->config->get('camelot.model'));
 
-			$this->throttler  = $this->database->loadRepository('Throttler',$this->config->get('localcamelot.throttler_model'));
+			//$this->throttler  = $this->database->loadRepository('Throttler',$this->config->get('localcamelot.throttler_model'));
 			//$hasher = '\\'.ltrim($this->config->get('camelot'));
 
 		}
@@ -75,10 +76,10 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 				}
 
 				// check if the throttler is enabled 
-				if($this->throttler->isEnabled())
+				if(!is_null($this->throttler))
 				{
 					// checks if the user has been suspended or the ip is blacklisted
-					$this->throttler->check($credentials);
+					//$this->throttler->blockedIp('user','');
 				}
 
 				$user = null;
@@ -97,9 +98,14 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 
 				if(!$user instanceof AccountInterface)
 				{
-					// add a failed login attempt
-					$this->throttler->addLoginAttempt();
 					
+					// check if the throttler is enabled 
+					if(!is_null($this->throttler))
+					{
+						// add a failed login attempt
+						$this->throttler->addLoginAttempt();
+					}
+
 					$userNotFound = new UserNotFoundException($credentials[$this->config->get('localcamelot.username_field')]);
 					// check if a event dispatcher instance exists
 					if($this->dispatcher)
@@ -116,8 +122,12 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 				if(!$this->hasher->check($password,$user->getPasswordHash()))
 				{
 
-					// add a failed login attempt
-					$this->throttler->addLoginAttempt();
+					// check if the throttler is enabled 
+					if(!is_null($this->throttler))
+					{
+						// add a failed login attempt
+						$this->throttler->addLoginAttempt();
+					}
 
 					$incorrectPassword = new IncorrectPasswordException("incorect_password");
 

@@ -4,6 +4,7 @@ use T4s\CamelotAuth\Database\DatabaseInterface;
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
+use T4s\CamelotAuth\Messaging\MessagingInterface;
 use T4s\CamelotAuth\Events\DispatcherInterface;
 
 abstract class AbstractAuth{
@@ -57,6 +58,8 @@ abstract class AbstractAuth{
 	 */ 
 	protected $request;
 
+	protected $provider;
+
 	/**
 	 * Indicated if the logout method has been called
 	 *
@@ -64,12 +67,15 @@ abstract class AbstractAuth{
 	 */
 	protected $loggedOut = false;
 
-	public function __construct(ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database)
+	public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,MessagingInterface $messaging,$path)
 	{
+		$this->provider 	= $provider;
 		$this->config 		= $config;
 		$this->session 		= $session;
 		$this->cookie 		= $cookie;
 		$this->database 	= $database;
+		$this->messaging	= $messaging;
+		$this->path 		= $path;
 
 	}
 

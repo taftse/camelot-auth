@@ -39,6 +39,13 @@ class Camelot{
     protected $config;
 
     /**
+     * The Messaging driver
+     *
+     * @var T4s\CamelotAuth\Messaging\MessagingInterface
+     */
+    protected $messaging;
+
+    /**
     * The event dispatcher instance.
     *
     * @var T4s\CamelotAuth\Events\DispatcherInterface;
@@ -102,7 +109,7 @@ class Camelot{
         // no driver is set yet 
         if(!isset($driver) || is_null($driver))
         {
-            if(is_null($thi->driver))
+            if(is_null($this->driver))
             {
                 $this->driver = $this->detectAuthDriver();
             }
@@ -151,7 +158,7 @@ class Camelot{
         }
 
         // if the driver is still null lets just give up and load the default provider no one will know
-        if(is_null($driverName))
+        if(!isset($driverName))
         {
             $provider = $this->config->get('camelot.default_provider');
             $driverName = $this->supported_drivers[ucfirst($provider)]['driver'];
@@ -186,6 +193,7 @@ class Camelot{
 
         $this->driver = new $driverClass(
             $provider,
+            $this->config,
             $this->session,
             $this->cookie,
             $this->database,
