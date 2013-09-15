@@ -9,6 +9,8 @@ use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Database\DatabaseInterface;
 use T4s\CamelotAuth\Messaging\MessagingInterface;
 
+use T4s\CamelotAuth\Models\UserInterface;
+
 use T4s\CamelotAuth\Auth\Local\Exceptions\LoginRequiredExeption;
 use T4s\CamelotAuth\Auth\Local\Exceptions\PasswordRequiredExeption;
 use T4s\CamelotAuth\Auth\Local\Exceptions\IncorrectPasswordException;
@@ -40,13 +42,13 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 		{
 			parent::__construct($provider,$config,$session,$cookie,$database,$messaging,$path);
 
-
 			$this->userProvider =  $this->database->loadRepository('User',$this->config->get('localcamelot.model'));
 
 			$this->accountProvider =  $this->database->loadRepository('Account',$this->config->get('camelot.model'));
 
+			$this->hasher = $this->loadHasher($this->config->get('localcamelot.hasher'));
 			//$this->throttler  = $this->database->loadRepository('Throttler',$this->config->get('localcamelot.throttler_model'));
-			//$hasher = '\\'.ltrim($this->config->get('camelot'));
+			$hasher = '\\'.ltrim($this->config->get('localcamelot.hassher'));
 
 		}
 
@@ -85,18 +87,21 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 				$user = null;
 				$account = null;
 
-				if($this->config->get('localcamelot.userIdentifier') =='username' || $this->config->get('localcamelot.userIdentifier') =='both' )
+				if($this->config->get('localcamelot.userIdentifier') =='both' || $this->config->get('localcamelot.userIdentifier') =='username')
 				{
 					$user = $this->userProvider->getByCredentials($credentials);
 					
 				}
 
-				if(is_null($user)||$this->config->get('localcamelot.userIdentifier') =='email' || $this->config->get('localcamelot.userIdentifier') =='both' )
+				if((is_null($user) && $this->config->get('localcamelot.userIdentifier') =='both' )|| $this->config->get('localcamelot.userIdentifier') =='email' )
 				{
+					$account = $this->accountProvider->getByFields('email',$credentials[$this->config->get('localcamelot.username_field')]);
 					
+					$user =  $this->userProvider->getByAccountID($account->id);
 				}
-
-				if(!$user instanceof AccountInterface)
+				
+				
+				if(!$user instanceof UserInterface)
 				{
 					
 					// check if the throttler is enabled 
@@ -180,4 +185,8 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 		}
 
 
+		protected function loadHasher($hasher)
+		{
+			# code...
+		}
 }

@@ -6,18 +6,23 @@ class EloquentProvider
 
 	protected $model;
 
-	public function __construct($model = null)
+	protected $config;
+
+	public function __construct($config,$model = null)
 	{
-		if(isset($model))
+		
+		if(!is_null($model))
 		{
 			$this->model = $model;
 		}
+
+		$this->config = $config;
 	}
 
 	public function createModel()
 	{
 		$class = '\\'.ltrim($this->model,'\\');
-
+				
 		return new $class;
 	}
 }
