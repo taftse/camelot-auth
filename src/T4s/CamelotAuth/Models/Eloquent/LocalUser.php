@@ -22,9 +22,9 @@ class LocalUser extends Model implements UserInterface
 
 	protected $hidden = array('password_hash');
 
-	public function Account()
+	public function account()
 	{
-
+		return $this->belongsTo('T4s\CamelotAuth\Models\Eloquent\Account');
 	}
 	
 	public function getAuthIdentifier()
