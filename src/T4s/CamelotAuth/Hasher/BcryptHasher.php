@@ -35,7 +35,7 @@ class BcryptHasher implements HasherInterface
 
 	public function check($string,$hashedString,array $options = array())
 	{
-		return password_verify($value, $hashedValue);
+		return password_verify($string, $hashedString);
 	}
 		
 	public function needsRehash($string,array $options = array())
