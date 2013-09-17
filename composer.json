@@ -3,7 +3,7 @@
     "name": "t4s/camelot-auth",
     "description": "Modular Authentication system supprting a number of authentication methods",
     "license": "BSD-3-Clause",
-    "keywords": ["Authentication","Oauth","Oauth2","SAML2","LDAP","Active Directory","OpenID","Yubii Key"],
+    "keywords": ["Authentication","Oauth","Oauth2","SAML2","LDAP","Active Directory","OpenID","Yubii Key","Laravel","Laravel 4"],
     "homepage": "https://github.com/taftse/camelot-auth/",
     "authors": [
         {
