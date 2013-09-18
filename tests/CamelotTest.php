@@ -55,20 +55,43 @@ class CamelotTest extends PHPUnit_Framework_TestCase
 	
 	
 	public function testDetectAuthDriverDefaultsToCorrectDefaultDriver() {
-		$mock = m::mock("\T4s\CamelotAuth\Camelot[loadAuthDriver]", array($this->session, $this->cookie, $this->config, $this->messaging, $this->path));
-		$mock->shouldReceive('loadAuthDriver')->once()
-			 ->with('bar','Foo');
+		$mock = m::mock("\T4s\CamelotAuth\Camelot[loadAuthDriver,detectProviderFromSegments,getDriver,checkForAlias]", 
+						array($this->session, $this->cookie, $this->config, $this->messaging, $this->path));
+		$mock->shouldReceive('detectProviderFromSegments')->once()
+			 ->andReturn(null);
+		$mock->shouldReceive('getDriver')->once()->with(null)->andReturn(null);
 		
-		$this->config->shouldReceive('get')->once()
-			         ->with('camelot.detect_provider')
-			         ->andReturn(false);
 		$this->config->shouldReceive('get')->once()
 			         ->with('camelot.default_provider')
 			         ->andReturn('Foo');
+		$mock->shouldReceive('getDriver')->once()->with('Foo')->andReturn('foobar');
+		$mock->shouldReceive('checkForAlias')->once()->with('Foo')->andReturn('Foo');
+		$mock->shouldReceive('loadAuthDriver')->once()->with('foobar','Foo');
+			 
 			         
 		$mock->detectAuthDriver();
 		
 	}
+	public function testDetectAuthDriverGetsDriverFromPath() {
+		$this->path = 'login/foo';
+		$mock = m::mock("\T4s\CamelotAuth\Camelot[loadAuthDriver,detectProviderFromSegments,getDriver,checkForAlias]", 
+						array($this->session, $this->cookie, $this->config, $this->messaging, $this->path));
+		$mock->shouldReceive('detectProviderFromSegments')->once()->andReturn('Bar');
+		$mock->shouldReceive('getDriver')->once()->with('Bar')->andReturn('barfoo');
+		
+		$this->config->shouldReceive('get')->never()->with('camelot.default_provider')->andReturn('Foo');
+		$mock->shouldReceive('getDriver')->never()->with('Foo')->andReturn('foobar');
+		
+		$mock->shouldReceive('checkForAlias')->once()->with('Bar')->andReturn('Bar');
+		$mock->shouldReceive('loadAuthDriver')->once()->with('barfoo','Bar');
+			
+			         
+		$mock->detectAuthDriver();
+		
+	}
+	
+	
+	// test detectProviderFromSegments method
 	
 	public function testDetectsProviderIfDetectionIsTurnedOn()
 	{

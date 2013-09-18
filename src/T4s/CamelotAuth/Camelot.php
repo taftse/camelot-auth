@@ -167,7 +167,7 @@ class Camelot{
 			$segmentNr = $this->config->get('camelot.route_location');
             if(isset($segments[$segmentNr-1]))
             {
-                return $provider = $segments[$segmentNr-1];
+                return $provider = ucfirst($segments[$segmentNr-1]);
             }
         }
         return null;
