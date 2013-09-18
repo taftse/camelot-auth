@@ -148,10 +148,7 @@ class Camelot{
             {
                 $provider = $segments[$this->config->get('camelot.route_location')-1];
 
-                if(isset($this->supported_drivers[ucfirst($provider)]))
-                {
-                    $driverName = $this->supported_drivers[ucfirst($provider)]['driver'];
-                }
+                $driverName = $this->getDriver($provider);
             }
         }
 
@@ -159,7 +156,7 @@ class Camelot{
         if(!isset($driverName))
         {
             $provider = $this->config->get('camelot.default_provider');
-            $driverName = $this->supported_drivers[ucfirst($provider)]['driver'];
+            $driverName = $this->getDriver($provider);
         }
 
          // is this authentication provider an alias of another authentication provider
@@ -176,6 +173,15 @@ class Camelot{
             return $aliased;
         }
         return $provider;		    
+    }
+    
+    public function getDriver($provider)
+    {
+	    if(isset($this->supported_drivers[ucfirst($provider)]))
+        {
+        	return $this->supported_drivers[ucfirst($provider)]['driver'];
+        }
+        return null;
     }
 
 

@@ -72,7 +72,21 @@ class CamelotTest extends PHPUnit_Framework_TestCase
 	}
 	
 
-	
+	public function testGetDriverForGivenProvider(){
+		$provider = 'Foo';
+		
+		$result = $this->camelot->getDriver($provider);
+		
+		assertThat($result, is('bar'));
+	}
+	public function testGetDriverGivesNullForWrongProvider()
+	{
+		$provider = 'Beer';
+		
+		$result = $this->camelot->getDriver($provider);
+		
+		assertThat($result, is(null));
+	}
 	
 	
 	public function testCheckForAliasReturnsCurrentProviderIfNoAliasIsSet()
@@ -83,7 +97,7 @@ class CamelotTest extends PHPUnit_Framework_TestCase
 		assertThat($result, is('Foo'));		
 	}
 	public function testCheckForAliasReturnsAliasIfSet()
-	{
+	{	
 		$provider = 'Foobar';
 		$result = $this->camelot->checkForAlias($provider);
 		
