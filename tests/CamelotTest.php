@@ -40,7 +40,6 @@ class CamelotTest extends PHPUnit_Framework_TestCase
 		$this->config->shouldReceive('get')->once()->with('camelot.database_driver')
 					 ->andReturn('Eloquent');
 		
-		$this->camelot = new Camelot($this->session,$this->cookie,$this->config,$this->messaging,$this->path);
 		
 	}
 
@@ -48,14 +47,14 @@ class CamelotTest extends PHPUnit_Framework_TestCase
 	{
 		m::close();
 	}
+	public function setCamelot()
+	{
+		$this->camelot = new Camelot($this->session,$this->cookie,$this->config,$this->messaging,$this->path);
+	}
 	
 	
 	
 	public function testDetectAuthDriverDefaultsToCorrectDefaultDriver() {
-		$this->config->shouldReceive('get')->once()->with('camelot.provider_routing')
-					 ->andReturn($this->routingarray);
-		$this->config->shouldReceive('get')->once()->with('camelot.database_driver')
-					 ->andReturn('Eloquent');
 		$mock = m::mock("\T4s\CamelotAuth\Camelot[loadAuthDriver]", array($this->session, $this->cookie, $this->config, $this->messaging, $this->path));
 		$mock->shouldReceive('loadAuthDriver')->once()
 			 ->with('bar','Foo');
@@ -71,8 +70,59 @@ class CamelotTest extends PHPUnit_Framework_TestCase
 		
 	}
 	
-
+	public function testDetectsProviderIfDetectionIsTurnedOn()
+	{
+		$this->path = 'login/Foo/';
+		$this->config->shouldReceive('get')->once()
+					 ->with('camelot.detect_provider')
+					 ->andReturn(true);
+		$this->config->shouldReceive('get')->once()
+					 ->with('camelot.route_location')
+					 ->andReturn(2);
+		$this->setCamelot();
+		
+		$result = $this->camelot->detectProviderFromSegments();
+		
+		
+		assertThat($result, is('Foo'));	
+	}
+	public function testDetectProviderReturnsNullIfDetectionIsTurnedOff()
+	{
+		$this->path = 'login/Foo/';
+		$this->config->shouldReceive('get')->once()
+					 ->with('camelot.detect_provider')
+					 ->andReturn(false);
+		$this->config->shouldReceive('get')->never()
+					 ->with('camelot.route_location')
+					 ->andReturn(2);
+		$this->setCamelot();
+		
+		$result = $this->camelot->detectProviderFromSegments();
+		
+		
+		assertThat($result, is(null));
+	}
+	public function testDetectProviderReturnsNullIfSegmentIsNotSet()
+	{
+		$this->path = 'login';
+		$this->config->shouldReceive('get')->once()
+					 ->with('camelot.detect_provider')
+					 ->andReturn(false);
+		$this->config->shouldReceive('get')->never()
+					 ->with('camelot.route_location')
+					 ->andReturn(2);
+		$this->setCamelot();
+		
+		$result = $this->camelot->detectProviderFromSegments();
+		
+		
+		assertThat($result, is(null));
+	}
+	
+	
+	// testing the getDriver Method
 	public function testGetDriverForGivenProvider(){
+		$this->setCamelot();
 		$provider = 'Foo';
 		
 		$result = $this->camelot->getDriver($provider);
@@ -81,31 +131,48 @@ class CamelotTest extends PHPUnit_Framework_TestCase
 	}
 	public function testGetDriverGivesNullForWrongProvider()
 	{
+		$this->setCamelot();
 		$provider = 'Beer';
 		
 		$result = $this->camelot->getDriver($provider);
 		
 		assertThat($result, is(null));
 	}
+	public function testGetDriverGivesNullForNoProvider()
+	{
+		$this->setCamelot();
+		
+		$result = $this->camelot->getDriver();
+		
+		assertThat($result, is(null));
+	}
 	
+	
+	// testing the checkForAlias method
 	
 	public function testCheckForAliasReturnsCurrentProviderIfNoAliasIsSet()
 	{
+		$this->setCamelot();
 		$provider = 'Foo';
+		
 		$result = $this->camelot->checkForAlias($provider);
 		
 		assertThat($result, is('Foo'));		
 	}
 	public function testCheckForAliasReturnsAliasIfSet()
 	{	
+		$this->setCamelot();
 		$provider = 'Foobar';
+		
 		$result = $this->camelot->checkForAlias($provider);
 		
 		assertThat($result, is('Foo'));
 	}
 	public function testCheckForNestedAliases()
 	{
+		$this->setCamelot();
 		$provider = 'Foobarfoo';
+		
 		$result = $this->camelot->checkForAlias($provider);
 		
 		assertThat($result, is('Foo'));
