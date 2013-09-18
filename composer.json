@@ -17,12 +17,15 @@
         "illuminate/support": "4.0.x"
     },
     "require-dev":{
-       "mockery/mockery": "dev-master"
+        "mockery/mockery":"dev-master",
+        "phpunit/phpunit":"3.7.*",
+        "kodova/hamcrest-php": "dev-master"
     },
     "autoload": {
         "psr-0": {
             "T4s\\CamelotAuth": "src/"
         }
     },
+    
     "minimum-stability": "dev"
 }
