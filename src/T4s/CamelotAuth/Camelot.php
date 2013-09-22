@@ -97,10 +97,7 @@ class Camelot{
         {
             $provider = $params[0];
             // is this authentication provider an alias of another authentication provider
-            if(isset($this->supported_drivers[ucfirst($params[0])]['provider'])) 
-            {
-                $provider = $this->supported_drivers[ucfirst($params[0])]['provider'];
-            }
+            $provider = $this->checkForAlias($provider);
             // load the driver
             $driver = $this->loadAuthDriver($this->supported_drivers[ucfirst($params[0])]['driver']);
 
@@ -165,10 +162,8 @@ class Camelot{
         }
 
          // is this authentication provider an alias of another authentication provider
-        if(isset($this->supported_drivers[ucfirst($provider)]['provider'])) 
-        {
-            $provider = $this->supported_drivers[ucfirst($provider)]['provider'];
-        }
+        $provider = $this->checkForAlias($provider);
+        
 
         return $this->loadAuthDriver($driverName,$provider);
     }
@@ -209,6 +204,15 @@ class Camelot{
         return $this->driver;
     }
 
+    public function checkForAlias($provider)
+    {
+        if(isset($this->supported_drivers[ucfirst($provider)]['provider'])) 
+        {
+            $aliased = $this->supported_drivers[ucfirst($provider)]['provider'];
+            return $this->checkForAlias($aliased);
+        }
+        return $provider;
+    }
 
     /**
     * Get the event dispatcher instance.
