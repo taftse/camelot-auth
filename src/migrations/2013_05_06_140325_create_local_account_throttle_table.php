@@ -30,6 +30,6 @@ class CreatelocalAccountThrottleTable extends Migration {
 	*/
 	public function down()
 	{
-	Schema::drop('throttle');
+	Schema::drop('local_account_throttle');
 	}
 }
