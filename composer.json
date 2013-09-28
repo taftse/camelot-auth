@@ -1,0 +1,29 @@
+{
+
+    "name": "t4s/camelot-auth",
+    "description": "Modular Authentication system supprting a number of authentication methods",
+    "license": "BSD-3-Clause",
+    "keywords": ["Authentication","Oauth","Oauth2","SAML2","LDAP","Active Directory","OpenID","Yubii Key","Laravel","Laravel 4"],
+    "homepage": "https://github.com/taftse/camelot-auth/",
+    "authors": [
+        {
+            "name": "Timothy Seebus",
+            "email": "support@twsweb-int.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "ircmaxell/password-compat": "1.0.*",
+        "illuminate/support": "4.0.x"
+    },
+    "require-dev":{
+       "mockery/mockery": "dev-master",
+       "satooshi/php-coveralls": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "T4s\\CamelotAuth": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
