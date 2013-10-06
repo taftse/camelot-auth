@@ -1,11 +1,10 @@
 <?php namespace T4s\CamelotAuth\Models\Eloquent;
 
-
-use T4s\CamelotAuth\Models\Eloquent\User;
+use Illuminate\Database\Eloquent\Model;
 
 use T4s\CamelotAuth\Models\UserInterface;
 
-class LocalUser extends User implements UserInterface
+class LocalUser extends Model implements UserInterface
 {
 	/**
 	 * The Database table used by the model
@@ -24,15 +23,9 @@ class LocalUser extends User implements UserInterface
 	protected $hidden = array('password_hash');
 
 
-	public function account()
-	{
-		return $this->belongsTo($this->accountModel);
-	}
-
-
 	public function getByAccountID($accountID)
 	{
-		return $this->where('account_id',$accountID)->with($this->accountModel)->first();
+		return $this->where('account_id',$accountID)->first();
 	}
 	
 	public function getAuthIdentifier()

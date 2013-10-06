@@ -41,7 +41,7 @@ class UserProvider extends EloquentProvider implements UserProviderInterface
 	{
 		$class = '\\'.ltrim($this->model,'\\');
 		
-		return new $class('\\'.ltrim($this->config->get('camelot.model'),'\\'));
+		return new $class();
 	}
 
 	//public function validateCredentials(UserProviderInterface $user,array $credentials);

@@ -9,6 +9,11 @@ use T4s\CamelotAuth\Events\DispatcherInterface;
 
 use T4s\CamelotAuth\Models\AccountInterface;
 
+use T4s\CamelotAuth\Exceptions\UserNotFoundException;
+use T4s\CamelotAuth\Exceptions\AccountPendingActivationException;
+use T4s\CamelotAuth\Exceptions\AccountSuspendedException;
+use T4s\CamelotAuth\Exceptions\AccountNotActiveException;
+
 abstract class AbstractAuth{
 
 	/**
@@ -98,7 +103,7 @@ abstract class AbstractAuth{
 		else if($redirect)
 		{
 			$this->session->put($this->request,'return_url');
-			return Camelot::redirect($this->config->get('login_uri'));
+			//return Camelot::redirect($this->config->get('login_uri'));
 		}
 		return false;
 	}
@@ -147,7 +152,7 @@ abstract class AbstractAuth{
 					$exception = new AccountPendingActivationException("account_activation_required");
 					break;
 				case 'suspended':
-					$exception = new AccountSusspendedException("account_suspended");
+					$exception = new AccountSuspendedException("account_suspended");
 					break;
 				default:
 					$exception = new AccountNotActiveException("account_not_active");
@@ -201,6 +206,7 @@ abstract class AbstractAuth{
 		$this->user = null;
 
 		$this->loggedOut = true;
+		return true;
 	}
 
 	public function setEventDispatcher(DispatcherInterface $dispatcher)

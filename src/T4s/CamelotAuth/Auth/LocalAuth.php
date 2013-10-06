@@ -16,7 +16,7 @@ use T4s\CamelotAuth\Auth\LocalAuth\Exceptions\PasswordRequiredExeption;
 use T4s\CamelotAuth\Auth\LocalAuth\Exceptions\IncorrectPasswordException;
 use T4s\CamelotAuth\Exceptions\UserNotFoundException;
 use T4s\CamelotAuth\Exceptions\AccountPendingActivationException;
-use T4s\CamelotAuth\Exceptions\AccountSusspendedException;
+use T4s\CamelotAuth\Exceptions\AccountSuspendedException;
 use T4s\CamelotAuth\Exceptions\AccountNotActiveException;
 
 
@@ -154,7 +154,7 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 						
 				if(is_null($account))
 				{
-					$account =$this->accountProvider->getByID($user->getAccountID());
+					$account = $this->accountProvider->getByID($user->getAccountID());
 				}
 								
 				if($login) 

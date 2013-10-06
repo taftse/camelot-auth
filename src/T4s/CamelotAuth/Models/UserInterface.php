@@ -2,8 +2,6 @@
 
 interface UserInterface
 {
-	public function account();
-
 	public function getAuthIdentifier();
 	
 	public function getByAccountID($accountIdentifier);
