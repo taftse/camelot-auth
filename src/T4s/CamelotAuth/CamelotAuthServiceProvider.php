@@ -35,7 +35,7 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 		$this->app['camelot'] = $this->app->share(function($app)
 		{
 			$camelot =  new Camelot(
-				new IlluminateSession($app['session']),
+				new IlluminateSession($app['session.store']),
 				new IlluminateCookie($app['cookie']),
 				$app['config']['camelot-auth::camelot'],
 				$app['request']->path()
