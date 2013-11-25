@@ -13,7 +13,7 @@ class IlluminateCookieTest extends PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->cookieJar = m::mock('Illuminate\Cookie\CookieJar');
-		$cookie = new IlluminateCookie($this->cookieJar,"camelot-auth-cookie");
+		$this->cookie = new IlluminateCookie($this->cookieJar,"camelot-auth-cookie");
 	}
 
 	public function tearDown()
