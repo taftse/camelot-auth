@@ -1,7 +1,7 @@
 #Camelot-Auth
 ============
 
-[![Build Status](https://travis-ci.org/taftse/camelot-auth.png?branch=master)](https://travis-ci.org/taftse/camelot-auth)
+[![Build Status](https://travis-ci.org/taftse/camelot-auth.png?branch=dev-1.0)](https://travis-ci.org/taftse/camelot-auth)
 
 Camelot auth is A Modular based Authentication library
 
