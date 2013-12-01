@@ -30,11 +30,13 @@ class IlluminateCookie implements CookieInterface
 			$key = $this->getKey();
 		}
 		$this->cookie = $this->cookieJar->make($key,$value,$minutes);
+		$this->cookieJar->queue($this->cookie);
 	}
 
 	public function forever($value)
 	{
 		$this->cookie = $this->cookieJar->forever($this->getKey(),$value);
+		$this->cookieJar->queue($this->cookie);
 	}
 
 	public function get($key= null)
@@ -42,6 +44,12 @@ class IlluminateCookie implements CookieInterface
 		if(is_null($key))
 		{
 			$key = $this->getKey();
+		}
+		
+		$queuedCookies = $this->cookieJar->getQueuedCookies();
+		if(isset($queuedCookies[$key]))
+		{
+			return $queuedCookies[$key];
 		}
 		return $this->cookieJar->get($key);
 	}
@@ -53,6 +61,7 @@ class IlluminateCookie implements CookieInterface
 			$key = $this->getKey();
 		}
 		$this->cookie = $this->cookieJar->forget($key);
+		$this->cookieJar->queue($this->cookie);
 	}
 
 	public function getCookie()
