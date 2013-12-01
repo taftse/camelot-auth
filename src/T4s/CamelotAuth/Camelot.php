@@ -140,7 +140,7 @@ class Camelot{
     {
         // should we detect the authentication driver?
         // if yes, a provider will be set, otherwise the provider will be null
-        $provider = detectProviderFromSegments();
+        $provider = $this->detectProviderFromSegments();
         // if the provider exists, the driverName will be set correctly
         // if not, the driverName will be set to null
         $driverName = $this->getDriver($provider);
