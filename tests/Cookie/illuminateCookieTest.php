@@ -23,13 +23,15 @@ class IlluminateCookieTest extends PHPUnit_Framework_TestCase
 
 	public function testPut()
 	{
-		$this->cookieJar->shouldReceive('make')->with('camelot-auth-cookie','cookie','123')->once();
+		$this->cookieJar->shouldReceive('make')->with('camelot-auth-cookie','cookie','123')->once()->andReturn('cookie');
+		$this->cookieJar->shouldReceive('queue')->with('cookie')->once();
 		$this->cookie->put('cookie','123');
 	}
 
 	public function testForever()
 	{
-		$this->cookieJar->shouldReceive('forever','cookie')->once();
+		$this->cookieJar->shouldReceive('forever')->with('camelot-auth-cookie','cookie')->once()->andReturn('cookie');
+		$this->cookieJar->shouldReceive('queue')->with('cookie')->once();
 		$this->cookie->forever('cookie');
 	}
 }
