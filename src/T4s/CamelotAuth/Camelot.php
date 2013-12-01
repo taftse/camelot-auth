@@ -139,26 +139,18 @@ class Camelot{
     public function detectAuthDriver()
     {
         // should we detect the authentication driver?
-        if($this->config->get('camelot.detect_provider'))
-        {
-            $segments = explode("/", $this->path);
-
-            if(isset($segments[$this->config->get('camelot.route_location')-1]))
-            {
-                $provider = $segments[$this->config->get('camelot.route_location')-1];
-
-                if(isset($this->supported_drivers[ucfirst($provider)]))
-                {
-                    $driverName = $this->supported_drivers[ucfirst($provider)]['driver'];
-                }
-            }
-        }
+        // if yes, a provider will be set, otherwise the provider will be null
+        $provider = detectProviderFromSegments();
+        // if the provider exists, the driverName will be set correctly
+        // if not, the driverName will be set to null
+        $driverName = $this->getDriver($provider);
+      
 
         // if the driver is still null lets just give up and load the default provider no one will know
         if(!isset($driverName))
         {
             $provider = $this->config->get('camelot.default_provider');
-            $driverName = $this->supported_drivers[ucfirst($provider)]['driver'];
+            $driverName = $this->getDriver($provider);
         }
 
          // is this authentication provider an alias of another authentication provider
@@ -204,6 +196,21 @@ class Camelot{
         return $this->driver;
     }
 
+    public function detectProviderFromSegments()
+    {
+         if($this->config->get('camelot.detect_provider'))
+        {
+            $segments = explode("/", $this->path);
+                        $segmentNr = $this->config->get('camelot.route_location');
+            if(isset($segments[$segmentNr-1]))
+            {
+                return ucfirst($segments[$segmentNr-1]);
+            }
+        }
+        return null;
+
+    }
+
     public function checkForAlias($provider)
     {
         if(isset($this->supported_drivers[ucfirst($provider)]['provider'])) 
@@ -212,6 +219,15 @@ class Camelot{
             return $this->checkForAlias($aliased);
         }
         return $provider;
+    }
+
+    public function getDriver($provider = null)
+    {
+         if(isset($this->supported_drivers[ucfirst($provider)]))
+        {
+                return $this->supported_drivers[ucfirst($provider)]['driver'];
+        }
+        return null;
     }
 
     /**
