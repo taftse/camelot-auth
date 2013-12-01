@@ -41,14 +41,14 @@ return array(
 
 	/*
 	|-------------------------------------------------------------------------
-	| Submit button name
+	| CSRF Token name
 	|-------------------------------------------------------------------------
 	|
-	| The name of the submit button which will trigger the login 
+	| The name of the CSRF Token
 	|
 	*/
 
-	'login_button' => 'login',
+	'csrf_token' => '_token',
 
 
 	/*

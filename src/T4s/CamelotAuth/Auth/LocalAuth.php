@@ -56,10 +56,10 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 
 		public function authenticate(array $credentials = null ,$remember = false, $login = true)
 		{
-			if(isset($credentials[$this->config->get('localcamelot.login_button')]))
+			if(isset($credentials[$this->config->get('localcamelot.username_field')]))
 			{
-				// lets unset the button so it does not mess with our queries
-				unset($credentials[$this->config->get('localcamelot.login_button')]);
+				// lets unset the csrf token so it does not mess with our queries
+				unset($credentials[$this->config->get('localcamelot.csrf_token')]);
 
 				// check if a event dispatcher instance exists
 				if($this->dispatcher)
@@ -167,7 +167,14 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 
 		public function register(array $accountDetails = array())
 		{
+			$missing = $this->checkRequiredRegistrationFields($accountDetails);
+			// if missing == false nothing is missing so add the details to the database
+			if(!$missing)
+			{
 
+			}
+			//there are bits missing save what we have already and return to the registration page
+			// with list of missing fields
 		}
 
 

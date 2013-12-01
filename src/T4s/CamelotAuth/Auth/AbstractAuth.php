@@ -65,6 +65,18 @@ abstract class AbstractAuth{
 	 */ 
 	protected $request;
 
+	/** 
+	 * The callback base url
+	 *
+	 * @var string
+	 */
+	protected $callbackUrl;
+
+	/**
+	 * the name of the authentication provider
+	 *
+	 * @var string
+	 */
 	protected $provider;
 
 	/**
@@ -74,6 +86,17 @@ abstract class AbstractAuth{
 	 */
 	protected $loggedOut = false;
 
+	/**
+	 * the fields required for a successfull registration
+	 *
+	 * @var array
+	 */
+	protected $registrationFields = array();
+
+
+
+
+
 	public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,MessagingInterface $messaging,$path)
 	{
 		$this->provider 	= $provider; // auth provider (string)
@@ -82,10 +105,22 @@ abstract class AbstractAuth{
 		$this->cookie 		= $cookie;
 		$this->database 	= $database;
 		$this->messaging	= $messaging;
-		$this->path 		= $path;
+		$this->path 		= $path; // check path
 
 		// load the account repository 
 		$this->accountProvider =  $this->database->loadRepository('Account',$this->config->get('camelot.model'));
+
+		$this->registrationFields = $this->config->get('camelot.required_account_details');
+
+		// set the callback url
+		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+        $this->callbackUrl = $protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+        $this->callbackUrl = rtrim($this->callbackUrl , '/');
+        if(strpos($this->callbackUrl,'?')!== false)
+        {
+        	$this->callbackUrl = substr($this->callbackUrl, 0, strrpos($this->callbackUrl, '?'));
+        }
 	}
 
 	/**
@@ -100,10 +135,11 @@ abstract class AbstractAuth{
 		{
 			return true;
 		}
-		else if($redirect)
+		
+		if($redirect)
 		{
-			$this->session->put($this->request,'return_url');
-			//return Camelot::redirect($this->config->get('login_uri'));
+			$this->session->put($this->request,'url.intended');
+			$this->redirectURI($this->config->get('camelot.login_uri'));
 		}
 		return false;
 	}
@@ -212,5 +248,94 @@ abstract class AbstractAuth{
 	public function setEventDispatcher(DispatcherInterface $dispatcher)
 	{
 		$this->dispatcher = $dispatcher;
+	}
+
+	/**
+	 * check if all the required fields are submitted
+	 *
+	 * @return bool
+	 */
+
+	public function checkRequiredRegistrationFields(array $registrationData)
+	{
+		$requiredFields = null;
+		foreach ($this->registrationFields as $field) {
+			if(!isset($registrationData[$field]) ||is_null($registrationData[$field]))
+			{
+				$requiredFields[] = $field;
+			}
+		}
+
+		if(is_null($requiredFields))
+		{
+			return true;
+		}
+
+		return $registrationFields;
+	}
+
+	public function redirectURI($uri,$parematers){
+
+		return $this->redirectURL($host.$uri,$parematers);
+	}
+
+	public function redirectURL($url,$parematers = array())
+	{
+		if(strpos($url, '?'))
+		{
+			$paramPreflix = '&';
+		}
+		else
+		{
+			$paramPreflix = '?';
+		}
+
+		foreach ($parematers as $name => $value) {
+			$param = urlencode($name);
+
+			if(!is_null($value))
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $val) {
+						$param .= "[]=" . urlencode($val) . "&" . urlencode($name);
+					}
+				}else{
+					$param .= urlencode($value);
+				}
+			}
+			$url .= $paramPreflix .	$param;
+			$paramPreflix = '&';		
+		}
+
+		if($_SERVER['SERVER_PROTOCOL'] =='HTTP/1.1' && $_SERVER['REQUEST_METHOD'] =='POST')
+		{
+			$code = 303;
+		}
+		else
+		{
+			$code = 302;
+		}
+
+		//header('Location: '.$url,TRUE,$code);
+		header('Pragma: no-cache');
+		header('Cache-Control: no-cache, must-revalidate');
+
+		$html  = '<html>';
+		$html .= '<head>
+						<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+						<title>Redirecting</title>
+				  </head>';
+		$html .= '<body>';
+		$html .= '<h1>Redirecting</h1>';
+		$html .= '<p> we are redirecting you to: ';
+		$html .= '<a id="redirectLink" href="'.htmlspecialchars($url).'">'.htmlspecialchars($url).'</a>';
+		$html .= '<script type="text/javascript">document.getElementById("redirectLink").focus();</script>';
+		$html .= '</p>';
+		$html .= '</body>';
+		$html .= '</html>';
+
+		return $html;
+
 	}
 }

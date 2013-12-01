@@ -1,8 +1,10 @@
 <?php namespace T4s\CamelotAuth\Models\Eloquent;
 
-use T4s\CamelotAuth\Models\Eloquent\User;
+use Illuminate\Database\Eloquent\Model;
 
-class OauthUser extends User implements UserInterface
+use T4s\CamelotAuth\Models\UserInterface;
+
+class OauthUser extends Model implements UserInterface
 {
 	/**
 	 * The Database table used by the model
@@ -12,10 +14,6 @@ class OauthUser extends User implements UserInterface
 
 	protected $table = 'account';
 
-	public function account()
-	{
-		return $this->belongsTo($this->accountModel);
-	}
 	
 	public function getAuthIdentifier()
 	{
