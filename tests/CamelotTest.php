@@ -37,9 +37,7 @@ class CamelotTest extends PHPUnit_Framework_TestCase
 
 		$this->config->shouldReceive('get')->once()->with('camelot.provider_routing')->andReturn('foo');
 		$this->config->shouldReceive('get')->once()->with('camelot.database_driver')->andReturn('Eloquent');
-		
-		$this->camelot = new Camelot($this->session,$this->cookie,$this->config,$this->messaging,$this->path);
-		
+				
 	}
 
 	public function tearDown()
