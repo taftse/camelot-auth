@@ -21,8 +21,8 @@
         "phpunit/phpunit":"3.7.*",
         "kodova/hamcrest-php": "dev-master",
 
-        "illuminate/cookie": "~4",
-        "illuminate/session": "~4"
+        "illuminate/cookie": "4.1.*",
+        "illuminate/session": "4.1.*"
     },
     "autoload": {
         "psr-0": {
