@@ -16,7 +16,7 @@ class EloquentDatabase implements DatabaseInterface
 	public function loadRepository($repository,$model = null)
 	{
 
-		$class = 'T4s\CamelotAuth\Repositories\Eloquent\\'.ltrim($repository,'\\').'provider';
+		$class = 'T4s\CamelotAuth\Repositories\Eloquent\\'.ltrim($repository,'\\').'Provider';
 
 		return new $class($this->config,$model);
 	}
