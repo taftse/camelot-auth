@@ -30,7 +30,7 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 
 	}
 
-	public function authenticate(array $credentials, $remember = false,$login = true)
+	public function authenticate(array $credentials = null, $remember = false,$login = true)
 	{
 
 		
