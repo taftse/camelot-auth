@@ -48,7 +48,8 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 
 		if($this->app->environment() !== 'production')
 		{
-			define('ENVIRONMENT', 'development');
+			if (!defined('ENVIRONMENT'))
+				define('ENVIRONMENT', 'development');
 		}
 
 		//Camelot::setEventDispatcher(new LaravelDispatcher);
