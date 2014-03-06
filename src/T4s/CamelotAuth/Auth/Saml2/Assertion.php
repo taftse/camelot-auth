@@ -33,7 +33,7 @@ class Assertion
 	 *
 	 * @var array|null
 	 */
-	protected $nameId = null;
+	public $nameId = null;
 
 	/**
 	 * Encrypted name identifier of the subject

@@ -57,4 +57,26 @@ class ResponseMessage extends AbstractMessage
 	{
 		return $this->assertions;
 	}
+
+
+	public function getNameId()
+	{
+		foreach ($this->assertions as $assertion) {
+			if(isset($assertion->nameId))
+			{
+				return $assertion->nameId;
+			}
+		}
+	}
+
+	public function getAttributes()
+	{
+		$attributes = array();
+		foreach ($this->assertions as $assertion) {
+			if(isset($assertion->attributes))
+			{
+				return $this->attributes;
+			}
+		}
+	}
 }

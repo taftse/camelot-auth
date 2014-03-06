@@ -122,7 +122,8 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 			
 		}
 
-
+		
+		
 		var_dump($response->getNameId());
 
 		var_dump($response->getAttributes());

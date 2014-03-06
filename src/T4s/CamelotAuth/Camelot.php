@@ -92,16 +92,19 @@ class Camelot{
 
     public function __call($method,$params)
     { 
+
         // does this function override the authentication provider
         if(isset($params[0]) && is_string($params[0]) && isset($this->supported_drivers[ucfirst($params[0])]))
         {
-            $provider = $params[0];
             // is this authentication provider an alias of another authentication provider
-            $provider = $this->checkForAlias($provider);
+            $params[0] = $this->checkForAlias($params[0]);
             // load the driver
             $driver = $this->loadAuthDriver($this->supported_drivers[ucfirst($params[0])]['driver']);
-
+            unset($params[0]);
+            
         }
+                
+
 
         // no driver is set yet 
         if(!isset($driver) || is_null($driver))

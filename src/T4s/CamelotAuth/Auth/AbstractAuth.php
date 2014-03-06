@@ -271,7 +271,7 @@ abstract class AbstractAuth{
 			return true;
 		}
 
-		return $registrationFields;
+		return $requiredFields;
 	}
 
 	public function redirectURI($uri,$parematers){
