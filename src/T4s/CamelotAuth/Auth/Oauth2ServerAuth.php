@@ -25,14 +25,6 @@ class Oauth2ServerAuth extends AbstractAuth implements AuthInterface{
 
 	public function authenticate(array $credentials = null ,$remember = false, $login = true)
 	{
-		if(strpos($this->path,'authorize'))
-		{
-			return $this->authorize($credentials);
-		}
-		else if(strpos($this->path, 'access_token'))
-		{
-			return $this->accessToken($credentials);
-		}
 		return $this->index($credentials);
 	}
 
@@ -61,7 +53,7 @@ class Oauth2ServerAuth extends AbstractAuth implements AuthInterface{
 		{
 			throw new Exception("un authorized client", 1);
 		}
-
+		
 		$this->session->put($clientDetails,'oauth2_client_details');
 
 
