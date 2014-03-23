@@ -25,7 +25,7 @@ class Oauth2ServerApplication extends Model
 
 
 
-	public function validateClient($clientId,$clientSecret,$redirectUrl)
+	/*public function validateClient($clientId,$clientSecret,$redirectUrl)
 	{
 		$this->select('name', 'client_id','auto_aprove');
 
@@ -41,5 +41,5 @@ class Oauth2ServerApplication extends Model
 		}
 
 		return $this->first();
-	}
+	}*/
 }

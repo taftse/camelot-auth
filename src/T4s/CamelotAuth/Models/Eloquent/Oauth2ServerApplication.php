@@ -25,8 +25,6 @@ class Oauth2ServerApplication extends Model
 
 
 	
-
-
 	public function getByClientID($clientId)
 	{
 		return $this->where('client_id',$clientId)->first();
@@ -34,19 +32,20 @@ class Oauth2ServerApplication extends Model
 
 	public function validateClient($clientId,$clientSecret,$redirectUrl)
 	{
-		$this->select('name', 'client_id','auto_aprove');
 
-		$this->where('client_id','=',$clientId);
+		$query = $this->select('name', 'client_id','auto_aprove');
+
+		$query->where('client_id','=',$clientId);
 		if(!is_null($clientSecret))
 		{
-			$this->where('client_secret','=',$clientSecret);
+			$query->where('client_secret','=',$clientSecret);
 		}
 
 		if(!is_null($redirectUrl))
 		{
-			$this->where('redirect_url','=',$redirectUrl);
+			$query->where('redirect_uri','=',$redirectUrl);
 		}
 
-		return $this->first();
+		return $query->first();
 	}
 }
