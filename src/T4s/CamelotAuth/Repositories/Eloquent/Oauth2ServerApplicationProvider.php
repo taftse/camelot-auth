@@ -35,6 +35,7 @@ class Oauth2ServerApplicationProvider extends EloquentProvider
 
 	public function createModel()
 	{
+		
 		$class = '\\'.ltrim($this->model,'\\');
 		
 		return new $class();
