@@ -157,7 +157,7 @@ return array(
                 //'gender',
             ),
 
-    'login_uri' => 'login',
+    'login_uri' => '',
     
     'registration_uri' => 'account/register',
     'verification_uri' => 'account/verify',

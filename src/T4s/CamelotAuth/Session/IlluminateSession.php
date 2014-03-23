@@ -25,7 +25,7 @@ class IlluminateSession implements SessionInterface
 		if(is_null($key)){
 			$key = $this->key;
 		}
-		
+
 		$this->store->put($key,$value);
 	}
 
@@ -45,5 +45,10 @@ class IlluminateSession implements SessionInterface
 			$key = $this->key;
 		}
 		$this->store->forget($key);
+	}
+
+	public function all()
+	{
+		return $this->store->all();
 	}
 }

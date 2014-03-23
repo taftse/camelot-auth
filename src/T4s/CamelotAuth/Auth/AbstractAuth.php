@@ -139,7 +139,7 @@ abstract class AbstractAuth{
 		if($redirect)
 		{
 			$this->session->put($this->request,'url.intended');
-			$this->redirectURI($this->config->get('camelot.login_uri'));
+			return $this->redirectURI($this->config->get('camelot.login_uri'));
 		}
 		return false;
 	}
@@ -274,12 +274,17 @@ abstract class AbstractAuth{
 		return $requiredFields;
 	}
 
-	public function redirectURI($uri,$parematers){
-
-		return $this->redirectURL($host.$uri,$parematers);
+	public function redirectURI($uri,$paremeters = array())
+	{
+		$protocol = 'http://';
+		if(isset($_SERVER['HTTPS'])&& $_SERVER['HTTPS'] != "off"){
+        	$protocol = "https://" ;
+    	}
+    	
+		return $this->redirectURL( $protocol .$_SERVER['SERVER_NAME'].'/'.$uri,$paremeters);
 	}
 
-	public function redirectURL($url,$parematers = array())
+	public function redirectURL($url,$paremeters = array())
 	{
 		if(strpos($url, '?'))
 		{
@@ -290,7 +295,7 @@ abstract class AbstractAuth{
 			$paramPreflix = '?';
 		}
 
-		foreach ($parematers as $name => $value) {
+		foreach ($paremeters as $name => $value) {
 			$param = urlencode($name);
 
 			if(!is_null($value))
@@ -317,7 +322,7 @@ abstract class AbstractAuth{
 			$code = 302;
 		}
 
-		//header('Location: '.$url,TRUE,$code);
+		header('Location: '.$url,TRUE,$code);
 		header('Pragma: no-cache');
 		header('Cache-Control: no-cache, must-revalidate');
 
@@ -335,7 +340,9 @@ abstract class AbstractAuth{
 		$html .= '</body>';
 		$html .= '</html>';
 
-		return $html;
+		echo $html;
+
+		exit;
 
 	}
 }

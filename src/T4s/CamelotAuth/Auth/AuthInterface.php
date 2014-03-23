@@ -10,7 +10,7 @@ interface AuthInterface
 
 	public function authenticate(array $credentials, $remember = false,$login = true);
 
-	public function register(array $accountDetails = array());
+	//public function register(array $accountDetails = array());
 
 	public function logout();
 

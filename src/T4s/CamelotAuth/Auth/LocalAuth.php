@@ -167,14 +167,15 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 
 		public function register(array $accountDetails = array())
 		{
-			$missing = $this->checkRequiredRegistrationFields($accountDetails);
+			//$missing = $this->checkRequiredRegistrationFields($accountDetails);
 			// if missing == false nothing is missing so add the details to the database
-			if(!$missing)
-			{
+			//if(!$missing)
+			//{
 
-			}
+			//}
 			//there are bits missing save what we have already and return to the registration page
 			// with list of missing fields
+			//echo $this->hasher->hash($accountDetails['password']);
 		}
 
 
