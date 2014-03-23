@@ -320,7 +320,7 @@ abstract class AbstractAuth{
 		else
 		{
 			$code = 302;
-		}
+		}		 
 
 		header('Location: '.$url,TRUE,$code);
 		header('Pragma: no-cache');
@@ -341,8 +341,9 @@ abstract class AbstractAuth{
 		$html .= '</html>';
 
 		echo $html;
+		flush();
+		return $this;
 
-		exit;
-
+		
 	}
 }

@@ -8,6 +8,8 @@ use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Database\DatabaseInterface;
 use T4s\CamelotAuth\Messaging\MessagingInterface;
 
+use T4s\CamelotAuth\Models\AccountInterface;
+
 
 class Oauth2ServerAuth extends AbstractAuth implements AuthInterface{
 
@@ -84,7 +86,7 @@ class Oauth2ServerAuth extends AbstractAuth implements AuthInterface{
 		}
 
 		$this->session->put($credentials,'oauth2_request_params');
-
+		
 
 		if($this->check(true))
 		{
@@ -96,6 +98,7 @@ class Oauth2ServerAuth extends AbstractAuth implements AuthInterface{
 	{
 		// is the user logged in
 		$this->check(true);
+		
 
 		$client = $this->session->get('oauth2_client_details');
 		$params	= $this->session->get('oauth2_request_params');
@@ -103,27 +106,69 @@ class Oauth2ServerAuth extends AbstractAuth implements AuthInterface{
 		if(is_null($client) && is_null($params))
 		{
 			throw new \Exception("no client details", 1);
-			
 		}
 
 		if(isset($credentials['doauth']))
 		{
 			if($credentials['doauth'] == 'Deny')
 			{
-				return 'request denied';
+
+				$errorParameters['error'] = 'access_denied';
+				$errorParameters['error_message'] = 'The resource owner or authorization server denied the request';
+				if($params['state']){ $errorParameters['state']=$params['state'];}
+
+				$this->session->forget('oauth2_request_params');
+				$this->session->forget('oauth2_client_details');
+				return $this->redirectURL($client['redirect_uri'],$errorParameters);
 			}
-			$this->
-			$this->newRequest($client,$params);
+			
+			return $this->newRequest($client,$params);
 		}
+		
+		if(($session = $this->validateAccessToken($this->user(),$client) )|| $client['auto_aprove'] == true)
+		{
+			
+			if(!isset($session['access_token']))
+			{
+				$session['access_token'] = null;
+			}
+			return $this->newRequest($this->user(),$client,$params,$session['access_token']);
+			
+		}
+
+		$view_data['name'] = $client['name'];
+		$view_data['scopes'] = $this->getRequestedScopes($params['scope']);
+		$view_data['post_uri'] = $this->config->get('oauth2camelotserver.authorize_uri');
+		return $view_data;
 	}
 
-	private function newRequest()
+	private function newRequest(AccountInterface $account,$client,$parameters,$accessToken = null)
 	{
-		//create new auth code
-		/*client_id,
-		account_id
-		redirect_uri,
-		scope*/
-
+		
+		$params['code'] = $this->sessionProvider->createAuthCode($account->id,$client,$parameters['redirect_uri'],$parameters['scopes'],$accessToken);
+		$params['state']= $parameters['state'];
+		var_dump($parameters);
+		return $this->redirectURL($parameters['redirect_uri'],$params);
 	}	
+
+	private function validateAccessToken(AccountInterface $account,$client)
+	{
+		$session = $this->sessionProvider->validateAccessToken($account->id,$client['client_id']);
+		if(is_null($session))
+			return false;
+
+		var_dump($session);
+		var_dump(\DB::getQueryLog());
+		exit;
+	}
+
+	private function getRequestedScopes(array $scopes)
+	{
+		$scopesToReturn = array();
+		$globalScopes = $this->config->get('oauth2camelotserver.scopes');
+		foreach ($scopes as $key) {
+			$scopesToReturn[$key] = $globalScopes[$key];
+		}
+		return $globalScopes;
+	}
 }

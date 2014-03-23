@@ -20,6 +20,9 @@ class Account extends Model implements AccountInterface
                    'city', 'zip_code', 'state_code', 'country_iso',
                    'dob', 'phone', 'gender', 'status'); 
 	
+	public $timestamps = true;
+
+
 	public function getAuthIdentifier()
 	{
 		return $this->getKey();

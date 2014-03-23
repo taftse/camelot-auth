@@ -25,21 +25,47 @@ class Oauth2ServerSession extends Model
 
 
 
-	public function validateClient($clientId,$clientSecret,$redirectUrl)
+	public function validateAccessToken($accountId,$clientId)
 	{
-		$this->select('name', 'client_id','auto_aprove');
+		
+		$query =$this->where('client_id','=',$clientId);
+		$query->where('type_id','=',$accountId);
+		$query->where('type','=','user');
+		$query->where('access_token','!=','');
+		$query->where('access_token','IS NOT NULL',null);
 
-		$this->where('client_id','=',$clientId);
-		if(!is_null($clientSecret))
+		return $query->first();
+	}
+
+	public function createAuthCode($accountId,$client,$redirectUri,$scopes,$accessToken)
+	{
+		$code = md5(time().uniqid());
+
+		$query =$this->where('client_id','=',$client['client_id']);
+		$query->where('type_id','=',$accountId);
+		$query->where('type','=','user');
+
+		if(!is_null($accessToken))
 		{
-			$this->where('client_secret','=',$clientSecret);
+			$query->where('access_token','=',$accessToken);
+			$updates['code'] = $code;
+			$updates['stage'] ='request';
+			$updates['redirect_uri'] = $redirectUri;
+
+			$query->update($updates);
+			return $code;
 		}
 
-		if(!is_null($redirectUrl))
-		{
-			$this->where('redirect_url','=',$redirectUrl);
-		}
+		$query->delete();
 
-		return $this->first();
+		$insert =  ['client_id'=>$client['client_id'],
+					'redirect_uri'=> $redirectUri,
+					'type_id' => $accountId,
+					'type'=>'user',
+					'code' => $code,
+					'scopes'=>serialize($scopes)
+					];
+		$query->insert($insert);
+		return $code;
 	}
 }

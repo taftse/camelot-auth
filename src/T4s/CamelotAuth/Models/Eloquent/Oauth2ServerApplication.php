@@ -23,7 +23,7 @@ class Oauth2ServerApplication extends Model
 
 	protected $hidden = array();
 
-
+	public $timestamps = true;
 	
 	public function getByClientID($clientId)
 	{

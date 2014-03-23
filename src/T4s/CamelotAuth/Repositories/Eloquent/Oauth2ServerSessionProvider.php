@@ -16,12 +16,17 @@ class Oauth2ServerSessionProvider extends EloquentProvider
 	
 
 
-	public function validateClient($clientId, $clientSecret = null, $redirectUrl)
+	public function validateAccessToken($accountId,$clientId)
 	{
-		return $this->createModel()->validateClient($clientId,$clientSecret,$redirectUrl);
+		return $this->createModel()->validateAccessToken($accountId,$clientId);
 	}
 
 
+
+	public function createAuthCode($accountId,$client,$redirectUri,$scopes,$accessToken = null)
+	{
+		return $this->createModel()->createAuthCode($accountId,$client,$redirectUri,$scopes,$accessToken = null);
+	}
 
 
 

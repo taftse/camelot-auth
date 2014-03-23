@@ -12,7 +12,7 @@ class IlluminateCookie implements CookieInterface
 
 	protected $cookie;
 
-	public function __construct(CookieJar $cookieJar,$key = "camelot-auth")
+	public function __construct(CookieJar $cookieJar,$key = "camelot-auth-cookie")
 	{
 		$this->cookieJar = $cookieJar;
 		$this->key = $key;

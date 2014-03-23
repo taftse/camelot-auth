@@ -9,7 +9,7 @@ class IlluminateSession implements SessionInterface
 
 	protected $store;
 
-	public function __construct(SessionStore $store,$key = "camelot-auth")
+	public function __construct(SessionStore $store,$key = "camelot-auth-session")
 	{
 		$this->store = $store;
 		$this->key = $key;
