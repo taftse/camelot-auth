@@ -122,7 +122,7 @@ class Oauth2ServerAuth extends AbstractAuth implements AuthInterface{
 				return $this->redirectURL($client['redirect_uri'],$errorParameters);
 			}
 			
-			return $this->newRequest($client,$params);
+			return $this->newRequest($this->user(),$client,$params);
 		}
 		
 		if(($session = $this->validateAccessToken($this->user(),$client) )|| $client['auto_aprove'] == true)
