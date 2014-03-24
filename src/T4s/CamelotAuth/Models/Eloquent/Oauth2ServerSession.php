@@ -68,4 +68,39 @@ class Oauth2ServerSession extends Model
 		$query->insert($insert);
 		return $code;
 	}
+
+	public function validateAuthCode($code,$clientId,$redirectUri)
+	{
+		$query= $this->where('client_id','=',$client['client_id']);
+		$query->where('redirect_uri','=',$redirect_uri);
+		$query->where('code','=',$code);
+		return $query->first();
+	}
+
+	public function getAccessToken($sessionId)
+	{
+		$query= $this->where('id','=',$sessionId);
+		$query->where('access_token','IS NOT NULL',null);
+		$token = $query->first();
+		if(!is_null($token))
+		{
+			$query= $this->where('id','=',$sessionId);
+			$updates['code'] = '';
+			$updates['stage'] ='granted';
+			$query->update($updates);
+		}
+		return $token;
+	}
+
+	public function generateAccessToken($sessionId)
+	{
+		$access_token = sha1(time().uniqid());
+
+		$query= $this->where('id','=',$sessionId);
+			$updates['code'] = '';
+			$updates['stage'] ='granted';
+			$update['access_token'] = $access_token;
+			$query->update($updates);
+		return $access_token;
+	}
 }

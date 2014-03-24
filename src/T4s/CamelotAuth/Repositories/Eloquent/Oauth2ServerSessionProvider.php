@@ -29,6 +29,21 @@ class Oauth2ServerSessionProvider extends EloquentProvider
 	}
 
 
+	public function validateAuthCode($code,$clientId,$redirectUri)
+	{
+		return $this->createModel()->validateAuthCode($code,$clientId,$redirectUri);
+	}
+
+
+	public function getAccessToken($sessionId)
+	{
+		return $this->createModel()->getAccessToken($sessionId);
+	}
+
+	public function generateAccessToken($sessionId)
+	{
+		return $this->createModel()->generateAccessToken($sessionId);
+	}
 
 	public function createModel()
 	{

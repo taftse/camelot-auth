@@ -142,11 +142,68 @@ class Oauth2ServerAuth extends AbstractAuth implements AuthInterface{
 		return $view_data;
 	}
 
+
+	public function accessToken(array $credentials)
+	{
+		if(!isset($credentials['client_id']))
+		{
+			throw new \Exception("No client_id", 1);
+		}	
+
+		if(!isset($credentials['client_secret']))
+		{
+			throw new \Exception("No client_secret", 1);
+		}	
+
+		if(!isset($credentials['redirect_uri']))
+		{
+			throw new \Exception("no redirect_uri", 1);
+		}
+
+		if(!isset($credentials['code']))
+		{
+			throw new \Exception("no code", 1);
+		}
+
+		if(!isset($credentials['grant_type']) || ! in_array($credentials['grant_type'], $this->config->get('oauth2camelotserver.grant_type')))
+		{
+			throw new \Exception("no grant_type or unsupported grant_type", 1);
+		}
+
+
+		$clientDetails  = $this->applicationProvider->alidateClient($credentials['client_id'], $credentials['client_secret'], $credentials['redirect_uri']);
+		if(is_null($clientDetails))
+		{
+			throw new \Exception("unauthorised client", 1);
+		}
+
+		switch ($credentials['grant_type']) {
+			case 'authorization_code':
+				$session = $this->sessionProvider->validateAuthCode($credentials['code'],$$credentials['client_id'],$credentials['redirect_uri']);
+				if(is_null($session))
+				{
+					throw new \Exception("authorization code invalid", 1);	
+				}
+				$accessToken = $this->sessionProvider->getAccessToken($session->id);
+				if(is_null($accessToken['access_token']))
+				{
+					$accessToken['access_token'] = $this->sessionProvider->generateAccessToken($session->id);
+				}
+
+				header('content-type: application/json');
+				echo json_encode(['access_token'=>$accessToken['access_token']]);
+				return;
+				break;
+		}
+	}
+
+
 	private function newRequest(AccountInterface $account,$client,$parameters,$accessToken = null)
 	{
 		
 		$params['code'] = $this->sessionProvider->createAuthCode($account->id,$client,$parameters['redirect_uri'],$parameters['scope'],$accessToken);
 		$params['state']= $parameters['state'];
+
 		return $this->redirectURL($parameters['redirect_uri'],$params);
 	}	
 

@@ -23,6 +23,9 @@ return array(
 	/// list of accepted response types
 	'response_type' => ['code'],
 
+	/// list of accepted grant types
+	'grant_types' =>['authorization_code'],
+
 	'authorize_uri' => 'api/oauth2/authorize',
 
 	'scopes' =>	[
