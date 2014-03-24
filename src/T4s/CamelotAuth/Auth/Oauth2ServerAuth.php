@@ -145,9 +145,8 @@ class Oauth2ServerAuth extends AbstractAuth implements AuthInterface{
 	private function newRequest(AccountInterface $account,$client,$parameters,$accessToken = null)
 	{
 		
-		$params['code'] = $this->sessionProvider->createAuthCode($account->id,$client,$parameters['redirect_uri'],$parameters['scopes'],$accessToken);
+		$params['code'] = $this->sessionProvider->createAuthCode($account->id,$client,$parameters['redirect_uri'],$parameters['scope'],$accessToken);
 		$params['state']= $parameters['state'];
-		var_dump($parameters);
 		return $this->redirectURL($parameters['redirect_uri'],$params);
 	}	
 
