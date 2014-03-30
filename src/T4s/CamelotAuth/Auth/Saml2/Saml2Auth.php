@@ -61,6 +61,6 @@ class Saml2Auth extends AbstractAuth
 			return $_REQUEST['RelayState'];
 		}
 
-		return $this->sesssion->get('url.intended',$this->config->get('camelot.login_success_route'));
+		return $this->sesssion->get('url.intended_url',$this->config->get('camelot.login_success_route'));
 	}
 }

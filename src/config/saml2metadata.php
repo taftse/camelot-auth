@@ -86,6 +86,11 @@ AA=='),
 			    					  'Organization'=>array('OrganizationName'=>'Tools4Schools'),
 			    					),
 			    				),
+			    		'https://portal.tools4schools.ie'=>
+			    				array('SPSSODescriptor'=> array(
+			    					  'Organization'=>array('OrganizationName'=>'Tools4Schools'),
+			    					),
+			    				),
     					),
 					
 );
