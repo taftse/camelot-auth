@@ -8,7 +8,7 @@ use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 */
 class HTTPRedirectBinding extends Binding
 {
-	
+	protected $get = array();
 	protected $parameters = array();
 
 	/**
@@ -92,23 +92,25 @@ class HTTPRedirectBinding extends Binding
 
 	public function receive()
 	{
-		if(array_key_exists('SAMLResponse', $_GET))
+		$this->parseQueryString();
+
+		if(array_key_exists('SAMLResponse', $this->get))
 		{
-			$message = $_GET['SAMLResponse'];
+			$message = $this->get['SAMLResponse'];
 		}
-		else if(array_key_exists('SAMLRequest', $_GET))
+		else if(array_key_exists('SAMLRequest', $this->get))
 		{
-			$message = $_GET['SAMLRequest'];
+			$message = $this->get['SAMLRequest'];
 		}
 		else
 		{
 			throw new \Exception("missing SAMLRequest or SAMLResponse parameter");
 		}
 
-			$encoding = Saml2Constants::Binding_Encoding_DEFLATE;
-		if(array_key_exists('SAMLEncoding',$_GET))
+		$encoding = Saml2Constants::Binding_Encoding_DEFLATE;
+		if(array_key_exists('SAMLEncoding',$this->get))
 		{
-			$encoding = $_GET['SAMLEncoding'];
+			$encoding = $this->get['SAMLEncoding'];
 		}
 
 		$message = base64_decode($message);
@@ -123,10 +125,65 @@ class HTTPRedirectBinding extends Binding
 				break;
 		}
 
+		$XMLMessage = new \DOMDocument();
+		$XMLMessage->loadXML($message);
+		$message = AbstractMessage::getMessageFromXML($XMLMessage->firstChild);
+		
+
+		if(array_key_exists('RelayState', $this->get))
+		{
+			$message->setRelayState(''.$this->get['RelayState']);
+		}
+
+		if(array_key_exists('Signature',$this->get))
+		{
+			if(!array_key_exists('SigAlg',$this->get))
+			{
+				throw new Exception("missing signature algorithm");
+			}
+
+			$signatureData = ['Signature' => $this->get['Signature'],
+							  'SigAlg' => $this->get['SigAlg'],
+							  'Query'=>$this->get['SignedQuery']
+							 ];
+
+			//$message->addValidator(array())
+		}
+
 		return $message;
 	}
 
+	/*
+	adapted from the SIMPLE SAML PHP LIBRARY
+	*/
+	protected function parseQueryString()
+	{
+		$relayState = '';
+		$sigAlg = '';
 
+		foreach(explode('&',$_SERVER['QUERY_STRING']) as $e){
+			list($key,$value) = explode('=',$e,2);
+			$key = urldecode($key);
+			$value = urldecode($value);
+			$this->get[$key] = $value;
 
+			switch ($key) {
+				case 'SAMLRequest':
+				case 'SAMLResponse':
+					$signatureQuery = $key . '=' . $value;
+					break;
+				case 'RelayState':
+					$relayState = '&RelayState='.$value;
+					break;
+				case 'SigAlg':
+					$sigAlg = '&SigAlg='.$value;
+					break;
+			}
+		}
+
+		$this->get['SignedQuery']= $sigAlg.$relayState.$sigAlg;
+
+		return $this->get;
+	}
 	
 }

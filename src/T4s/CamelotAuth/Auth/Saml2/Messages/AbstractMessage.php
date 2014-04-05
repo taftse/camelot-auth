@@ -116,7 +116,7 @@ abstract class AbstractMessage
 
 	public function generateUnsignedMessage()
 	{
-		$root = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,'samlp:'.$this->messageType);
+		$root = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,$this->messageType);
 
 		$this->xmlMessage->appendChild($root);
 
@@ -131,7 +131,7 @@ abstract class AbstractMessage
 
 		if(!is_null($this->issuer))
 		{
-			$n = $root->ownerDocument->createElementNS(Saml2Constants::Namespace_SAML,'saml:Issuer');
+			$n = $root->ownerDocument->createElementNS(Saml2Constants::Namespace_SAML,'Issuer');
 			$n->appendChild($root->ownerDocument->createTextNode($this->issuer));
 			$root->appendChild($n);
 		}
@@ -143,7 +143,7 @@ abstract class AbstractMessage
 	{
 		if(!empty($this->extensions))
 		{
-			$extensions = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,'samlp:Extensions');
+			$extensions = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,'Extensions');
 			$root->appendChild($extensions);
 
 			foreach ($this->extensions as $extension) {

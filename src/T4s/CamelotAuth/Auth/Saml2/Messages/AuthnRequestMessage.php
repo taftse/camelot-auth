@@ -4,7 +4,7 @@ use T4s\CamelotAuth\Auth\Saml2\Messages\AbstractMessage;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\EntityMetadata;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
-class AuthRequestMessage extends AbstractMessage
+class AuthnRequestMessage extends AbstractMessage
 {
 	/**
 	 * Specifies the requested subject of the resulting assertion(s)
@@ -165,7 +165,38 @@ class AuthRequestMessage extends AbstractMessage
 
 	public function importXMLMessage(\DOMElement $message)
 	{
-		
+		if($message->hasAttribute('ForceAuthn')&& $message->getAttribute('ForceAuthn') == 'true')
+		{
+			$this->forceAuthn = true;
+		}
+
+		if($message->hasAttribute('IsPassive')&& $message->getAttribute('IsPassive') == 'true')
+		{
+			$this->isPassive = true;
+		}
+
+		if($message->hasAttribute('AssertionConsumerServiceURL'))
+		{
+			$this->assertionConsumerServiceURL = $message->getAttribute('AssertionConsumerServiceURL');
+		}
+
+		if($message->hasAttribute('AssertionConsumerServiceIndex'))
+		{
+			$this->assertionConsumerServiceIndex = (int)$message->getAttribute('AssertionConsumerServiceIndex');
+		}
+
+		if($message->hasAttribute('ProtocolBinding'))
+		{
+			$this->protocolBinding = $message->getAttribute('ProtocolBinding');
+		}
+
+		$this->nameIDPolicy = $this->parseNameIDPolicy($message);
+
+		$this->requestedAuthContext = $this->parseRequestdAuthnContext($message);
+
+		$this->scoping = $this->parseScoping($message);
+
+
 	}
 
 	public function signRequest()
@@ -205,49 +236,11 @@ class AuthRequestMessage extends AbstractMessage
 		}
 
 		//<NameIDPolicy/>
-		if(!empty($this->nameIDPolicy))
-		{
-			$nameIDPolicy = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,'NameIDPolicy');
-			
-			if(array_key_exists('Format',$this->nameIDPolicy))
-			{
-				$nameIDPolicy->setAttribute('Format',$this->nameIDPolicy['Format']);
-			}
-
-			if(array_key_exists('SPNameQualifier', $this->nameIDPolicy))
-			{
-				$nameIDPolicy->setAttribute('SPNameQualifier',$this->nameIDPolicy['SPNameQualifier']);
-			}
-
-			if(array_key_exists('AllowCreate', $this->nameIDPolicy))
-			{
-				$nameIDPolicy->setAttribute('AllowCreate',$this->nameIDPolicy['AllowCreate']);
-			}
-
-			$root->appendChild($nameIDPolicy);
-		}
+		$root->appendChild($this->generateNameIDPolicy());
 
 		// <RequestedAuthn/>
-		$reqAuthContext = $this->requestedAuthContext;
-		if(!empty($reqAuthContext['AuthnContextClassRef']))
-		{
-			$requestedAuthContext = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,'RequestedAuthnContext');
-			
-
-			if(isset($this->requestedAuthContext['Comparison']) && $this->requestedAuthContext['Comparison'] !== 'exact')
-			{
-				$requestedAuthContext->setAttribute('Comparison',$this->requestedAuthContext['Comparison']);
-			}
-
-			$root->appendChild($requestedAuthContext);
-
-			foreach ($reqAuthContext['AuthnContextClassRef'] as $AuthnContext)
-			{
-				$context = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAML,'AuthnContextClassRef');
-				$context->appendChild($this->xmlMessage->createTextNode($AuthnContext));
-				$root->appendChild($context);				
-			}
-		}
+		$root = $this->generateRequestdAuthnContext($root);
+		
 
 		//<extentions> @todo add extensions support
 		if(!empty($this->extensions))
@@ -303,6 +296,113 @@ class AuthRequestMessage extends AbstractMessage
 		return $this->assertionConsumerServiceURL;
 	}
 
+	public function generateNameIDPolicy()
+	{
+		if(!empty($this->nameIDPolicy))
+		{
+			$nameIDPolicy = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,'NameIDPolicy');
+			
+			if(array_key_exists('Format',$this->nameIDPolicy))
+			{
+				$nameIDPolicy->setAttribute('Format',$this->nameIDPolicy['Format']);
+			}
+
+			if(array_key_exists('SPNameQualifier', $this->nameIDPolicy))
+			{
+				$nameIDPolicy->setAttribute('SPNameQualifier',$this->nameIDPolicy['SPNameQualifier']);
+			}
+
+			if(array_key_exists('AllowCreate', $this->nameIDPolicy))
+			{
+				$nameIDPolicy->setAttribute('AllowCreate',$this->nameIDPolicy['AllowCreate']);
+			}
+
+			return $nameIDPolicy;
+		}
+	}
+
+	protected function parseNameIDPolicy(\DOMElement $message)
+	{
+		$nameIDPolicy = $message->ownerDocument->getElementsByTagNameNS(Saml2Constants::Namespace_SAMLProtocol, 'NameIDPolicy')->item(0);
+		
+		if(!empty($nameIDPolicy))
+		{
+			if($nameIDPolicy->hasAttribute('Format'))
+			{
+				$return['Format'] = $nameIDPolicy->getAttribute('Format');
+			}
+
+			if($nameIDPolicy->hasAttribute('SPNameQualifier'))
+			{
+				$return['SPNameQualifier'] = $nameIDPolicy->getAttribute('SPNameQualifier');
+			}
+
+			if($nameIDPolicy->hasAttribute('AllowCreate'))
+			{
+				$return['AllowCreate'] = $nameIDPolicy->getAttribute('AllowCreate');
+			}	
+			return $return;
+		}
+	}
+
+	protected function generateRequestdAuthnContext($root)
+	{
+		if(!empty($this->requestedAuthContext['AuthnContextClassRef']))
+		{
+			$requestedAuthContext = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,'RequestedAuthnContext');
+			
+
+			if(isset($this->requestedAuthContext['Comparison']) && $this->requestedAuthContext['Comparison'] !== 'exact')
+			{
+				$requestedAuthContext->setAttribute('Comparison',$this->requestedAuthContext['Comparison']);
+			}
+
+			$root->appendChild($requestedAuthContext);
+
+			foreach ($this->requestedAuthContext['AuthnContextClassRef'] as $AuthnContext)
+			{
+				$context = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAML,'AuthnContextClassRef');
+				$context->appendChild($this->xmlMessage->createTextNode($AuthnContext));
+				$root->appendChild($context);				
+			}
+		}
+	}
+
+	protected function parseRequestdAuthnContext(\DOMElement $message)
+	{
+		$requestedAuthContext = $message->ownerDocument->getElementsByTagNameNS(Saml2Constants::Namespace_SAMLProtocol, 'RequestedAuthnContext')->item(0);
+		if(!empty($requestedAuthContext))
+		{
+			$return['AuthnContextClassRef'] = [];
+			$return['Comparison'] = 'exact';
+
+			if($requestedAuthContext->hasAttribute('Comparison'))
+			{
+				$return['Comparison'] = $requestedAuthContext->getAttribute('Comparison');
+			}
+
+			$accr =  $message->ownerDocument->getElementsByTagNameNS(Saml2Constants::Namespace_SAML,'AuthnContextClassRef')->item(0);
+			foreach ($accr as $i) {
+				$return['AuthnContextClassRef'][] = trim($i->textContent);
+			}
+
+			return $return;
+		}
+	}
+
+	protected function generateScoping()
+	{
+
+	}
+
+	protected function parseScoping(\DOMElement $message)
+	{
+		$scoping =  $message->ownerDocument->getElementsByTagNameNS(Saml2Constants::Namespace_SAMLProtocol,'Scoping')->item(0);
+		if(!empty($scoping))
+		{
+			throw new Exception("parseScoping function not complete yet");
+		}
+	}
 	/*public function setProtocolBinding($binding)
 	{
 		if(!in_array($binding, $this->bindingOptions))

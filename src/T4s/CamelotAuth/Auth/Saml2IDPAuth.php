@@ -10,7 +10,7 @@ use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Messaging\MessagingInterface;
 use T4s\CamelotAuth\Events\DispatcherInterface;
 
-use T4s\CamelotAuth\Auth\Saml2\Messages\AuthRequestMessage;
+use T4s\CamelotAuth\Auth\Saml2\Messages\AuthnRequestMessage;
 use T4s\CamelotAuth\Auth\Saml2\Messages\ResponseMessage;
 
 use T4s\CamelotAuth\Auth\Saml2\bindings\Binding;
@@ -28,26 +28,30 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 			$this->provider = $credentials['entityID'];
 		}
 		// check if the entity provider is valid
-		if(!$this->metadataStore->isValidEnitity($this->provider))
+		/*if(!$this->metadataStore->isValidEnitity($this->provider))
 		{
 			$exception = 'T4s\CamelotAuth\Auth\Saml2\Exceptions\EntityNotFoundException';
 			throw new $exception("EntityID (".$this->provider.") is not registered with this Identity Provider");				
-		}
+		}*/
 
-		if(strrpos($this->path,'Authn'))
-		{
-			return $this->handleAuthnRequest();
-		}
+		return $this->handleRequest();
+		
 
 	}
 
-	public function handleAuthnRequest()
+	public function handleRequest()
 	{
 		$binding  = Binding::getBinding();
+		$request =  $binding->receive();
 
-		$response =  $binding->receive();
+		if(!($request instanceof AuthnRequestMessage))
+		{
+			//throw 
+		}
 
-		var_dump($response);
-		die();
+		$this->provider = $request->getIssuer();
+
+		var_dump($this->provider);
+		var_dump($request);
 	}
 }
