@@ -21,13 +21,6 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 	public function authenticate(array $credentials = null, $remember = false,$login = true)
 	{
 
-		
-		// if user is logged in 
-		if(!is_null($this->user()))
-		{
-			//redirect to dashboard
-			return true;
-		}
 		// check if a idp entity id is set in the credentails
 		if(isset($credentials['entityID']))
 		{
@@ -55,5 +48,6 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 		$response =  $binding->receive();
 
 		var_dump($response);
+		die();
 	}
 }

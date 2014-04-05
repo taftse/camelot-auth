@@ -92,6 +92,12 @@ class Camelot{
 
     public function __call($method,$params)
     { 
+        // is the first parameter and int then we must be changing the route detection settings
+        if(isset($params[0]) && is_int($params[0]))
+        {
+            $this->config->set('camelot.route_location',$params[0]);
+            array_shift($params);
+        }
 
         // does this function override the authentication provider
         if(isset($params[0]) && is_string($params[0]) && isset($this->supported_drivers[ucfirst($params[0])]))
@@ -103,6 +109,7 @@ class Camelot{
             unset($params[0]);
             
         }
+
                 
 
 
