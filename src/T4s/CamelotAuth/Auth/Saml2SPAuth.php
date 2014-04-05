@@ -10,7 +10,7 @@ use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Messaging\MessagingInterface;
 use T4s\CamelotAuth\Events\DispatcherInterface;
 
-use T4s\CamelotAuth\Auth\Saml2\Messages\AuthRequestMessage;
+use T4s\CamelotAuth\Auth\Saml2\Messages\AuthnRequestMessage;
 use T4s\CamelotAuth\Auth\Saml2\Messages\ResponseMessage;
 
 use T4s\CamelotAuth\Auth\Saml2\bindings\Binding;
@@ -88,7 +88,7 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 		$idpMetadata = $this->metadataStore->getEntity($this->provider);
 	
 		// create a new AuthRequest and send it to a idp
-		$authnMessage = new AuthRequestMessage($idpMetadata,$this->getMetadata());
+		$authnMessage = new AuthnRequestMessage($idpMetadata,$this->getMetadata());
 
 		$authnMessage->setAssertionConsumingServiceURL($this->callbackUrl.'/AssertionConsumingService');
 		// where should we redirect the user after a successfull login 
