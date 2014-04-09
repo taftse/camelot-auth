@@ -125,6 +125,43 @@ class AuthnRequestMessage extends AbstractMessage
 			$this->importXMLMessage($message);
 		}
 	}
+
+
+	// set the url of the assertion consuming service for this sp
+	public function setAssertionConsumingServiceURL($url)
+	{
+		$this->assertionConsumerServiceURL = $url;
+	}
+
+	// gets the url of the assertion consuming service for this sp
+	public function getAssertionConsumingServiceURL()
+	{
+		return $this->assertionConsumerServiceURL;
+	}
+
+	public function setAssertionConsumingServiceIndex($index)
+	{
+		$this->assertionConsumerServiceIndex = $index;
+	}
+
+	public function getAssertionConsumingServiceIndex()
+	{
+		return $this->assertionConsumerServiceIndex;
+	}
+
+	public function setProtocolBinding($binding)
+	{
+		if(!in_array($binding, $this->bindingOptions))
+		{
+			throw new \Exception("binding value is not one of the supported bindings");
+		}
+		$this->protocolBinding = $binding;
+	}
+
+	public function getProtocolBinding()
+	{
+		return $this->protocolBinding;
+	}
 	
 	public function importMetadataSettings(EntityMetadata  $idpMetadata,EntityMetadata $spMetadata)
 	{
@@ -165,6 +202,8 @@ class AuthnRequestMessage extends AbstractMessage
 
 	public function importXMLMessage(\DOMElement $message)
 	{
+		parent::importXMLMessage($message);
+
 		if($message->hasAttribute('ForceAuthn')&& $message->getAttribute('ForceAuthn') == 'true')
 		{
 			$this->forceAuthn = true;
@@ -205,7 +244,7 @@ class AuthnRequestMessage extends AbstractMessage
 	}
 
 	public function generateUnsignedMessage()
-	{
+	{	
 		$root = parent::generateUnsignedMessage();
 
 		// if true
@@ -284,17 +323,7 @@ class AuthnRequestMessage extends AbstractMessage
 		return $root;
 	}	
 
-	// set the url of the assertion consuming service for this sp
-	public function setAssertionConsumingServiceURL($url)
-	{
-		$this->assertionConsumerServiceURL = $url;
-	}
-
-	// gets the url of the assertion consuming service for this sp
-	public function getAssertionConsumingServiceURL($url)
-	{
-		return $this->assertionConsumerServiceURL;
-	}
+	
 
 	public function generateNameIDPolicy()
 	{
@@ -403,12 +432,5 @@ class AuthnRequestMessage extends AbstractMessage
 			throw new Exception("parseScoping function not complete yet");
 		}
 	}
-	/*public function setProtocolBinding($binding)
-	{
-		if(!in_array($binding, $this->bindingOptions))
-		{
-			throw new \Exception("binding value is not one of the supported bindings");
-		}
-		$this->protocolBinding = $binding;
-	}*/
+	
 }

@@ -12,6 +12,8 @@ class EntityMetadata
 
 	protected $endpoints = array();
 
+	protected $keys = array();
+
 	protected $supportedAttributes = array();
 
 	public function __construct($entityID, $entityMetadata)
@@ -47,9 +49,7 @@ class EntityMetadata
 							$this->contactPerson[] = $value;
 							break;
 						case 'AdditionalMetadataLocation':
-							$this->additionalMetadataLocation[] = $value;
-						case 'Signatue':
-							$this->signature = $value;
+							$this->additionalMetadataLocation[] = $value;							
 							break;
 						case 'Extentions':
 							$this->extentions = $value;
@@ -68,10 +68,13 @@ class EntityMetadata
 										case 'SingleSignOnService':
 										case 'NameIDMappingService':
 										case 'AssertionIDRequestService':
-											$this->endpoints[$key2] = $value2;
+											$this->endpoints[$key2][] = $value2;
 											break;
 										case 'Attributes':
 											$this->supportedAttributes[] = $value2;
+											break;
+										case 'KeyDescriptor':
+											$this->keys = $value2;
 											break;
 									}
 								}
@@ -187,5 +190,31 @@ class EntityMetadata
 	public function getEntityID()
 	{
 		return $this->entityID;
+	}
+
+	public function getSupportedBindings($endpointsType)
+	{
+		$endpoints = $this->getEndpoints($endpointsType);
+
+		foreach ($endpoints as $endpoint) {
+			$supportedBindings[] = $endpoint['Binding'];
+		}
+		return $supportedBindings;
+	}
+
+	public function getPrivateKey()
+	{
+
+	}
+
+	public function getPublicKey($use = null, $required = false)
+	{
+		foreach ($this->keys as $key) {
+			if(!is_null($use) && isset($key['use']) && $key['use'] !== $use)
+			{
+				// key is not for use so go to the next one
+				continue;
+			}
+		}
 	}
 }

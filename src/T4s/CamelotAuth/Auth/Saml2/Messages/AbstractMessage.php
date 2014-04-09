@@ -1,9 +1,12 @@
 <?php namespace T4s\CamelotAuth\Auth\Saml2\Messages;
 
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\EntityMetadata;
 
-abstract class AbstractMessage
+abstract class AbstractMessage implements SignedElementInterface
 {
+	// Attributes
+
 	/**
 	 * The Identifier for the request
 	 *
@@ -41,12 +44,28 @@ abstract class AbstractMessage
 	 */
 	protected $consent = Saml2Constants::Consent_Unspecified;
 
+
+	//elements
+
 	/**
 	 * Identifies the entity that generated the message
 	 *
 	 * @var string
 	 */
 	protected $issuer = null;
+
+
+	private $signatureKey = null;
+
+	private $certificates = null;
+
+	private $validators = null;
+
+
+
+	protected $extensions = null;
+
+	// end elements
 
 
 	protected $messageType;
@@ -116,7 +135,7 @@ abstract class AbstractMessage
 
 	public function generateUnsignedMessage()
 	{
-		$root = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,$this->messageType);
+		$root = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,'samlp:'.$this->messageType);
 
 		$this->xmlMessage->appendChild($root);
 
@@ -131,7 +150,7 @@ abstract class AbstractMessage
 
 		if(!is_null($this->issuer))
 		{
-			$n = $root->ownerDocument->createElementNS(Saml2Constants::Namespace_SAML,'Issuer');
+			$n = $root->ownerDocument->createElementNS(Saml2Constants::Namespace_SAML,'saml:Issuer');
 			$n->appendChild($root->ownerDocument->createTextNode($this->issuer));
 			$root->appendChild($n);
 		}
@@ -143,7 +162,7 @@ abstract class AbstractMessage
 	{
 		if(!empty($this->extensions))
 		{
-			$extensions = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,'Extensions');
+			$extensions = $this->xmlMessage->createElementNS(Saml2Constants::Namespace_SAMLProtocol,'samlp:Extensions');
 			$root->appendChild($extensions);
 
 			foreach ($this->extensions as $extension) {
@@ -157,6 +176,11 @@ abstract class AbstractMessage
 		return $this->destination;
 	}
 
+	public function setDestination($destination)
+	{
+		$this->destination = $destination;
+	}
+
 	public function getXMLMessage()
 	{
 		return $this->xmlMessage;
@@ -167,6 +191,11 @@ abstract class AbstractMessage
 		return $this->issuer;
 	}
 	
+	public function setIssuer($issuer)
+	{
+		$this->issuer = $issuer;
+	}
+
 	public function importXMLMessage(\DOMElement $message)
 	{
 		if(!$message->hasAttribute('ID'))
@@ -203,5 +232,36 @@ abstract class AbstractMessage
 		
 		//var_dump($signatureElement);
 		//if($signatureElement)*/
+	}
+
+
+	public function getSignatureKey()
+	{
+		return $this->signatureKey;
+	}
+
+	public function setSignatureKey(\XMLSecurityKey $signatureKey)
+	{
+		$this->signatureKey = $signatureKey;
+	}
+
+	public function setCertificates(array $certificates)
+	{
+		$this->certificates = $certificates;
+	}
+
+	public function getCertificates()
+	{
+		return $this->certificates;
+	}
+
+	public function validate(\XMLSecurityKey $key)
+	{
+		
+	}
+
+	public static function addSignature(EntityMetadata $senderMetadata,EntityMetadata $recipientMetadata,SignedElementInterface $element)
+	{
+		
 	}
 }

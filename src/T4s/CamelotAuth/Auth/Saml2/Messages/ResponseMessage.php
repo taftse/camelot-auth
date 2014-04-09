@@ -8,6 +8,18 @@ use T4s\CamelotAuth\Auth\Saml2\Assertion;
 
 class ResponseMessage extends AbstractMessage
 {
+	
+
+	// attributes 
+
+	protected $inResponseTo = null;
+
+
+	//elements
+
+	protected $status = null;
+
+
 	/**
 	 * A list of all the assertions in this response
 	 *
@@ -79,4 +91,24 @@ class ResponseMessage extends AbstractMessage
 			}
 		}
 	}
+
+	public function getInResponseTo()
+	{
+		return $this->inResponseTo;
+	}
+
+	public function setInResponseTo($inResponseTo)
+	{
+		$this->inResponseTo = $inResponseTo;
+	}
+
+	public function generateUnsignedMessage()
+	{	
+		$root = parent::generateUnsignedMessage();
+
+
+		return $root;
+	}
+
+
 }
