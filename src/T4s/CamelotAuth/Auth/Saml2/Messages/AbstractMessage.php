@@ -67,6 +67,7 @@ abstract class AbstractMessage implements SignedElementInterface
 
 	// end elements
 
+	protected $relayState = null;
 
 	protected $messageType;
 
@@ -154,6 +155,27 @@ abstract class AbstractMessage implements SignedElementInterface
 			$n->appendChild($root->ownerDocument->createTextNode($this->issuer));
 			$root->appendChild($n);
 		}
+		
+		return $root;
+	}
+
+	public function generateSignedMessage()
+	{
+		$root = $this->generateUnsignedMessage();
+		if(is_null($this->signatureKey))
+		{
+			return $root;
+		}
+
+		$insertBefore = $root->firstChild;
+
+		if(!is_null($this->issuer))
+		{
+			$insertBefore = $insertBefore->nextSibling;
+		}
+
+		$dSig = new ass\XmlSecurity\DSig();
+		$dSig->createSignature($this->signatureKey, DSig::EXC_C14N, $root,$insertBefore);
 		
 		return $root;
 	}
@@ -263,5 +285,15 @@ abstract class AbstractMessage implements SignedElementInterface
 	public static function addSignature(EntityMetadata $senderMetadata,EntityMetadata $recipientMetadata,SignedElementInterface $element)
 	{
 		
+	}
+
+	public function setRelayState($relayState)
+	{
+		$this->relayState = $relayState;
+	}
+
+	public function getRelayState()
+	{
+		return $this->relayState;
 	}
 }

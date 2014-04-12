@@ -10,7 +10,39 @@ class HTTPPostBinding extends Binding
 
 	public function send(AbstractMessage $message)
 	{
+		if(is_null($this->destination))
+		{
+			$this->destination = $message->getDestination();
+		}
 
+		$messageString = $message->generateSignedMessage();
+		$messageString = $message->getXMLMessage()->saveXML($messageString);
+		$messageString = base64_encode($messageString);
+
+		if($message instanceof RequestMessage)
+		{
+			$messageType = 'SAMLRequest';
+		}
+		else
+		{
+			$messageType = 'SAMLResponse';
+		}
+
+		$post[$messageType] = $messageString;
+		if(!is_null($message->getRelayState()))
+		{
+			$post['RelayState'] = $message->getRelayState();
+		}
+
+		//header('Location: ' . $this->destination,TRUE,303);
+		//header('Pragma: no-cache');
+		//header('Cache-Control: no-cache, must-revalidate');
+
+		$html = $this->generateRedirectPage($post);
+
+		echo $html;
+		flush();
+		
 	}
 
 	public function receive()
@@ -41,5 +73,34 @@ class HTTPPostBinding extends Binding
 		}
 
 		return $message;
+	}
+
+	private function generateRedirectPage($post)
+	{
+		
+
+		$html  = '<html>';
+		$html .= '<head>
+						<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+						<title>Redirecting</title>
+				  </head>';
+		$html .= '<body onload="document.getElementsByTagName(\'input\')[0].click();">';
+		$html .= '<noscript>';
+		$html .= '<p>Oops it looks like your browser does not support Javascript, if you would be so kind to click on the button below then we can proceed. ';
+		$html .= '</p>';
+		$html .= '</noscript>';
+		$html .= '<form method="post" action="'.$this->destination.'">';
+		$html .= '	<input type="submit" style="display:none"/>';
+		foreach ($post as $key => $value) {
+			$html .= '<input type="hidden" name="'.htmlspecialchars($key).'" value="'.htmlspecialchars($value).'"/> ';
+		}
+		$html .= '<noscript>';
+		$html .= '	<input type="submit" value="Continue"/>';
+		$html .= '</noscript>';
+		$html .= '</form>'; 
+		$html .= '</body>';
+		$html .= '</html>';
+
+		return $html;
 	}
 }

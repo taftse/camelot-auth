@@ -10,11 +10,16 @@ use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Messaging\MessagingInterface;
 use T4s\CamelotAuth\Events\DispatcherInterface;
 
+use T4s\CamelotAuth\Auth\Saml2\Metadata\IndexedEndpointType;
+
 use T4s\CamelotAuth\Auth\Saml2\Messages\AuthnRequestMessage;
 use T4s\CamelotAuth\Auth\Saml2\Messages\ResponseMessage;
 
 use T4s\CamelotAuth\Auth\Saml2\bindings\Binding;
 use T4s\CamelotAuth\Auth\Saml2\bindings\HTTPRedirectBinding;
+use T4s\CamelotAuth\Auth\Saml2\bindings\HTTPPostBinding;
+use T4s\CamelotAuth\Auth\Saml2\bindings\HTTPArtifactBinding;
+
 
 class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 {
@@ -26,7 +31,6 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 
 	public function authenticate(array $credentials = null, $remember = false,$login = true)
 	{
-		
 		// check if a idp entity id is set in the credentails
 		if(isset($credentials['entityID']))
 		{
@@ -35,13 +39,15 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 		}
 		// check if the entity provider is valid
 		
-
-		return $this->handleRequest();
+		if(strpos($this->path,'SingleLogoutService'))
+		{
+			return $this->handleSingleLogoutRequest();
+		}
+		return $this->handleAuthnRequest();
 		
-
 	}
 
-	public function handleRequest()
+	public function handleAuthnRequest()
 	{
 		$binding  = Binding::getBinding();
 		$request =  $binding->receive();
@@ -66,8 +72,25 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 				$request->getProtocolBinding(),
 				$request->getAssertionConsumingServiceIndex());
 		
-		var_dump($this->generateResponseMessage($acsEndpoint)->generateUnsignedMessage());
-		die();
+
+	
+		switch($acsEndpoint->getBinding())
+		{
+			case Saml2Constants::Binding_HTTP_POST:
+				$response = new HTTPPostBinding();
+				break;
+			case Saml2Constants::Binding_HTTP_Artifact:
+				$response = new HTTPArtifactBinding();
+				break;
+			case Saml2Constants::Binding_HTTP_Redirect:
+				$response = new HTTPRedirectBinding();
+				break;
+			default:
+				throw new \Exception("Unsuported Binding (".$acsEndpoint->getBinding().")");
+				
+		}
+
+		return $response->send($this->generateResponseMessage($acsEndpoint));
 	}
 
 	public function getAssertionConsumingService($spMetadata,$acsURL,$binding,$index)
@@ -75,9 +98,13 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 		
 		$firstAllowed  = null;
 		$firstNotFalse = null;
-		$returnEndpoint = null;
+		
+		foreach ($spMetadata->getEndpoints('AssertionConsumerService') as $endpointIndex =>$endpoint) {
+			if(!isset($endpoint['Index']))
+			{
+				$endpoint['Index'] =  $endpointIndex;
+			}
 
-		foreach ($spMetadata->getEndpoints('AssertionConsumingService') as $endpoint) {
 			if(!is_null($acsURL) && $endpoint['Location'] !== $acsURL)
 			{
 				continue;
@@ -102,40 +129,41 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 			{
 				if($endpoint['isDefault'] == true)
 				{
-					return $endpoint;
+					return new IndexedEndpointType($endpoint['Binding'],$endpoint['Location'],$endpoint['Index'],true);
 				}
 				
 				if(is_null($firstAllowed))
 				{
-					$firstAllowed = $endpoint;
+					$firstAllowed = new IndexedEndpointType($endpoint['Binding'],$endpoint['Location'],$endpoint['Index']);
 				}
 			}
 			else if(is_null($firstNotFalse))
 			{
-				$firstNotFalse = $endpoint;
+				$firstNotFalse = new IndexedEndpointType($endpoint['Binding'],$endpoint['Location'],$endpoint['Index']);
 			}		
 		}
 
-		if(!is_null($firstNotFalse) && is_null($returnEndpoint))
+		if(!is_null($firstNotFalse))
 		{
 			return $firstNotFalse;
 		}
-		elseif(is_null($returnEndpoint))
+		elseif(!is_null($firstAllowed))
 		{
 			return $firstAllowed;
 		}
 		
-		return $spMetadata->getDefaultEndpoint('AssertionConsumingService',$this->supportedBindings);
+		$endpoint = $spMetadata->getDefaultEndpoint('AssertionConsumingService',$this->supportedBindings);
+		return new IndexedEndpointType($endpoint['Binding'],$endpoint['Location'],$endpoint['Index']);
 
 		
 	}
 
-	public function generateResponseMessage($consumerURL)
+	public function generateResponseMessage($consumerEndpoint)
 	{
 		$responseMessage = new ResponseMessage();
 		$responseMessage->setIssuer($this->config->get('myEntityID'));
-		$responseMessage->setDestination($consumerURL);
-		//$responseMessage->addSignature($this->metadataStore->getEntity($this->provider));
+		$responseMessage->setDestination($consumerEndpoint->getLocation());
+		$responseMessage->addSignature($this->metadataStore->getEntity($this->provider));
 
 		return $responseMessage;
 	}

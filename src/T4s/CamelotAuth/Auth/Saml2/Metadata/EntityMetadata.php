@@ -68,7 +68,7 @@ class EntityMetadata
 										case 'SingleSignOnService':
 										case 'NameIDMappingService':
 										case 'AssertionIDRequestService':
-											$this->endpoints[$key2][] = $value2;
+											$this->endpoints[$key2] = $value2;
 											break;
 										case 'Attributes':
 											$this->supportedAttributes[] = $value2;

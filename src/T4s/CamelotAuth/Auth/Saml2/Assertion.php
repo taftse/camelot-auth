@@ -2,7 +2,9 @@
 
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
-use T4s\CamelotAuth\Auth\Saml2\XMLNodes\NameIDNode;
+use T4s\CamelotAuth\Auth\Saml2\Messages\Elements\NameID;
+
+//use T4s\CamelotAuth\Auth\Saml2\XMLNodes\NameIDNode;
 use T4s\CamelotAuth\Auth\Saml2\XMLNodes\SubjectConfirmationNode;
 
 class Assertion 
@@ -31,7 +33,7 @@ class Assertion
 	/**
 	 * Specifies the name identifier of the subject in the assertion
 	 *
-	 * @var array|null
+	 * @var Element\NameID|null
 	 */
 	public $nameId = null;
 
@@ -177,7 +179,7 @@ class Assertion
 
 		$this->issuer = $this->getNode($assertion,'/saml:Issuer')->item(0)->nodeValue;
 
-		$this->nameId = $this->getNode($assertion,'/saml:Assertion/saml:Subject/saml:NameID')->item(0)->nodeValue;
+		$this->nameId = new NameID($this->getNode($assertion,'/saml:Assertion/saml:Subject/saml:NameID')->item(0)->nodeValue);
 
 
 		$this->sessionNotOnOrAfter = $this->parseSessionNotOnOrAfter($assertion);
@@ -246,5 +248,60 @@ class Assertion
         $xpath->registerNamespace('ds' , 'http://www.w3.org/2000/09/xmldsig#');
 	  	
 	  	return $xpath->query('/samlp:Response'.$xpathQuery);
+	}
+
+	public function generateXML(\DOMElement $parentNode = null)
+	{
+		if(is_null($parentNode)
+		{
+			$document = new \DOMDocument();
+			$parentNode = $document;
+		}
+		else
+		{
+			$document = $parentNode->ownerDocument;
+		}
+
+		$root = $document->createElementNS(Saml2Constants::Namespace_SAML,'saml:Assertion')
+		$parentNode->appendChild($root);
+
+		$root->setAttribute('ID',$this->id);
+		$root->setAttribute('Version',$this->version);
+		$root->setAttribute('IssueInstant',date('Y-m-d\TH:i:s\Z',$this->issueInstant));
+
+		$n = $root->ownerDocument->createElementNS(Saml2Constants::Namespace_SAML,'saml:Issuer');
+		$n->appendChild($root->ownerDocument->createTextNode($this->issuer));
+		$root->appendChild($n);
+
+		
+
+	}
+
+	protected function addSubjectNode(\DOMElement $root)
+	{
+		if(is_null($this->nameId) && is_null($this->encryptedNameId))
+		{
+			return;
+		}
+
+		$subject = $root->ownerDocument->createElementNS(Saml2Constants::Namespace_SAML,'saml:Subject');
+		$root->appendChild($subject);
+
+		if(is_null($this->encryptedNameId))
+		{
+			$this->nameId->toXML($root);
+		}
+		else
+		{
+			$eID = $subject->ownerDocument->createElementNS(Saml2Constants::Namespace_SAML,'saml:EncryptedID');
+			$subject->appendChild($eID);
+			$eID->appendChild($subject->ownerDocument->importNode($this->encryptedNameId,true));
+		}
+
+		foreach($this->subjectConfirmation as $subjectConfirmation)
+		{
+			$subjectConfirmation->toXML($subject);
+		}
+		
 	}
 }

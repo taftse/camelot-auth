@@ -56,7 +56,7 @@ class HTTPRedirectBinding extends Binding
 		}
 
 		$messageString = $message->generateUnsignedMessage();
-		$messageString = $message->getXMLMessage()->saveXML($messageString);
+		$messageString = $message->getXMLMessage()->saveXML($Messagestring);
 
 		$messageString = gzdeflate($messageString);
 		$messageString = base64_encode($messageString);
@@ -84,7 +84,7 @@ class HTTPRedirectBinding extends Binding
 			
 		}
 
-		header('Location: ' . $this->destination.'?'.$msg);
+		header('Location: ' . $this->destination.'?'.$msg,TRUE,302);
 		header('Pragma: no-cache');
 		header('Cache-Control: no-cache, must-revalidate');
         exit;

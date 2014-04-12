@@ -109,7 +109,12 @@ AA==')),
 			    									'Binding'=>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
 			    									'Location'=>'http://portal.tools4schools.ie/login/AssertionConsumingService'
 			    									),
+			    								array(
+			    									'Binding'=>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+			    									'Location'=>'http://portal.tools4schools.ie/login/AssertionConsumingService'
+			    									),
 			    								),
+
 			    							),
 			    					),
     						),

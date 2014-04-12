@@ -70,6 +70,16 @@ class ResponseMessage extends AbstractMessage
 		return $this->assertions;
 	}
 
+	public function setAssertions(array $assertions)
+	{
+		$this->assertions = $assertions;
+	}
+
+	public function addAssertion(Assertion $assertion)
+	{
+		$this->assertions[] = $assertion;
+	}
+
 
 	public function getNameId()
 	{
@@ -106,7 +116,9 @@ class ResponseMessage extends AbstractMessage
 	{	
 		$root = parent::generateUnsignedMessage();
 
-
+		foreach ($this->assertions as $assertion) {
+			$assertion->generateXML($root)
+		}
 		return $root;
 	}
 
