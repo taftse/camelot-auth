@@ -43,13 +43,18 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 		{
 			return $this->handleSingleLogoutRequest();
 		}
-		return $this->handleAuthnRequest();
-		
+		else if(strpos($this->path,'SingleSignOnService'))
+		{
+			return $this->handleAuthnRequest();
+		}
+
+		return $this->handleNewSSORequest();
 	}
 
 	public function handleAuthnRequest()
 	{
 		$binding  = Binding::getBinding();
+		
 		$request =  $binding->receive();
 
 		if(!($request instanceof AuthnRequestMessage))
@@ -71,35 +76,21 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 				$request->getAssertionConsumingServiceURL(),
 				$request->getProtocolBinding(),
 				$request->getAssertionConsumingServiceIndex());
-		
 
-	
-		switch($acsEndpoint->getBinding())
-		{
-			case Saml2Constants::Binding_HTTP_POST:
-				$response = new HTTPPostBinding();
-				break;
-			case Saml2Constants::Binding_HTTP_Artifact:
-				$response = new HTTPArtifactBinding();
-				break;
-			case Saml2Constants::Binding_HTTP_Redirect:
-				$response = new HTTPRedirectBinding();
-				break;
-			default:
-				throw new \Exception("Unsuported Binding (".$acsEndpoint->getBinding().")");
-				
-		}
-
-		return $response->send($this->generateResponseMessage($acsEndpoint));
+		return $this->generateResponseMessage($acsEndpoint);
 	}
 
-	public function getAssertionConsumingService($spMetadata,$acsURL,$binding,$index)
+	public function getAssertionConsumingService($spMetadata,$acsURL = null,$binding = null,$index = null)
 	{
-		
+		echo 'bla';
 		$firstAllowed  = null;
 		$firstNotFalse = null;
 		
 		foreach ($spMetadata->getEndpoints('AssertionConsumerService') as $endpointIndex =>$endpoint) {
+			
+			var_dump($endpoint);
+
+
 			if(!isset($endpoint['Index']))
 			{
 				$endpoint['Index'] =  $endpointIndex;
@@ -120,10 +111,10 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 				continue;
 			}
 
-			if(!in_array($endpoint['Binding'],$this->supportedBindings))
+			/*if(!in_array($endpoint['Binding'],$this->supportedBindings))
 			{
 				continue;
-			}
+			}*/
 
 			if(array_key_exists('isDefault',$endpoint))
 			{
@@ -158,13 +149,39 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 		
 	}
 
-	public function generateResponseMessage($consumerEndpoint)
+	public function handleNewSSORequest()
 	{
+		$acsEndpoint = $this->getAssertionConsumingService($this->metadataStore->getEntity($this->provider));
+		return $this->generateResponseMessage($acsEndpoint);
+	}
+
+	public function generateResponseMessage($acsEndpoint)
+	{	
+	
+		switch($acsEndpoint->getBinding())
+		{
+			case Saml2Constants::Binding_HTTP_POST:
+				$response = new HTTPPostBinding();
+				break;
+			case Saml2Constants::Binding_HTTP_Artifact:
+				$response = new HTTPArtifactBinding();
+				break;
+			case Saml2Constants::Binding_HTTP_Redirect:
+				$response = new HTTPRedirectBinding();
+				break;
+			default:
+				throw new \Exception("Unsuported Binding (".$acsEndpoint->getBinding().")");
+				
+		}
+
+		
+
 		$responseMessage = new ResponseMessage();
 		$responseMessage->setIssuer($this->config->get('myEntityID'));
-		$responseMessage->setDestination($consumerEndpoint->getLocation());
-		$responseMessage->addSignature($this->metadataStore->getEntity($this->provider));
-
-		return $responseMessage;
+		$responseMessage->setDestination($acsEndpoint->getLocation());
+		/*$responseMessage->addSignature($this->metadataStore->getEntity($this->provider),
+									   $this->metadataStore->getEntity($this->config->get('saml2.myEntityID')));
+*/
+		//return $response->send($responseMessage);
 	}
 }

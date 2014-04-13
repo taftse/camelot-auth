@@ -47,6 +47,22 @@ AA==')),
 				    						),
 			    						  
 			    						),
+									'SPSSODescriptor'=> 
+			    						array('AssertionConsumerService'=>
+			    							array(
+			    								array(
+			    									'Binding'=>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+			    									'Location'=>'https://app.onelogin.com/trust/saml2/http-post/sso/297476',
+			    									),
+			    							'SingleLogoutService'=>
+			    							array(
+			    								array('Binding'=>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+			    									  'Location'=>'https://app.onelogin.com/trust/saml2/http-redirect/slo/297476',
+			    									 ),
+			    								)
+			    							),
+
+			    						),
 			    					),
 						'https://tools4schools-dev-ed.my.salesforce.com'=>
 							array(
@@ -118,5 +134,40 @@ AA==')),
 			    							),
 			    					),
     						),
+						'https://app.onelogin.com/saml/metadata/297476'=>
+			    				array(
+			    					'Organization'=>array('OrganizationName'=>'OneLogin'),
+			    					'KeyDescriptor'=>array('KeyDescriptor' => array(array('use'=>'signing','key'=>'MIIBrTCCAaGgAwIBAgIBATADBgEAMGcxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApD
+YWxpZm9ybmlhMRUwEwYDVQQHDAxTYW50YSBNb25pY2ExETAPBgNVBAoMCE9uZUxv
+Z2luMRkwFwYDVQQDDBBhcHAub25lbG9naW4uY29tMB4XDTExMDYyNzE2MDIzNFoX
+DTE2MDYyNjE2MDIzNFowZzELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3Ju
+aWExFTATBgNVBAcMDFNhbnRhIE1vbmljYTERMA8GA1UECgwIT25lTG9naW4xGTAX
+BgNVBAMMEGFwcC5vbmVsb2dpbi5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJ
+AoGBAN0f5UDHxn/KGyEdhsr55cnVthzJvVdFBvyMU0PvjIjrFYI7uzB7q2vRAWUK
+YLLpGr7vWTT7gVaCBsiQsbteo9noBXaoAooeJYf4S/VuD3LH4Sjn0o9V+/Un/4JZ
+dkrhHtfUW/Qc2eBcuttZN2+Z9Uahx6soxYCsgTFrHSq12u6RAgMBAAEwAwYBAAMB
+AA==')),
+			    						),
+			    					'SPSSODescriptor'=> 
+			    						array('AssertionConsumerService'=>
+			    							array(
+			    								array(
+			    									'Binding'=>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+			    									'Location'=>'https://app.onelogin.com/trust/saml2/http-post/sso/297476',
+			    									),
+			    								),
+			    							'SingleLogoutService'=>
+			    							array(
+			    								array(
+				    								array('Binding'=>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+				    									  'Location'=>'https://app.onelogin.com/trust/saml2/http-redirect/slo/297476',
+				    									 ),
+			    								)
+			    							),
+
+			    						),
+			    					),
+    						
+    						
 					
 );

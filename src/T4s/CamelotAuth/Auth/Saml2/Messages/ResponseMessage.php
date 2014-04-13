@@ -117,7 +117,7 @@ class ResponseMessage extends AbstractMessage
 		$root = parent::generateUnsignedMessage();
 
 		foreach ($this->assertions as $assertion) {
-			$assertion->generateXML($root)
+			$assertion->generateXML($root);
 		}
 		return $root;
 	}

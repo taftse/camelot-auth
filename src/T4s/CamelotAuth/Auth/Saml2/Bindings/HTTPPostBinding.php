@@ -17,6 +17,9 @@ class HTTPPostBinding extends Binding
 
 		$messageString = $message->generateSignedMessage();
 		$messageString = $message->getXMLMessage()->saveXML($messageString);
+
+		var_dump($messageString);
+		die();
 		$messageString = base64_encode($messageString);
 
 		if($message instanceof RequestMessage)
@@ -37,6 +40,8 @@ class HTTPPostBinding extends Binding
 		//header('Location: ' . $this->destination,TRUE,303);
 		//header('Pragma: no-cache');
 		//header('Cache-Control: no-cache, must-revalidate');
+
+		
 
 		$html = $this->generateRedirectPage($post);
 
