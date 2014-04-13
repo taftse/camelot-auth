@@ -129,7 +129,7 @@ return array(
                 'OneloginSP'      => array('driver'=>'saml2SP', 'provider'=>'https://app.onelogin.com/saml/metadata/297476'),
                 'Salesforce'    => array('driver'=>'saml2SP', 'provider'=>'https://tools4schools-dev-ed.my.salesforce.com'),
                 'Openidp'       => array('driver'=>'saml2SP', 'provider'=>'https://openidp.feide.no'),
-                'Saml2'         => array('driver'=>'saml2IDP','provider'=>'https://portal.tools4schools.ie'),
+                'Saml2'         => array('driver'=>'saml2IDP'),
              ),
 
 

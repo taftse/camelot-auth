@@ -1,114 +1,128 @@
-<?php namespace T4s\CamelotAuth\Auth\Saml2;
+<?php
+/**
+ * Camelot Auth
+ *
+ * @author Timothy Seebus <timothyseebus@tools4schools.org>
+ * @license http://opensource.org/licences/MIT
+ * @package CamelotAuth
+ */
 
-class Saml2Constants{
-	/**
-	 * Consent Types
-	 */
-	
-	const Consent_Unspecified 				= 'urn:oasis:names:tc:SAML:2.0:consent:unspecified';
 
-	const Consent_Obtained 					= 'urn:oasis:names:tc:SAML:2.0:consent:obtained';
+namespace T4s\CamelotAuth\Auth\Saml2;
 
-	const Consent_Prior 					= 'urn:oasis:names:tc:SAML:2.0:consent:prior';
 
-	const Consent_Implicit 					= 'urn:oasis:names:tc:SAML:2.0:consent:implicit';
+class Saml2Constants
+{
+    /**
+     * Consent Types
+     */
 
-	const Consent_Explicit 					= 'urn:oasis:names:tc:SAML:2.0:consent:explicit';
+    const Consent_Unspecified 				= 'urn:oasis:names:tc:SAML:2.0:consent:unspecified';
 
-	const Consent_Unavailable 				= 'urn:oasis:names:tc:SAML:2.0:consent:unavialable';
+    const Consent_Obtained 					= 'urn:oasis:names:tc:SAML:2.0:consent:obtained';
 
-	const Consent_Inapplicable 				= 'urn:oasis:names:tc:SAML:2.0:consent:inapplicable';
+    const Consent_Prior 					= 'urn:oasis:names:tc:SAML:2.0:consent:prior';
 
-	/**
-	 * Namespaces 
-	 */
-	
-	const Namespace_SAMLProtocol			= 'urn:oasis:names:tc:SAML:2.0:protocol';
+    const Consent_Implicit 					= 'urn:oasis:names:tc:SAML:2.0:consent:implicit';
 
-	const Namespace_SAML 					= 'urn:oasis:names:tc:SAML:2.0:assertion';
+    const Consent_Explicit 					= 'urn:oasis:names:tc:SAML:2.0:consent:explicit';
 
-	/**
-	 * Name Formats
-	 */
+    const Consent_Unavailable 				= 'urn:oasis:names:tc:SAML:2.0:consent:unavialable';
 
-	const NameFormat_Unspecified 			= 'urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified';
-	/**
-	 * Name ID Formats
-	 */
+    const Consent_Inapplicable 				= 'urn:oasis:names:tc:SAML:2.0:consent:inapplicable';
 
-	const NameID_Unspecified 				= 'urn:oasis:names:tc:SAML:2.0:nameid-format:unspecified';
+    /**
+     * Namespaces
+     */
 
-	const NameID_Persistent					= 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent';
+    const Namespace_SAMLProtocol			= 'urn:oasis:names:tc:SAML:2.0:protocol';
 
-	const NameID_Transient					= 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient';
-	
-	const NameID_Encrypted					= 'urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted';
+    const Namespace_SAML 					= 'urn:oasis:names:tc:SAML:2.0:assertion';
 
-	/**
-	 * Binding Options
-	 */
+    const Namespace_Metadata                = 'urn:oasis:names:tc:SAML:2.0:metadata';
 
-	const Binding_HTTP_POST					= 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST';
+    /**
+     * Name Formats
+     */
 
-	const Binding_HTTP_Artifact				= 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact';
+    const NameFormat_Unspecified 			= 'urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified';
+    /**
+     * Name ID Formats
+     */
 
-	const Binding_HTTP_Redirect				= 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect';
+    const NameID_Unspecified 				= 'urn:oasis:names:tc:SAML:2.0:nameid-format:unspecified';
 
-	const Binding_SOAP						= 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP';
+    const NameID_Persistent					= 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent';
 
-	const Binding_HOK_SSO					= 'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser';
+    const NameID_Transient					= 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient';
 
-	const Binding_Encoding_DEFLATE			= 'urn:oasis:names:tc:SAML:2.0:bindings:URL-Encoding:DEFLATE';
+    const NameID_Encrypted					= 'urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted';
 
-	/**
-	 * StatusCodes
-	 */
+    /**
+     * Binding Options
+     */
 
-	const Status_Success					= 'urn:oasis:names:tc:SAML:2.0:status:Success';
+    const Binding_HTTP_POST					= 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST';
 
-	const Status_Requester					= 'urn:oasis:names:tc:SAML:2.0:status:Requester';
-	
-	const Status_Responder					= 'urn:oasis:names:tc:SAML:2.0:status:Responder';
+    const Binding_HTTP_Artifact				= 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact';
 
-	const Status_VersionMismatch			= 'urn:oasis:names:tc:SAML:2.0:status:VersionMismatch';
+    const Binding_HTTP_Redirect				= 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect';
 
-	const Status_AuthnFailed				= 'urn:oasis:names:tc:SAML:2.0:status:AuthnFailed';
+    const Binding_SOAP						= 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP';
 
-	const Status_InvalidAttrNameOrValue		= 'urn:oasis:names:tc:SAML:2.0:status:InvalidAttrNameOrValue';
+    const Binding_HOK_SSO					= 'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser';
 
-	const Status_InvalidNameIDPolicy		= 'urn:oasis:names:tc:SAML:2.0:status:InvalidNameIDPolicy';
+    const Binding_Encoding_DEFLATE			= 'urn:oasis:names:tc:SAML:2.0:bindings:URL-Encoding:DEFLATE';
 
-	const Status_NoAuthnContext				= 'urn:oasis:names:tc:SAML:2.0:status:NoAuthnContext';
+    /**
+     * StatusCodes
+     */
 
-	const Status_NoAvailableIDP				= 'urn:oasis:names:tc:SAML:2.0:status:NoAvailableIDP';
+    const Status_Success					= 'urn:oasis:names:tc:SAML:2.0:status:Success';
 
-	const Status_NoPassive					= 'urn:oasis:names:tc:SAML:2.0:status:NoPassive';
+    const Status_Requester					= 'urn:oasis:names:tc:SAML:2.0:status:Requester';
 
-	const Status_NoSupportedIDP				= 'urn:oasis:names:tc:SAML:2.0:status:NoSupportedIDP';
+    const Status_Responder					= 'urn:oasis:names:tc:SAML:2.0:status:Responder';
 
-	const Status_PartialLogout				= 'urn:oasis:names:tc:SAML:2.0:status:PartialLogout';
+    const Status_VersionMismatch			= 'urn:oasis:names:tc:SAML:2.0:status:VersionMismatch';
 
-	const Status_ProxyCountExceeded			= 'urn:oasis:names:tc:SAML:2.0:status:ProxyCountExceeded';
+    const Status_AuthnFailed				= 'urn:oasis:names:tc:SAML:2.0:status:AuthnFailed';
 
-	const Status_RequestDenied				= 'urn:oasis:names:tc:SAML:2.0:status:RequestDenied';
+    const Status_InvalidAttrNameOrValue		= 'urn:oasis:names:tc:SAML:2.0:status:InvalidAttrNameOrValue';
 
-	const Status_RequestUnsupported			= 'urn:oasis:names:tc:SAML:2.0:status:RequestUnsupported';
+    const Status_InvalidNameIDPolicy		= 'urn:oasis:names:tc:SAML:2.0:status:InvalidNameIDPolicy';
 
-	const Status_RequestVersionDeprecated	= 'urn:oasis:names:tc:SAML:2.0:status:RequestVersionDeprecated';
+    const Status_NoAuthnContext				= 'urn:oasis:names:tc:SAML:2.0:status:NoAuthnContext';
 
-	const Status_RequestVersionTooHigh		= 'urn:oasis:names:tc:SAML:2.0:status:RequestVersionTooHigh';
+    const Status_NoAvailableIDP				= 'urn:oasis:names:tc:SAML:2.0:status:NoAvailableIDP';
 
-	const Status_RequestVersionTooLow		= 'urn:oasis:names:tc:SAML:2.0:status:RequestVersionTooLow';
+    const Status_NoPassive					= 'urn:oasis:names:tc:SAML:2.0:status:NoPassive';
 
-	const Status_ResourceNotRecognized		= 'urn:oasis:names:tc:SAML:2.0:status:ResourceNotRecognized';
+    const Status_NoSupportedIDP				= 'urn:oasis:names:tc:SAML:2.0:status:NoSupportedIDP';
 
-	const Status_TooManyResponses			= 'urn:oasis:names:tc:SAML:2.0:status:TooManyResponses';
+    const Status_PartialLogout				= 'urn:oasis:names:tc:SAML:2.0:status:PartialLogout';
 
-	const Status_UnknownAttrProfile			= 'urn:oasis:names:tc:SAML:2.0:status:UnknownAttrProfile';
+    const Status_ProxyCountExceeded			= 'urn:oasis:names:tc:SAML:2.0:status:ProxyCountExceeded';
 
-	const Status_UnknownPrincipal			= 'urn:oasis:names:tc:SAML:2.0:status:UnknownPrincipal';
+    const Status_RequestDenied				= 'urn:oasis:names:tc:SAML:2.0:status:RequestDenied';
 
-	const Status_UnsupportedBinding			= 'urn:oasis:names:tc:SAML:2.0:status:UnsupportedBinding';
+    const Status_RequestUnsupported			= 'urn:oasis:names:tc:SAML:2.0:status:RequestUnsupported';
+
+    const Status_RequestVersionDeprecated	= 'urn:oasis:names:tc:SAML:2.0:status:RequestVersionDeprecated';
+
+    const Status_RequestVersionTooHigh		= 'urn:oasis:names:tc:SAML:2.0:status:RequestVersionTooHigh';
+
+    const Status_RequestVersionTooLow		= 'urn:oasis:names:tc:SAML:2.0:status:RequestVersionTooLow';
+
+    const Status_ResourceNotRecognized		= 'urn:oasis:names:tc:SAML:2.0:status:ResourceNotRecognized';
+
+    const Status_TooManyResponses			= 'urn:oasis:names:tc:SAML:2.0:status:TooManyResponses';
+
+    const Status_UnknownAttrProfile			= 'urn:oasis:names:tc:SAML:2.0:status:UnknownAttrProfile';
+
+    const Status_UnknownPrincipal			= 'urn:oasis:names:tc:SAML:2.0:status:UnknownPrincipal';
+
+    const Status_UnsupportedBinding			= 'urn:oasis:names:tc:SAML:2.0:status:UnsupportedBinding';
 
 
 }

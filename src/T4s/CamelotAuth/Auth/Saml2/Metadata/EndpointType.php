@@ -53,7 +53,7 @@ class EndpointType
 		return $this->binding;
 	}
 
-	public function toXML($parentNode)
+	public function toXML(\DOMElement $parentNode)
 	{
 		// more code to come
 	}

@@ -1,4 +1,13 @@
-<?php namespace T4s\CamelotAuth\Auth;
+<?php
+/**
+ * Camelot Auth
+ *
+ * @author Timothy Seebus <timothyseebus@tools4schools.org>
+ * @license http://opensource.org/licences/MIT
+ * @package CamelotAuth
+ */
+
+namespace T4s\CamelotAuth\Auth;
 
 use T4s\CamelotAuth\Database\DatabaseInterface;
 use T4s\CamelotAuth\Config\ConfigInterface;

@@ -25,11 +25,6 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 		parent::__construct($provider,$config,$session,$cookie,$database,$messaging,$path);
 	}
 
-	public function metadata()
-	{
-
-	}
-
 	public function authenticate(array $credentials = null, $remember = false,$login = true)
 	{
 

@@ -92,7 +92,7 @@ class Camelot{
 
     public function __call($method,$params)
     { 
-        // is the first parameter and int then we must be changing the route detection settings
+        // is the first parameter an int then we must be changing the route detection settings
         if(isset($params[0]) && is_int($params[0]))
         {
             $this->config->set('camelot.route_location',$params[0]);

@@ -1,29 +1,59 @@
-<?php namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+<?php
+/**
+ * Camelot Auth
+ *
+ * @author Timothy Seebus <timothyseebus@tools4schools.org>
+ * @license http://opensource.org/licences/MIT
+ * @package CamelotAuth
+ */
+
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
 
 
-class KeyDescriptor{
+class KeyDescriptor implements SAMLNodeInterface
+{
+    protected $use = null;
 
-	/**
-	 * Specifies the purpose of the key being described
-	 * @var string|null
-	 */
-	protected $use = null;
+    protected $keyInfo;
 
-	/**
-	 *  element that directly or indirectly identifies a key
-	 * @var KeyInfo
-	 */
+    /**
+     * @var null|array
+     */
+    protected $encryptionMethod = null;
 
-	protected $keyInfo = null;
+    public function __construct($keyInfo = null)
+    {
+        $this->keyInfo = $keyInfo;
+    }
 
+    public function toXML(\DOMElement $parentElement)
+    {
+        $descriptor = $parentElement->ownerDocument->createElementNS(Saml2Constants::Namespace_Metadata,'md:KeyDescriptor');
+        $parentElement->appendChild($descriptor);
 
-	protected $encriptionMethods = array();
+        if(!is_null($this->use))
+        {
+            $descriptor->setAttribute('use',$this->use);
+        }
 
+        if(!is_null($this->keyInfo))
+        {
+            $this->keyInfo->toXML($descriptor);
+        }
 
+        if(!is_null($this->encryptionMethod))
+        {
+            foreach($this->encryptionMethod as $method)
+            {
+                $method->toXML($descriptor);
+            }
+        }
 
-	
-	public function __construct($use = null,KeyInfo $keyInfo,EncryptionMethod $encriptionMethod)
-	{
-		$this->use = $use
-	}
-}
+        return $descriptor;
+    }
+
+    public function importXML(\DOMElement $node)
+    {
+
+    }
+} 
