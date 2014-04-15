@@ -37,6 +37,11 @@ class IDPSSODescriptor extends SSODescriptor implements SAMLNodeInterface
      */
     protected $attributes = null;
 
+    public function __construct()
+    {
+        parent::__construct('IDPSSODescriptor');
+    }
+
     public function toXML(\DOMElement $parentElement)
     {
         $descriptor = parent::toXML($parentElement);
