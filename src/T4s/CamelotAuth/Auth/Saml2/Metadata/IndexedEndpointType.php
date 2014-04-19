@@ -34,17 +34,17 @@ class IndexedEndpointType extends EndpointType
 		$this->isDefault = $isDefault;
 	}
 
-	public function toXML($parentNode)
+	public function toXML(\DOMElement $parentElement)
 	{
-		$node = parrent::toXML($parentNode);
+		$node = parrent::toXML($parentElement);
 
-
+        return $node;
 		// more code to come
 	}
 
-	public function importXML($xml)
+	public function importXML(\DOMElement $node)
 	{
-		parrent::importXML($xml);
+		parrent::importXML($node);
 
 		// more code to come
 	}
