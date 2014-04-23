@@ -6,16 +6,12 @@
  * @license http://opensource.org/licences/MIT
  * @package CamelotAuth
  */
-
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
 
 
-use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
-
-class AuthnAuthorityDescriptor extends RoleDescriptor implements SAMLNodeInterface
+class PDPDescriptor extends RoleDescriptor implements SAMLNodeInterface
 {
-
-    protected $authnQueryService = array();
+    protected $authzService = array();
 
     protected $assertionIDRequestService = null;
 
@@ -23,16 +19,16 @@ class AuthnAuthorityDescriptor extends RoleDescriptor implements SAMLNodeInterfa
 
     public function __construct()
     {
-          parent::__construct('AuthnAuthorityDescriptor');
+        parent::__construct('PDPDescriptor');
     }
 
     public function toXML(\DOMElement $parentElement)
     {
         $descriptor = parent::toXML($parentElement);
 
-        foreach($this->authnQueryService as $aqs)
+        foreach($this->authzService as $authzService)
         {
-            $aqs->toXML($descriptor);
+            $authzService->toXML($descriptor);
         }
 
         if(!is_null($this->assertionIDRequestService))
@@ -43,7 +39,6 @@ class AuthnAuthorityDescriptor extends RoleDescriptor implements SAMLNodeInterfa
             }
         }
 
-
         if(!is_null($this->nameIDFormat))
         {
             foreach($this->nameIDFormat as $nameIDFormat)
@@ -52,7 +47,6 @@ class AuthnAuthorityDescriptor extends RoleDescriptor implements SAMLNodeInterfa
                 $descriptor->appendChild($nameIDf);
             }
         }
-
 
         return $descriptor;
     }
