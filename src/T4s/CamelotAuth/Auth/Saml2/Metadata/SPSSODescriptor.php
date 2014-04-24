@@ -58,4 +58,14 @@ class SPSSODescriptor extends SSODescriptor implements SAMLNodeInterface
 
         return $descriptor;
     }
+
+    public function addAssertionConsumingService($index,$binding= null,$location = null,$responseLocation= null)
+    {
+        if(!$index instanceof EndpointType)
+        {
+            $index = new IndexedEndpointType($index,$binding,$location,$responseLocation);
+        }
+
+        $this->assertionConsumingService[] = $index;
+    }
 } 

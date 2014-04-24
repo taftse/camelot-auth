@@ -38,6 +38,13 @@ class IndexedEndpointType extends EndpointType
 	{
 		$node = parrent::toXML($parentElement);
 
+        $node->setAttribute('index',$this->index);
+
+        if($this->isDefault != false)
+        {
+            $node->setAttribute('isDefault','true');
+        }
+
         return $node;
 		// more code to come
 	}

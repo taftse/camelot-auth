@@ -10,6 +10,8 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
 
 
+use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
+
 abstract class RoleDescriptor implements SAMLNodeInterface
 {
     protected $descriptorType;
@@ -52,6 +54,10 @@ abstract class RoleDescriptor implements SAMLNodeInterface
 
     public function __construct($descriptorType,$protocolSupportEnumeration = null)
     {
+        if(is_null($protocolSupportEnumeration))
+        {
+            $protocolSupportEnumeration = Saml2Constants::Namespace_SAMLProtocol;
+        }
         $this->protocolSupportEnumeration = $protocolSupportEnumeration;
         $this->descriptorType = $descriptorType;
     }
@@ -101,9 +107,9 @@ abstract class RoleDescriptor implements SAMLNodeInterface
             }
         }
 
-        if(!is_null($this->organisation))
+        if(!is_null($this->organization))
         {
-            $this->organisation->toXML($descriptor);
+            $this->organization->toXML($descriptor);
         }
 
         if(!is_null($this->contacts))

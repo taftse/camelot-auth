@@ -78,4 +78,34 @@ abstract class SSODescriptor extends RoleDescriptor implements SAMLNodeInterface
 
         return $descriptor;
     }
+
+    public function addArtifactResolutionService($index,$binding = null,$location = null, $isDefault = false,$responseLocation = null)
+    {
+        if($index instanceof IndexedEndpointType){
+             $index = new IndexedEndpointType($binding,$location,$index,$isDefault,$responseLocation);
+        }
+        $this->artifactResolutionService[] = $index;
+    }
+
+
+    public function addSingleLogoutService($binding,$location = null,$responseLocation= null)
+    {
+        if(!$binding instanceof EndpointType)
+        {
+           $binding = new EndpointType($binding,$location,$responseLocation);
+        }
+
+        $this->singleLogoutService[] = $binding;
+    }
+
+    public function addManageNameIDService($binding,$location = null,$responseLocation= null)
+    {
+        if(!$binding instanceof EndpointType)
+        {
+            $binding = new EndpointType($binding,$location,$responseLocation);
+        }
+
+        $this->manageNameIDService[] = $binding;
+    }
+
 } 

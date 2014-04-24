@@ -55,7 +55,16 @@ class EndpointType
 
 	public function toXML(\DOMElement $parentNode)
 	{
-		// more code to come
+		$parentNode->setAttribute('Binding',$this->binding);
+
+        $parentNode->setAttribute('Location',$this->location);
+
+        if(!is_null($this->responseLocation))
+        {
+            $parentNode->setAttribute('ResponseLocation',$this->responseLocation);
+        }
+
+        return $parentNode;
 	}
 
 	public function importXML($xml)

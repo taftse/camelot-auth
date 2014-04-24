@@ -1,5 +1,7 @@
 <?php
 /**
+ * Camelot Auth
+ *
  * @author Timothy Seebus <timothyseebus@tools4schools.org>
  * @license http://opensource.org/licences/MIT
  * @package CamelotAuth
@@ -7,6 +9,7 @@
 
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
 
+use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
 class IDPSSODescriptor extends SSODescriptor implements SAMLNodeInterface
 {
@@ -53,14 +56,20 @@ class IDPSSODescriptor extends SSODescriptor implements SAMLNodeInterface
 
         foreach($this->singleSignOnService as $SSO)
         {
-            $SSO->toXML($descriptor);
+            $endpoint = $descriptor->ownerDocument->createElementNS(Saml2Constants::Namespace_Metadata,'md:SingleSignOnService');
+            $descriptor->appendChild($endpoint);
+
+            $SSO->toXML($endpoint);
         }
 
         if(!is_null($this->nameIDMappingService))
         {
             foreach($this->nameIDMappingService as $nidms)
             {
-                $nidms->toXML($descriptor);
+                $endpoint = $descriptor->ownerDocument->createElementNS(Saml2Constants::Namespace_Metadata,'md:NameIDMappingService');
+                $descriptor->appendChild($endpoint);
+
+                $nidms->toXML($endpoint);
             }
         }
 
@@ -68,7 +77,10 @@ class IDPSSODescriptor extends SSODescriptor implements SAMLNodeInterface
         {
             foreach($this->assertionIDRequestService as $aidrs)
             {
-                $aidrs->toXML($descriptor);
+                $endpoint = $descriptor->ownerDocument->createElementNS(Saml2Constants::Namespace_Metadata,'md:AssertionIDRequestService');
+                $descriptor->appendChild($endpoint);
+
+                $aidrs->toXML($endpoint);
             }
         }
 
@@ -93,6 +105,38 @@ class IDPSSODescriptor extends SSODescriptor implements SAMLNodeInterface
         return $descriptor;
 
     }
+
+    public function addSingleSignOnService($binding,$location = null,$responseLocation= null)
+    {
+        if(!$binding instanceof EndpointType)
+        {
+            $binding = new EndpointType($binding,$location,$responseLocation);
+        }
+
+        $this->singleSignOnService[] = $binding;
+    }
+
+    public function addNameIDMappingService($binding,$location = null,$responseLocation= null)
+    {
+        if(!$binding instanceof EndpointType)
+        {
+            $binding = new EndpointType($binding,$location,$responseLocation);
+        }
+
+        $this->nameIDMappingService[] = $binding;
+    }
+
+    public function addAssertionIDRequestService($binding,$location = null,$responseLocation= null)
+    {
+        if(!$binding instanceof EndpointType)
+        {
+            $binding = new EndpointType($binding,$location,$responseLocation);
+        }
+
+        $this->assertionIDRequestService[] = $binding;
+    }
+
+
 
     public function importXML(\DOMElement $node)
     {

@@ -132,6 +132,11 @@ class EntityDescriptor implements SAMLNodeInterface
         return $entityDescriptor;
     }
 
+    public function addRoleDescriptor(RoleDescriptor $role)
+    {
+        $this->descriptors[] = $role;
+    }
+
     public function  importXML(\DOMElement $node)
     {
 

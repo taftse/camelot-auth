@@ -11,8 +11,11 @@ namespace T4s\CamelotAuth\Auth\Saml2;
 
 use T4s\CamelotAuth\Auth\AbstractAuth;
 
+use T4s\CamelotAuth\Auth\Saml2\Metadata\EndpointType;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\EntitiesDescriptor;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\EntityDescriptor;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\IDPSSODescriptor;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\SPSSODescriptor;
 use T4s\CamelotAuth\Database\DatabaseInterface;
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
@@ -46,7 +49,16 @@ or where a vendor of a SAML product or services wishes to make contact with the 
 
         /// this should be a loaded metadata file from config or should be generated from teh database
         $metadata = new EntitiesDescriptor();
-        $entity = new EntityDescriptor('http://login.tools4schools.org');
+        $entity = new EntityDescriptor('https://app.onelogin.com/saml/metadata/343584');
+
+
+        $roleDescriptor = new IDPSSODescriptor();
+
+        $roleDescriptor->addSingleSignOnService(Saml2Constants::Binding_HTTP_Redirect,"https://app.onelogin.com/trust/saml2/http-post/sso/343584");
+        $roleDescriptor->addSingleSignOnService(new EndpointType(Saml2Constants::Binding_HTTP_POST,"https://app.onelogin.com/trust/saml2/http-post/sso/343584"));
+        $roleDescriptor->addSingleSignOnService(Saml2Constants::Binding_SOAP,"https://app.onelogin.com/trust/saml2/soap/sso/343584");
+
+        $entity->addRoleDescriptor($roleDescriptor);
 
         $metadata->addDescriptor($entity);
 
