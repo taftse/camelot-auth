@@ -7,7 +7,7 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
 class EndpointType
@@ -34,8 +34,13 @@ class EndpointType
 	protected $responseLocation = null;
 
 
-	public function __construct($binding,$location,$responseLocation = null)
+	public function __construct($binding,$location = null,$responseLocation = null)
 	{
+        if($binding instanceof \DOMElement)
+        {
+            return $this->importXML($binding);
+        }
+
 		$this->binding 			= $binding;
 		$this->location 		= $location;
 		$this->responseLocation = $responseLocation;
@@ -67,7 +72,7 @@ class EndpointType
         return $parentNode;
 	}
 
-	public function importXML($xml)
+	public function importXML(\DOMElement $xml)
 	{
 		// more code to come
 	}

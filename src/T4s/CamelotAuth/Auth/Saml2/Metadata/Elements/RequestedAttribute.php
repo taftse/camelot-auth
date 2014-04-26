@@ -7,10 +7,10 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
-class RequestedAttribute extends Attribute implements SAMLNodeInterface
+class RequestedAttribute extends Attribute implements SAMLElementInterface
 {
     protected $isRequired = false;
 

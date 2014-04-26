@@ -7,12 +7,12 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
-class ContactPerson implements SAMLNodeInterface
+class ContactPerson implements SAMLElementInterface
 {
     protected $type;
 
@@ -36,6 +36,10 @@ class ContactPerson implements SAMLNodeInterface
 
     public function __construct($type,$company = null,$givenName = null,$surName = null)
     {
+        if($type instanceof \DOMElement)
+        {
+            return $this->importXML($type);
+        }
         $this->type = $type;
         $this->company = $company;
         $this->givenName = $givenName;
@@ -91,5 +95,39 @@ class ContactPerson implements SAMLNodeInterface
         }
 
         return $contactPerson;
+    }
+
+    public function importXML(\DOMElement $node)
+    {
+        if(!$node->hasAttribute('contactType'))
+        {
+            throw new \Exception("This ContactPerson is missing the required contactType attribute");
+        }
+        $this->type = $node->getAttribute('contactType');
+
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+                case "Extensions":
+                    $this->extensions = $node;
+                    break;
+                case "Company":
+                    $this->company = $node->nodeValue;
+                    break;
+                case "GivenName":
+                    $this->givenName = $node->nodeValue;
+                    break;
+                case "SurName":
+                    $this->surName = $node->nodeValue;
+                    break;
+                case "EmailAddress":
+                    $this->emailAddress[] = $node->nodeValue;
+                    break;
+                case "TelephoneNumber":
+                    $this->telephoneNumber[] = $node->nodeValue;
+                    break;
+            }
+        }
     }
 } 

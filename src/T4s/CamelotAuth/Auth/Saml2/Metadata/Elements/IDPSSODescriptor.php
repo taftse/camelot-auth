@@ -7,11 +7,11 @@
  * @package CamelotAuth
 */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
-class IDPSSODescriptor extends SSODescriptor implements SAMLNodeInterface
+class IDPSSODescriptor extends SSODescriptor implements SAMLElementInterface
 {
     protected $wantAuthnRequestSigned = false;
 
@@ -40,9 +40,14 @@ class IDPSSODescriptor extends SSODescriptor implements SAMLNodeInterface
      */
     protected $attributes = null;
 
-    public function __construct()
+    public function __construct(\DOMElement $metadatNode = null)
     {
         parent::__construct('IDPSSODescriptor');
+
+        if(!is_null($metadatNode))
+        {
+            return $this->importXML($metadatNode);
+        }
     }
 
     public function toXML(\DOMElement $parentElement)
@@ -140,6 +145,34 @@ class IDPSSODescriptor extends SSODescriptor implements SAMLNodeInterface
 
     public function importXML(\DOMElement $node)
     {
+        parent::importXML($node);
 
+        if($node->hasAttribute('WantAuthnRequestSigned'))
+        {
+            $this->wantAuthnRequestSigned = $node->getAttribute('WantAuthnRequestSigned');
+        }
+
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+                case "SingleSignOnService":
+                    $this->singleSignOnService[] = new EndpointType($node);
+                    break;
+                case "NameIDMappingService":
+                    $this->nameIDMappingService[] = new EndpointType($node);
+                    break;
+                case "AssertionIDRequestService":
+                    $this->assertionIDRequestService[] = new EndpointType($node);
+                    break;
+                case "AttributeProfile":
+                    $this->attributeProfile[] = $node->nodeValue;
+                    break;
+                case "Attribute":
+                    // @todo create Attribute Elemnt
+                    //$this->attributes[] = new Attribute;
+                    break;
+            }
+        }
     }
 } 

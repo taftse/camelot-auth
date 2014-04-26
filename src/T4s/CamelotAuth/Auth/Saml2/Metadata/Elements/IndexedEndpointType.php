@@ -7,7 +7,7 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
 class IndexedEndpointType extends EndpointType
@@ -26,8 +26,13 @@ class IndexedEndpointType extends EndpointType
 	 */
 	protected $isDefault = false;
 
-	public function __construct($binding,$location,$index,$isDefault = false,$responseLocation = null)
+	public function __construct($binding,$location = null,$index = null,$isDefault = false,$responseLocation = null)
 	{
+        if($binding instanceof \DOMElement)
+        {
+            return $this->importXML($binding);
+        }
+
 		parent::__construct($binding,$location,$responseLocation);
 
 		$this->index 	 = $index;
@@ -51,7 +56,7 @@ class IndexedEndpointType extends EndpointType
 
 	public function importXML(\DOMElement $node)
 	{
-		parrent::importXML($node);
+		parent::importXML($node);
 
 		// more code to come
 	}

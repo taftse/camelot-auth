@@ -6,29 +6,38 @@
  * @license http://opensource.org/licences/MIT
  * @package CamelotAuth
  */
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
-class PDPDescriptor extends RoleDescriptor implements SAMLNodeInterface
+use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
+
+class AuthnAuthorityDescriptor extends RoleDescriptor implements SAMLElementInterface
 {
-    protected $authzService = array();
+
+    protected $authnQueryService = array();
 
     protected $assertionIDRequestService = null;
 
     protected $nameIDFormat = null;
 
-    public function __construct()
+    public function __construct(\DOMElement $metadatNode = null)
     {
-        parent::__construct('PDPDescriptor');
+        parent::__construct('AuthnAuthorityDescriptor');
+
+        if(!is_null($metadatNode))
+        {
+            return $this->importXML($metadatNode);
+        }
     }
 
     public function toXML(\DOMElement $parentElement)
     {
         $descriptor = parent::toXML($parentElement);
 
-        foreach($this->authzService as $authzService)
+        foreach($this->authnQueryService as $aqs)
         {
-            $authzService->toXML($descriptor);
+            $aqs->toXML($descriptor);
         }
 
         if(!is_null($this->assertionIDRequestService))
@@ -39,6 +48,7 @@ class PDPDescriptor extends RoleDescriptor implements SAMLNodeInterface
             }
         }
 
+
         if(!is_null($this->nameIDFormat))
         {
             foreach($this->nameIDFormat as $nameIDFormat)
@@ -47,6 +57,7 @@ class PDPDescriptor extends RoleDescriptor implements SAMLNodeInterface
                 $descriptor->appendChild($nameIDf);
             }
         }
+
 
         return $descriptor;
     }

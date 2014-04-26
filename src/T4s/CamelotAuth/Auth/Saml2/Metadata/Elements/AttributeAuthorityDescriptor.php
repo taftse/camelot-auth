@@ -7,12 +7,12 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
-class AttributeAuthorityDescriptor extends RoleDescriptor implements SAMLNodeInterface
+class AttributeAuthorityDescriptor extends RoleDescriptor implements SAMLElementInterface
 {
     protected $attributeService = array();
 
@@ -24,9 +24,14 @@ class AttributeAuthorityDescriptor extends RoleDescriptor implements SAMLNodeInt
 
     protected $attribute = null;
 
-    public function __construct()
+    public function __construct(\DOMElement $metadatNode = null)
     {
         parent::__construct('AttributeAuthorityDescriptor');
+
+        if(!is_null($metadatNode))
+        {
+            return $this->importXML($metadatNode);
+        }
     }
 
 

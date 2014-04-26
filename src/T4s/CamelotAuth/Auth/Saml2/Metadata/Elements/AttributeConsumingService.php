@@ -7,10 +7,10 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
-class AttributeConsumingService implements SAMLNodeInterface
+class AttributeConsumingService implements SAMLElementInterface
 {
     protected $index;
 

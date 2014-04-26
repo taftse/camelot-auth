@@ -8,10 +8,10 @@
  */
 
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
-interface SAMLNodeInterface {
+interface SAMLElementInterface {
 
     public function  toXML(\DOMElement $parentElement);
 

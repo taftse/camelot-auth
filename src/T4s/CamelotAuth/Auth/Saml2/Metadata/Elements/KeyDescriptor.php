@@ -7,10 +7,10 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
-class KeyDescriptor implements SAMLNodeInterface
+class KeyDescriptor implements SAMLElementInterface
 {
     protected $use = null;
 
@@ -19,10 +19,14 @@ class KeyDescriptor implements SAMLNodeInterface
     /**
      * @var null|array
      */
-    protected $encryptionMethod = null;
+    protected $encryptionMethods = null;
 
     public function __construct($keyInfo = null)
     {
+        if($keyInfo instanceof \DOMElement)
+        {
+            return $this->importXML($keyInfo);
+        }
         $this->keyInfo = $keyInfo;
     }
 
@@ -41,9 +45,10 @@ class KeyDescriptor implements SAMLNodeInterface
             $this->keyInfo->toXML($descriptor);
         }
 
-        if(!is_null($this->encryptionMethod))
+        // @todo revamp this function when its not 23:54 and time for bed
+        if(!is_null($this->encryptionMethods))
         {
-            foreach($this->encryptionMethod as $method)
+            foreach($this->encryptionMethods as $method)
             {
                 $method->toXML($descriptor);
             }
@@ -54,6 +59,23 @@ class KeyDescriptor implements SAMLNodeInterface
 
     public function importXML(\DOMElement $node)
     {
+        if($node->hasAttribute('use'))
+        {
+            $this->use = $node->getAttribute('use');
+        }
 
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+                case "KeyInfo":
+                    $this->keyInfo = $node;
+                    break;
+                case "EncryptionMethod":
+                    // @todo implemnt xenc:EncriptionMethodType
+                    $this->encryptionMethods[] = $node;
+                    break;
+            }
+        }
     }
 } 

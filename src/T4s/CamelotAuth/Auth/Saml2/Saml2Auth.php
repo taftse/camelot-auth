@@ -11,17 +11,15 @@ namespace T4s\CamelotAuth\Auth\Saml2;
 
 use T4s\CamelotAuth\Auth\AbstractAuth;
 
-use T4s\CamelotAuth\Auth\Saml2\Metadata\EndpointType;
-use T4s\CamelotAuth\Auth\Saml2\Metadata\EntitiesDescriptor;
-use T4s\CamelotAuth\Auth\Saml2\Metadata\EntityDescriptor;
-use T4s\CamelotAuth\Auth\Saml2\Metadata\IDPSSODescriptor;
-use T4s\CamelotAuth\Auth\Saml2\Metadata\SPSSODescriptor;
 use T4s\CamelotAuth\Database\DatabaseInterface;
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Messaging\MessagingInterface;
 use T4s\CamelotAuth\Events\DispatcherInterface;
+
+use T4s\CamelotAuth\Auth\Saml2\Metadata\MetadataDatabase;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\MetadataConfig;
 
 class Saml2Auth extends AbstractAuth
 {
@@ -31,13 +29,26 @@ class Saml2Auth extends AbstractAuth
     {
         parent::__construct($provider,$config,$session,$cookie,$database,$messaging,$path);
 
+        $this->metadataStore =  $this->loadMetadataStore();
+    }
+
+    protected function loadMetadataStore()
+    {
+        switch($this->config->get('saml2.metadataStore'))
+        {
+            case 'config':
+                return new MetadataConfig($this->config);
+                break;
+            case 'database':
+                return new MetadataDatabase($this->config,$this->database);
+        }
     }
 
 
     public function metadata()
     {
 
-        $xmlDoc = new \DOMDocument("1.0","UTF-8");
+        /*$xmlDoc = new \DOMDocument("1.0","UTF-8");
         $terms = $xmlDoc->createComment('TERMS OF USE
 The contents of this file may only be used (with the two exceptions below) to establish SAML2 interoperability between sites partnered with this site.
 Where the partner has published its metadata at the URL described by the members entityID,
@@ -66,7 +77,9 @@ or where a vendor of a SAML product or services wishes to make contact with the 
 
         header('Content-Type: application/xml');
         flush();
-        return $xmlDoc->saveXML();
+        return $xmlDoc->saveXML();*/
+
+       return $this->metadataStore->importMetadata();
 
        // return $this->metadataStore->getEntity($this->config->get('saml2.myEntityID'));
     }

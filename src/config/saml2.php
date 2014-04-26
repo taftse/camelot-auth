@@ -11,7 +11,7 @@ return array(
     | Supported: "database", "config"
     |
     */
-	'metadata_store' => 'config',
+	'metadataStore' => 'database',
 
 
     'myEntityID' => 'https://idp.tools4schools.org',

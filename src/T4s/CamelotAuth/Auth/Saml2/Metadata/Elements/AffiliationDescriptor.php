@@ -7,10 +7,10 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
-class AffiliationDescriptor implements SAMLNodeInterface
+class AffiliationDescriptor implements SAMLElementInterface
 {
     protected $affiliateOwnerID;
 
@@ -44,6 +44,10 @@ class AffiliationDescriptor implements SAMLNodeInterface
 
     public function __construct($affiliateOwnerID = null)
     {
+        if($affiliateOwnerID instanceof \DOMElement)
+        {
+            return $this->importXML($affiliateOwnerID);
+        }
         $this->affiliateOwnerID = $affiliateOwnerID;
     }
 
@@ -93,5 +97,10 @@ class AffiliationDescriptor implements SAMLNodeInterface
         }
 
         return $descriptor;
+    }
+
+    public function importXML(\DOMElement $node)
+    {
+
     }
 } 

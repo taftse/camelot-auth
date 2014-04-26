@@ -7,12 +7,12 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
-class EntityDescriptor implements SAMLNodeInterface
+class EntityDescriptor implements SAMLElementInterface
 {
     // attributes
     /**
@@ -54,7 +54,7 @@ class EntityDescriptor implements SAMLNodeInterface
     /**
      * @var null
      */
-    protected $organisation = null;
+    protected $organization = null;
 
     /**
      * @var null|array
@@ -68,6 +68,10 @@ class EntityDescriptor implements SAMLNodeInterface
 
     public function __construct($entityId)
     {
+        if($entityId instanceof \DOMElement)
+        {
+            return $this->importXML($entityId);
+        }
         $this->entityID = $entityId;
     }
 
@@ -108,9 +112,9 @@ class EntityDescriptor implements SAMLNodeInterface
             $descriptor->toXML($entityDescriptor);
         }
 
-        if(!is_null($this->organisation))
+        if(!is_null($this->organization))
         {
-            $this->organisation->toXML($entityDescriptor);
+            $this->organization->toXML($entityDescriptor);
         }
 
         if(!is_null($this->contacts))
@@ -139,6 +143,66 @@ class EntityDescriptor implements SAMLNodeInterface
 
     public function  importXML(\DOMElement $node)
     {
+        if(!$node->hasAttribute('entityID'))
+        {
+            throw new \Exception("This EntiryDescriptor is missing the required entityID attribute");
+        }
+        $this->entityID = $node->getAttribute('entityID');
 
+        if($node->hasAttribute('ID'))
+        {
+            $this->id = $node->getAttribute('ID');
+        }
+
+        if($node->hasAttribute('validUntil'))
+        {
+            $this->validUntil = $node->getAttribute('validUntil');
+        }
+
+        if($node->hasAttribute('cacheDuration'))
+        {
+            $this->cacheDuration = $node->getAttribute('cacheDuration');
+        }
+
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+                case "Signature":
+                    $this->signature = $node;
+                    break;
+                case "Extensions":
+                    $this->extensions = $node;
+                    break;
+                case "IDPSSODescriptor":
+                    $this->descriptors[] = new IDPSSODescriptor($node);
+                    break;
+                case "SPSSODescriptor":
+                    $this->descriptors[] = new SPSSODescriptor($node);
+                    break;
+                case "AuthnAuthorityDescriptor":
+                    $this->descriptors[] = new AuthnAuthorityDescriptor($node);
+                    break;
+                case "AttributeAuthorityDescriptor":
+                    $this->descriptors[] = new AttributeAuthorityDescriptor($node);
+                    break;
+                case "PDPDescriptor":
+                    $this->descriptors[] = new PDPDescriptor($node);
+                    break;
+                case "AffiliationDescriptor":
+                    $this->descriptors[] = new AffiliationDescriptor($node);
+                    break;
+                case "Organization":
+                    $this->organization = new Organization($node);
+                    break;
+                case "ContactPerson":
+                    $this->contacts[] = new ContactPerson($node);
+                    break;
+                case "AdditionalMetadataLocation":
+                    $this->aditionalMetadataLocations[] = new AdditionalMetadataLocation($node);
+                    // perfect location for a event me thinks
+                    break;
+            }
+        }
     }
 } 

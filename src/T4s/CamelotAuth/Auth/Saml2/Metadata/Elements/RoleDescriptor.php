@@ -7,12 +7,12 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
-abstract class RoleDescriptor implements SAMLNodeInterface
+abstract class RoleDescriptor implements SAMLElementInterface
 {
     protected $descriptorType;
 
@@ -125,7 +125,53 @@ abstract class RoleDescriptor implements SAMLNodeInterface
 
     public function importXML(\DOMElement $node)
     {
+        if($node->hasAttribute('ID'))
+        {
+            $this->id = $node->getAttribute('ID');
+        }
 
+        if($node->hasAttribute('validUntil'))
+        {
+            $this->validUntil = $node->getAttribute('validUntil');
+        }
+
+        if($node->hasAttribute('cacheDuration'))
+        {
+            $this->cacheDuration = $node->getAttribute('cacheDuration');
+        }
+
+        if(!$node->hasAttribute('protocolSupportEnumeration'))
+        {
+            throw new \Exception("This ".$this->descriptorType." is missing the required protocolSupportEnumeration attribute");
+        }
+        $this->protocolSupportEnumeration = $node->getAttribute('protocolSupportEnumeration');
+
+        if($node->hasAttribute('errorURL'))
+        {
+            $this->errorURL = $node->getAttribute('errorURL');
+        }
+
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+                case "Signature":
+                    $this->signature = $node;
+                    break;
+                case "Extensions":
+                    $this->extensions = $node;
+                    break;
+                case "KeyDescriptor":
+                    $this->keyDescriptors[] = new KeyDescriptor($node);
+                    break;
+                case "Organization":
+                    $this->organisation = new Organization($node);
+                    break;
+                case "ContactPerson":
+                    $this->contacts[] = new ContactPerson($node);
+                    break;
+            }
+        }
     }
 
 } 

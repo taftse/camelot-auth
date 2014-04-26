@@ -7,10 +7,10 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
-class SPSSODescriptor extends SSODescriptor implements SAMLNodeInterface
+class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
 {
 
     protected $authnRequestsSigned = false;
@@ -24,9 +24,14 @@ class SPSSODescriptor extends SSODescriptor implements SAMLNodeInterface
      */
     protected $attributeConsumingService = null;
 
-    public function __construct()
+    public function __construct(\DOMElement $metadatNode= null )
     {
         parent::__construct('SPSSODescriptor');
+
+        if(!is_null($metadatNode))
+        {
+            return $this->importXML($metadatNode);
+        }
     }
 
     public function toXML(\DOMElement $parentElement)

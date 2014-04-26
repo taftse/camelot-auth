@@ -7,10 +7,10 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
-abstract class SSODescriptor extends RoleDescriptor implements SAMLNodeInterface
+abstract class SSODescriptor extends RoleDescriptor implements SAMLElementInterface
 {
 
     /**
@@ -108,4 +108,28 @@ abstract class SSODescriptor extends RoleDescriptor implements SAMLNodeInterface
         $this->manageNameIDService[] = $binding;
     }
 
+    public function importXML(\DOMElement $node)
+    {
+        parent::importXML($node);
+
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+                case "ArtifactResolutionService":
+                    $this->artifactResolutionService[] = new IndexedEndpointType($node);
+                    break;
+                case "SingleLogoutService":
+                    $this->singleLogoutService[] = new EndpointType($node);
+                    break;
+                case "ManageNameIDService":
+                    $this->manageNameIDService[] = new EndpointType($node);
+                    break;
+                case "nameIDFormat":
+                    $this->nameIDFormat[] = $node->nodeValue;
+                    break;
+
+            }
+        }
+    }
 } 

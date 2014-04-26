@@ -7,7 +7,7 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
@@ -36,14 +36,18 @@ class EntitiesDescriptor
 
     protected $entityDescriptors = array();
 
-    public function __construct()
+    public function __construct($xml = null)
     {
-
+        if($xml instanceof \DOMElement)
+        {
+            return $this->importXML($xml);
+        }
     }
 
 
     public function addDescriptor($descriptor)
     {
+
         if(!$descriptor instanceof EntitiesDescriptor && !$descriptor instanceof EntityDescriptor)
         {
             throw new \Exception("wrong descriptor type this method only accepts EntitiesDescriptor's or EntityDescriptor's");
@@ -105,6 +109,45 @@ class EntitiesDescriptor
 
     public function importXML(\DOMElement $node)
     {
+        if($node->hasAttribute('ID'))
+        {
+            $this->id = $node->getAttribute('ID');
+        }
+
+        if($node->hasAttribute('validUntil'))
+        {
+            $this->validUntil = $node->getAttribute('validUntil');
+        }
+
+        if($node->hasAttribute('cacheDuration'))
+        {
+            $this->cacheDuration = $node->getAttribute('cacheDuration');
+        }
+
+        if($node->hasAttribute('Name'))
+        {
+            $this->name = $node->getAttribute('Name');
+        }
+
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+                case "Signature":
+                    //$this->signature = new Signature($node);
+                    break;
+                case "Extensions":
+                    $this->extensions = $node;
+                    break;
+                case "EntitiesDescriptor":
+                    $this->entityDescriptors[] = new EntitiesDescriptor($node);
+                    break;
+                case "EntityDescriptor":
+                    $this->entityDescriptors[] = new EntityDescriptor($node);
+                    break;
+            }
+        }
+
 
     }
 } 

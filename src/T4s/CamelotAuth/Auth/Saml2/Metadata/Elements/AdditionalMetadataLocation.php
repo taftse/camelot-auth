@@ -7,17 +7,23 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
-class AdditionalMetadataLocation implements SAMLNodeInterface
+class AdditionalMetadataLocation implements SAMLElementInterface
 {
     protected $namespace;
 
     protected $location;
 
-    public function __construct($location,$namespace)
+    public function __construct($location,$namespace = null)
     {
+        if($location instanceof \DOMElement)
+        {
+            return $this->importXML($location);
+        }
+
+
         $this->location  = $location;
         $this->namespace = $namespace;
     }
@@ -34,6 +40,12 @@ class AdditionalMetadataLocation implements SAMLNodeInterface
 
     public function importXML(\DOMElement $node)
     {
+        if(!$node->hasAttribute('namespace'))
+        {
+            throw new \Exception("This AdditionalMetadataLocation is missing the required namespace attribute");
+        }
+        $this->namespace = $node->getAttribute('namespace');
 
+        $this->location = $node->nodeValue;
     }
 } 
