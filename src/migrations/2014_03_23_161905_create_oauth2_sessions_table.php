@@ -20,7 +20,7 @@ class CreateOauth2SessionsTable extends Migration {
 		    $table->integer('type_id');
 		    $table->enum('type', array('user', 'auto'));	
 		    $table->string('code');
-		    $table->string('access_token'->nullable();
+		    $table->string('access_token')->nullable();
 			$table->enum('stage', array('request', 'granted'));			
 			$table->boolean('limited_access')->default(false);
 			$table->string('scopes')->nullable();

@@ -57,6 +57,11 @@ class EntitiesDescriptor
     }
 
 
+    public function getEntities()
+    {
+        return $this->entityDescriptors;
+    }
+
 
 
 
@@ -140,7 +145,8 @@ class EntitiesDescriptor
                     $this->extensions = $node;
                     break;
                 case "EntitiesDescriptor":
-                    $this->entityDescriptors[] = new EntitiesDescriptor($node);
+                    $entities  = new EntitiesDescriptor($node);
+                    $this->entityDescriptors = array_merge($this->entityDescriptors,$entities->getEntities());
                     break;
                 case "EntityDescriptor":
                     $this->entityDescriptors[] = new EntityDescriptor($node);

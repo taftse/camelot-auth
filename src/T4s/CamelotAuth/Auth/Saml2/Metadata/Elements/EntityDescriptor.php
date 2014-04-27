@@ -75,6 +75,13 @@ class EntityDescriptor implements SAMLElementInterface
         $this->entityID = $entityId;
     }
 
+    public function getEntityID()
+    {
+        return $this->entityID;
+    }
+
+
+
     public function toXML(\DOMElement $parentElement)
     {
         $entityDescriptor = $parentElement->ownerDocument->createElementNS(Saml2Constants::Namespace_Metadata,'md:EntityDescriptor');

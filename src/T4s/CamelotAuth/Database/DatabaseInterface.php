@@ -6,5 +6,5 @@ interface DatabaseInterface
 
 	//public function loadModel($model);
 
-	
+    public function loadRepository($repository,$model);
 }

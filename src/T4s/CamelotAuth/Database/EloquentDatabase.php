@@ -1,24 +1,34 @@
-<?php namespace T4s\CamelotAuth\Database;
+<?php
+/**
+ * Camelot Auth
+ *
+ * @author Timothy Seebus <timothyseebus@tools4schools.org>
+ * @license http://opensource.org/licences/MIT
+ * @package CamelotAuth
+ */
+
+namespace T4s\CamelotAuth\Database;
 
 
-class EloquentDatabase implements DatabaseInterface
+use T4s\CamelotAuth\Config\ConfigInterface;
+
+class EloquentDatabase extends AbstractDatabase implements DatabaseInterface
 {
 
 	protected $config;
 
-
-	public function __construct($config)
-	{
-		$this->config = $config;
-
+	public function __construct(ConfigInterface $config)
+    {
+        $this->config = $config;
+        $this->setModels($this->config->get('camelot.models'));
 	}
 
-	public function loadRepository($repository,$model = null)
+	public function loadRepository($repository,$model,$table = null)
 	{
 
-		$class = 'T4s\CamelotAuth\Repositories\Eloquent\\'.ltrim($repository,'\\').'Provider';
+		$class = 'T4s\CamelotAuth\\'.$repository;
 
-		return new $class($this->config,$model);
+		return new $class($this->config,$this->getModel($model,$table));
 	}
 	
 }

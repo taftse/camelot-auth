@@ -19,7 +19,7 @@ class MetadataDatabase implements MetadataInterface
 {
     protected $database;
     protected $config;
-    protected $metadata;
+    protected $metadata = array();
 
     public function __construct(ConfigInterface$config,DatabaseInterface $database)
     {
@@ -39,40 +39,40 @@ class MetadataDatabase implements MetadataInterface
             }
 
             $file = file_get_contents($location);
-            if($file !== false)
+            if($file === false)
             {
-                $metadata = new \DOMDocument();
-                $metadata->loadXML($file);
+                continue;
+            }
 
-               // $node = $metadata->firstChild;
-               // if($node->nodeName == "#comment")
-                //{
-                //    $node = $node->;
-               // }
-               // var_dump($node->nodeName);
-                foreach($metadata->childNodes as $node)
+            $metadata = new \DOMDocument();
+            $metadata->loadXML($file);
+
+
+            foreach($metadata->childNodes as $node)
+            {
+                if($node instanceof \DOMElement)
                 {
-                    if($node instanceof \DOMElement)
+                    switch($node->localName)
                     {
-
-                        switch($node->nodeName)
-                        {
-                            case "md:EntitiesDescriptor":
-                                $this->metadata[$node->nodeName] = new EntitiesDescriptor($node);
-                                break;
-                            case "md:EntityDescriptor":
-                                $this->metadata[$node->nodeName] = new EntityDescriptor(node);
-                                break;
-                        }
-
+                        case "EntitiesDescriptor":
+                            $entities  = new EntitiesDescriptor($node);
+                            $this->metadata = array_merge($this->metadata,$entities->getEntities());
+                            break;
+                        case "EntityDescriptor":
+                            $this->metadata[] = new EntityDescriptor($node);
+                            break;
                     }
                 }
             }
+
         }
 
-        var_dump($this->metadata);
-
-
+        $entityRepository = $this->database->loadRepository('Auth\Saml2\Metadata\Database\EntitiesRepository','entity');
+        foreach($this->metadata as $entity)
+        {
+                $entity = $entityRepository->createEntity($entity);
+                $entityRepository->save($entity);
+        }
     }
 
     public function generateMetadata()

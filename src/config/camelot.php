@@ -25,7 +25,9 @@ return array(
         |
         */
 
-        'model' => 'T4s\CamelotAuth\Models\Eloquent\Account',
+        'models' => [
+                        'account' => ['model'=>'Models\Eloquent\Account', 'table'=>'account'],
+                    ],
 
 
         /*
@@ -162,5 +164,5 @@ return array(
     'login_uri' => '',
     
     'registration_uri' => 'account/register',
-    'verification_uri' => 'account/verify',
+    'verification_uri' => 'account/verify'
 );
