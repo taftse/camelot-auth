@@ -73,4 +73,30 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
 
         $this->assertionConsumingService[] = $index;
     }
+
+    public function inportXML(\DOMElement $node)
+    {
+        if($node->hasAttribute('AuthnRequestsSigned'))
+        {
+            $this->authnRequestsSigned = $node->getAttribute('AuthnRequestsSigned');
+        }
+
+        if($node->hasAttribute('WantAssertionSigned'))
+        {
+            $this->wantAssertionSigned = $node->getAttribute('WantAssertionSigned');
+        }
+
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+                case "AssertionConsumingService":
+                    $this->assertionConsumingService[] = new IndexedEndpointType($node);
+                    break;
+                case "AttributeConsumingService":
+                    $this->attributeConsumingService[] = new AttributeConsumingService($node);
+                    break;
+            }
+        }
+    }
 } 

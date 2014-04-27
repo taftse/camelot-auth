@@ -125,7 +125,7 @@ abstract class SSODescriptor extends RoleDescriptor implements SAMLElementInterf
                 case "ManageNameIDService":
                     $this->manageNameIDService[] = new EndpointType($node);
                     break;
-                case "nameIDFormat":
+                case "NameIDFormat":
                     $this->nameIDFormat[] = $node->nodeValue;
                     break;
 

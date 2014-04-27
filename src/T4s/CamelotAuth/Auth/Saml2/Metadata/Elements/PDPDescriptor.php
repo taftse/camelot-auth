@@ -55,4 +55,26 @@ class PDPDescriptor extends RoleDescriptor implements SAMLElementInterface
 
         return $descriptor;
     }
+
+    public function importXML(\DOMElement $node)
+    {
+        parent::importXML($node);
+
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+                case "AuthzService":
+                    $this->authzService[] = new EndpointType($node);
+                    break;
+                case "AssertionIDRequestService":
+                    $this->assertionIDRequestService[] = new EndpointType($node);
+                    break;
+                case "NameIDFormat":
+                    $this->nameIDFormat[] = $node->nodeValue;
+                    break;
+
+            }
+        }
+    }
 } 

@@ -12,7 +12,7 @@ namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 class AffiliationDescriptor implements SAMLElementInterface
 {
-    protected $affiliateOwnerID;
+    protected $affiliationOwnerID;
 
     protected $id = null;
 
@@ -48,7 +48,7 @@ class AffiliationDescriptor implements SAMLElementInterface
         {
             return $this->importXML($affiliateOwnerID);
         }
-        $this->affiliateOwnerID = $affiliateOwnerID;
+        $this->affiliationOwnerID = $affiliateOwnerID;
     }
 
     public function toXML(\DOMElement $parentElement)
@@ -56,7 +56,7 @@ class AffiliationDescriptor implements SAMLElementInterface
         $descriptor = $parentElement->ownerDocument->createElementNS(Saml2Constants::Namespace_Metadata,'md:AffiliationDescriptorType');
         $parentElement->appendChild($descriptor);
 
-        $descriptor->setAttribute('affiliationOwnerID',$this->affiliateOwnerID);
+        $descriptor->setAttribute('affiliationOwnerID',$this->affiliationOwnerID);
 
         if(!is_null($this->id))
         {
@@ -101,6 +101,44 @@ class AffiliationDescriptor implements SAMLElementInterface
 
     public function importXML(\DOMElement $node)
     {
+        if(!$node->hasAttribute('affiliationOwnerID'))
+        {
+            throw new \Exception("This AffiliationDescriptor is missing the required affiliationOwnerID attribute");
+        }
+        $this->affiliationOwnerID = $node->getAttribute('affiliationOwnerID');
 
+        if($node->hasAttribute('ID'))
+        {
+            $this->id = $node->getAttribute('ID');
+        }
+
+        if($node->hasAttribute('validUntil'))
+        {
+            $this->validUntil = $node->getAttribute('validUntil');
+        }
+
+        if($node->hasAttribute('cacheDuration'))
+        {
+            $this->cacheDuration = $node->getAttribute('cacheDuration');
+        }
+
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+                case "Signature":
+                    $this->signature = $node;
+                    break;
+                case "Extensions":
+                    $this->extensions = $node;
+                    break;
+                case "AffiliateMember":
+                    $this->affiliateMembers[] = $node->nodeValue;
+                    break;
+                case "KeyDescriptor":
+                    $this->keyDescriptors[] = new KeyDescriptor($node);
+                    break;
+            }
+        }
     }
 } 

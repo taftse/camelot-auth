@@ -61,4 +61,26 @@ class AuthnAuthorityDescriptor extends RoleDescriptor implements SAMLElementInte
 
         return $descriptor;
     }
+
+
+    public function importXML(\DOMElement $node)
+    {
+        parent::importXML($node);
+
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+                case "AuthnQueryService":
+                    $this->authnQueryService[] = new EndpointType($node);
+                    break;
+                case "AssertionIDRequestService":
+                    $this->assertionIDRequestService[] = new EndpointType($node);
+                    break;
+                case "NameIDFormat":
+                    $this->nameIDFormat[] = $node->nodeValue;
+                    break;
+            }
+        }
+    }
 } 

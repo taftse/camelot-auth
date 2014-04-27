@@ -82,6 +82,29 @@ class AttributeAuthorityDescriptor extends RoleDescriptor implements SAMLElement
 
     public function importXML(\DOMElement $node)
     {
+        parent::importXML($node);
 
+        foreach($node->childNodes as $node)
+        {
+            switch($node->localName)
+            {
+
+                case "AttributeService":
+                    $this->attributeService[] = new EndpointType($node);
+                    break;
+                case "AssertionIDRequestService":
+                    $this->assertionIDRequestService[] = new EndpointType($node);
+                    break;
+                case "NameIDFormat":
+                    $this->nameIDFormat[] = $node->nodeValue;
+                    break;
+                case "AttributeProfile":
+                    $this->attributeProfile[] = $node->nodeValue;
+                    break;
+                case "Attribute":
+                    $this->attribute[] = new Attribute($node);
+                    break;
+            }
+        }
     }
 } 
