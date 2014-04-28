@@ -68,6 +68,7 @@ class MetadataDatabase implements MetadataInterface
         }
 
         $entityRepository = $this->database->loadRepository('Auth\Saml2\Metadata\Database\EntitiesRepository','entity');
+        var_dump($entityRepository);
         foreach($this->metadata as $entity)
         {
                 $entity = $entityRepository->createEntity($entity);

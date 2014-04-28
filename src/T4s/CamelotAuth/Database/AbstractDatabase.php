@@ -47,14 +47,26 @@ class AbstractDatabase {
     public function getModel($name,$tableName = null)
     {
         $modelData = $this->models[$name];
+        $modelFile = __DIR__. $modelData['model'];
 
-        $class = 'T4s\CamelotAuth\Auth\\'.$modelData['model'];
+        if(!file_exists($modelFile))
+        {
+            throw new \Exception("Cannot Find the ".ucfirst($modelFile)." Model");
+        }
+        include_once $modelFile;
+
+        $modelClass = 'T4s\CamelotAuth\\'.$modelData['model'];
+
+        if(!class_exists($modelClass,false))
+        {
+            throw new \Exception("Cannot Find Model class (".$modelClass.")");
+        }
 
         if(!is_null($tableName))
         {
             $modelData['table'] = $tableName;
         }
 
-        return new $class($modelData['table']);
+        return new $modelClass($modelData['table']);
     }
 } 
