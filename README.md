@@ -14,7 +14,7 @@ Camelot-Auth is provided as a Composer package which can be installed by adding 
 ```javascript
 {
 	"require": {
-		"t4s/camelot-auth": "1.*"
+		"t4s/camelot-auth": "1.0.*"
 	}
 }
 ```
