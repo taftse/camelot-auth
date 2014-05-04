@@ -25,10 +25,16 @@ class EloquentDatabase extends AbstractDatabase implements DatabaseInterface
 
 	public function loadRepository($repository,$model,$table = null)
 	{
+        if(isset($this->repositories[$repository]))
+        {
+            return $this->repositories[$repository];
+        }
+
+        $model = $this->models[$model];
 
 		$class = 'T4s\CamelotAuth\\'.$repository;
 
-		return new $class($this->config,$this->getModel($model,$table));
+		return $this->repositories[$repository] = new $class($model['model'],$model['table']);
 	}
 	
 }

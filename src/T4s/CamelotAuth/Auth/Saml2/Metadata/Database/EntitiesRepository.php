@@ -15,24 +15,25 @@ use T4s\CamelotAuth\Repositories\AbstractRepository;
 
 class EntitiesRepository extends AbstractRepository{
 
-    public function createEntity(EntityDescriptor $entity)
+    public function createOrUpdateEntity(EntityDescriptor $entity)
     {
 
-        $entityModel = $this->getByEntityID($entity->getEntityID());
+        $entityModel = $this->getByEntity($entity->getEntityID());
         if(!is_null($entityModel))
         {
+            // update entity
             return $entityModel;
         }
 
-        $entityModel = $this->model->fill([
+        $entityModel = $this->getNewModel()->fill([
             'uid'=>$entity->getEntityID(),
             ]);
 
         return $entityModel;
     }
 
-    public function getByEntityID($entityID)
+    public function getByEntity($entityID)
     {
-       return  $this->model->where('uid', '=', $entityID)->first();
+       return $this->getNewModel()->where('uid', '=', $entityID)->first();
     }
 } 

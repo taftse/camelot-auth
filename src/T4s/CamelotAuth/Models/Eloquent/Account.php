@@ -23,6 +23,12 @@ class Account extends Model implements AccountInterface
 	public $timestamps = true;
 
 
+    public function __construct($table,array $attributes = array())
+    {
+        $this->table = $table;
+        parent::__construct($attributes);
+    }
+
 	public function getAuthIdentifier()
 	{
 		return $this->getKey();

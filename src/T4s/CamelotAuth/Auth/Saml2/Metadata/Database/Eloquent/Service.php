@@ -10,20 +10,20 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Eloquent;
 
 
-use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\EntityInterface;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\ServiceInterface;
 use T4s\CamelotAuth\Models\Eloquent\EloquentModel;
 
-class Entity extends EloquentModel implements EntityInterface
+class Service extends EloquentModel implements ServiceInterface
 {
 
-    protected $table = 'saml2_entities';
+    protected $table = 'saml2_services';
 
-    protected $fillable = ['uid'];
+    protected $fillable = ['entity_id','type','binding','location','default','index'];
 
     public $timestamps = true;
 
-    public function getEntityID()
-    {
-        return $this->id;
-    }
-} 
+
+
+
+}
+

@@ -10,6 +10,8 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
+use T4s\CamelotAuth\Auth\Saml2\Core\Elements\Attribute;
+
 class RequestedAttribute extends Attribute implements SAMLElementInterface
 {
     protected $isRequired = false;

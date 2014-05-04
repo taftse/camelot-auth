@@ -39,6 +39,16 @@ class IndexedEndpointType extends EndpointType
 		$this->isDefault = $isDefault;
 	}
 
+    public function getIndex()
+    {
+        return $this->index;
+    }
+
+    public function isDefault()
+    {
+        return $this->isDefault;
+    }
+
 	public function toXML(\DOMElement $parentElement)
 	{
 		$node = parrent::toXML($parentElement);
@@ -58,6 +68,15 @@ class IndexedEndpointType extends EndpointType
 	{
 		parent::importXML($node);
 
-		// more code to come
-	}
+        if(!$node->hasAttribute('index'))
+        {
+            throw new \Exception("This IndexedEndpoint is missing the required index attribute");
+        }
+        $this->index = $node->getAttribute('index');
+
+        if($node->hasAttribute('isDefault'))
+        {
+            $this->isDefault = (bool)$node->getAttribute('isDefault');
+        }
+    }
 }

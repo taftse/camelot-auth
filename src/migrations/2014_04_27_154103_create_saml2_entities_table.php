@@ -15,15 +15,15 @@ class CreateSaml2EntitiesTable extends Migration {
         Schema::create('saml2_entities', function($table)
         {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('uid');
-            $table->string('name_id_format');
-            $table->string('support_url');
-            $table->string('home_url');
-            $table->string('type');
+            $table->string('name_id_format')->nullable();
+            $table->string('support_url')->nullable();
+            $table->string('home_url')->nullable();
+            $table->string('type')->nullable();
             $table->boolean('approved')->default(false);
             $table->boolean('active')->default(false);
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
 
         });

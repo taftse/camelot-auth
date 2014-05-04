@@ -17,7 +17,7 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
 
     protected $wantAssertionSigned = false;
 
-    protected $assertionConsumingService = array();
+    protected $assertionConsumerService = array();
 
     /**
      * @var null|array
@@ -34,6 +34,18 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
         }
     }
 
+    public function getServices()
+    {
+        $services = parent::getServices();
+
+        foreach($this->assertionConsumerService as $acs)
+        {
+            $services[]['AssertionConsumerService'] = $acs;
+        }
+
+        return $services;
+    }
+
     public function toXML(\DOMElement $parentElement)
     {
         $descriptor = parent::toXML($parentElement);
@@ -48,7 +60,7 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
             $descriptor->setAttribute('WantAssertionSigned','true');
         }
 
-        foreach($this->assertionConsumingService as $acs)
+        foreach($this->assertionConsumerService as $acs)
         {
             $acs->toXML($descriptor);
         }
@@ -71,11 +83,13 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
             $index = new IndexedEndpointType($index,$binding,$location,$responseLocation);
         }
 
-        $this->assertionConsumingService[] = $index;
+        $this->assertionConsumerService[] = $index;
     }
 
-    public function inportXML(\DOMElement $node)
+    public function importXML(\DOMElement $node)
     {
+        parent::importXML($node);
+
         if($node->hasAttribute('AuthnRequestsSigned'))
         {
             $this->authnRequestsSigned = $node->getAttribute('AuthnRequestsSigned');
@@ -90,8 +104,8 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
         {
             switch($node->localName)
             {
-                case "AssertionConsumingService":
-                    $this->assertionConsumingService[] = new IndexedEndpointType($node);
+                case "AssertionConsumerService":
+                    $this->assertionConsumerService[] = new IndexedEndpointType($node);
                     break;
                 case "AttributeConsumingService":
                     $this->attributeConsumingService[] = new AttributeConsumingService($node);

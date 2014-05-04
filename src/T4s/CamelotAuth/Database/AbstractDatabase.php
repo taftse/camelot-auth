@@ -14,6 +14,8 @@ class AbstractDatabase {
 
     protected $models = [ ];
 
+    protected $repositories = [ ] ;
+
     /**
      * Set the tables to be used by the database driver
      *
@@ -37,36 +39,4 @@ class AbstractDatabase {
         return $this->models;
     }
 
-    /**
-     * Get the model to be used by the database driver
-     *
-     * @param $name
-     * @param null $tableName
-     * @return class
-     */
-    public function getModel($name,$tableName = null)
-    {
-        $modelData = $this->models[$name];
-        $modelFile = __DIR__. $modelData['model'];
-
-        if(!file_exists($modelFile))
-        {
-            throw new \Exception("Cannot Find the ".ucfirst($modelFile)." Model");
-        }
-        include_once $modelFile;
-
-        $modelClass = 'T4s\CamelotAuth\\'.$modelData['model'];
-
-        if(!class_exists($modelClass,false))
-        {
-            throw new \Exception("Cannot Find Model class (".$modelClass.")");
-        }
-
-        if(!is_null($tableName))
-        {
-            $modelData['table'] = $tableName;
-        }
-
-        return new $modelClass($modelData['table']);
-    }
 } 

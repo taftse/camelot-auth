@@ -28,6 +28,9 @@
     "autoload": {
         "psr-0": {
             "T4s\\CamelotAuth": "src/"
+        },
+        "psr-4": {
+            "T4s\\CamelotAuth\\": "src/"
         }
     },
     "minimum-stability": "dev"

@@ -24,11 +24,11 @@ return array(
 
     // eloquent
     ///*
-    'tables' => [
-                    'entity'                => 'Saml2\Metadata\Database\Eloquent\Entity',
-                    'serviceLocation'       => 'Saml2\Metadata\Database\Eloquent\ServiceLocation',
-                    'certificate'           => 'Saml2\Metadata\Database\Eloquent\Certificate',
-                    'contacts'              => 'Saml2\Metadata\Database\Eloquent\Contact',
+    'models' => [
+                    'entity'                => ['model'=>'Auth\Saml2\Metadata\Database\Eloquent\Entity', 'table'=>'saml2_entities'],
+                    'services'              => ['model'=>'Auth\Saml2\Metadata\Database\Eloquent\Service', 'table'=>'saml2_services'],
+                    'certificate'           => ['model'=>'Auth\Saml2\Metadata\Database\Eloquent\Certificate', 'table'=>'saml2_certificates'],
+                    'contacts'              => ['model'=>'Auth\Saml2\Metadata\Database\Eloquent\Contact', 'table'=>'saml2_contacts'],
                 ],
     //*/
 

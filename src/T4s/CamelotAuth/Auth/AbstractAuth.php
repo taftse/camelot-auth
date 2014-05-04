@@ -118,7 +118,7 @@ abstract class AbstractAuth{
 
 		// load the account repository
         $modelData = $this->config->get('camelot.models');
-		$this->accountProvider =  $this->database->loadRepository($modelData['account']['model'],$modelData['account']['table']);
+		$this->accountProvider =  $this->database->loadRepository('Repositories\AccountRepository','account',$modelData['account']['table']);
 
 		$this->registrationFields = $this->config->get('camelot.required_account_details');
 

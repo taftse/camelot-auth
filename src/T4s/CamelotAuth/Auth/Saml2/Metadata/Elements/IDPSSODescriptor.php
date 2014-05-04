@@ -50,6 +50,17 @@ class IDPSSODescriptor extends SSODescriptor implements SAMLElementInterface
         }
     }
 
+    public function getServices()
+    {
+        $services = parent::getServices();
+
+        foreach($this->singleSignOnService as $ssos)
+        {
+            $services[]['SingleSignOnService'] = $ssos;
+        }
+        return $services;
+    }
+
     public function toXML(\DOMElement $parentElement)
     {
         $descriptor = parent::toXML($parentElement);

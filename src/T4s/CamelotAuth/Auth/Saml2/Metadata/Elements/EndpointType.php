@@ -72,8 +72,23 @@ class EndpointType
         return $parentNode;
 	}
 
-	public function importXML(\DOMElement $xml)
+	public function importXML(\DOMElement $node)
 	{
-		// more code to come
+        if(!$node->hasAttribute('Binding'))
+        {
+            throw new \Exception("This Endpoint is missing the required Binding attribute");
+        }
+        $this->binding = $node->getAttribute('Binding');
+
+        if(!$node->hasAttribute('Location'))
+        {
+            throw new \Exception("This Endpoint is missing the required Location attribute");
+        }
+        $this->location = $node->getAttribute('Location');
+
+        if($node->hasAttribute('ResponseLocation'))
+        {
+            $this->responseLocation = $node->getAttribute('ResponseLocation');
+        }
 	}
 }

@@ -80,7 +80,22 @@ class EntityDescriptor implements SAMLElementInterface
         return $this->entityID;
     }
 
+    public function getServices()
+    {
+        $services = [];
 
+        foreach($this->descriptors as $descriptor)
+        {
+            $services = array_merge($descriptor->getServices(),$services);
+        }
+
+        return $services;
+    }
+
+    public function addRoleDescriptor(RoleDescriptor $role)
+    {
+        $this->descriptors[] = $role;
+    }
 
     public function toXML(\DOMElement $parentElement)
     {
@@ -143,10 +158,7 @@ class EntityDescriptor implements SAMLElementInterface
         return $entityDescriptor;
     }
 
-    public function addRoleDescriptor(RoleDescriptor $role)
-    {
-        $this->descriptors[] = $role;
-    }
+
 
     public function  importXML(\DOMElement $node)
     {

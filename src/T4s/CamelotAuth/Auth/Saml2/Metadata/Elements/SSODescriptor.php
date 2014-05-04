@@ -39,6 +39,37 @@ abstract class SSODescriptor extends RoleDescriptor implements SAMLElementInterf
 
     }
 
+    public function getServices()
+    {
+        $services = [ ];
+
+        if(!is_null($this->artifactResolutionService))
+        {
+            foreach($this->artifactResolutionService as $ars)
+            {
+                $services[]['ArtifactResolutionService'] = $ars;
+            }
+        }
+
+        if(!is_null($this->singleLogoutService))
+        {
+            foreach($this->singleLogoutService as $sls)
+            {
+                $services[]['SingleLogoutService'] = $sls;
+            }
+        }
+
+        if(!is_null($this->manageNameIDService))
+        {
+            foreach($this->manageNameIDService as $mnids)
+            {
+                $services[]['ManageNameIDService'] = $mnids;
+            }
+        }
+
+        return $services;
+    }
+
     public function toXML(\DOMElement $parentNode)
     {
         $descriptor = parent::toXML($parentNode);

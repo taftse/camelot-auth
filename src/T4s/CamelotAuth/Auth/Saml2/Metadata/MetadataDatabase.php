@@ -21,10 +21,20 @@ class MetadataDatabase implements MetadataInterface
     protected $config;
     protected $metadata = array();
 
+    protected $entityRepository;
+    protected $serviceLocationRepository;
+    protected $certificatesRepository;
+    protected $contactsRepository;
+
     public function __construct(ConfigInterface$config,DatabaseInterface $database)
     {
         $this->config = $config;
         $this->database = $database;
+
+        $this->entityRepository = $this->database->loadRepository('Auth\Saml2\Metadata\Database\EntitiesRepository','entity');
+        $this->serviceLocationRepository = $this->database->loadRepository('Auth\Saml2\Metadata\Database\ServicesRepository','services');
+        $this->certificatesRepository = $this->database->loadRepository('Auth\Saml2\Metadata\Database\CertificatesRepository','certificate');
+        $this->contactsRepository = $this->database->loadRepository('Auth\Saml2\Metadata\Database\ContactsRepository','contacts');
     }
 
 
@@ -67,12 +77,19 @@ class MetadataDatabase implements MetadataInterface
 
         }
 
-        $entityRepository = $this->database->loadRepository('Auth\Saml2\Metadata\Database\EntitiesRepository','entity');
-        var_dump($entityRepository);
         foreach($this->metadata as $entity)
         {
-                $entity = $entityRepository->createEntity($entity);
-                $entityRepository->save($entity);
+                $entityModel = $this->entityRepository->createOrUpdateEntity($entity)->save();
+
+                $this->serviceLocationRepository->deleteByEntity($entityModel);
+
+            foreach($entity->getServices() as $service)
+                {
+                    $key = key($service);
+                    $this->serviceLocationRepository->createService($entityModel,$key,$service[$key])->save();
+                }
+
+
         }
     }
 
