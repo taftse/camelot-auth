@@ -55,7 +55,7 @@ class LocalAuth extends AbstractAuth{
 
 			if($this->events)
 			{
-				$this->event->fire('camelot.auth.attempt',array_values(compact('credentials','remember','login')));
+				$this->events->fire('camelot.auth.attempt',array_values(compact('credentials','remember','login')));
 			}
 
 			//check that the required fields have been filled in 
@@ -127,7 +127,7 @@ class LocalAuth extends AbstractAuth{
 
 			if($this->events)
 			{
-				$this->event->fire('camelot.auth.login',array($localUser->Account,$remember));
+				$this->events->fire('camelot.auth.login',array($localUser->Account,$remember));
 			}
 			if($login){
 				 $this->createSession($localUser->Account,$remember);
