@@ -44,7 +44,13 @@ class ServicesRepository  extends  AbstractRepository{
 
     public   function deleteByEntity(EntityInterface $entity)
     {
-        return $this->getNewModel()->where('entity_id','=',$entity->getEntityID())->delete();
+        $model = $this->getNewModel()->where('entity_id','=',$entity->getEntityID());
+        if($model == false)
+        {
+            return$model;
+        }
+
+        return $model->delete();
     }
 
 

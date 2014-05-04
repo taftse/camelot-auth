@@ -79,14 +79,16 @@ class MetadataDatabase implements MetadataInterface
 
         foreach($this->metadata as $entity)
         {
-                $entityModel = $this->entityRepository->createOrUpdateEntity($entity)->save();
+                $entityModel = $this->entityRepository->createOrUpdateEntity($entity);
+                $this->entityRepository->save($entityModel);
+
 
                 $this->serviceLocationRepository->deleteByEntity($entityModel);
 
             foreach($entity->getServices() as $service)
                 {
                     $key = key($service);
-                    $this->serviceLocationRepository->createService($entityModel,$key,$service[$key])->save();
+                   // $this->serviceLocationRepository->createService($entityModel,$key,$service[$key])->save();
                 }
 
 

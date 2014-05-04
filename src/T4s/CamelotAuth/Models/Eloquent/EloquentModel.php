@@ -23,12 +23,5 @@ abstract class EloquentModel extends Model
         }
     }
 
-    public function save(array $options = Array())
-    {
-        if ($this->getDirty()) {
-            return parent::save($options);
-        } else {
-            return parent::touch();
-        }
-    }
+
 } 

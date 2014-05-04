@@ -53,6 +53,16 @@ abstract class AbstractRepository {
         return $model->delete();
     }
 
+
+    public function save($model)
+    {
+        if ($model->getDirty()) {
+            return $model->save();
+        } else {
+            return $model::touch();
+        }
+    }
+
     /**
      * Get the model to be used by the database driver
      *

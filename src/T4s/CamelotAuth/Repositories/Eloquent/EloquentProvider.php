@@ -25,4 +25,6 @@ class EloquentProvider
 				
 		return new $class;
 	}
+
+
 }
