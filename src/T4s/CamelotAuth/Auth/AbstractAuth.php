@@ -158,7 +158,7 @@ abstract class AbstractAuth{
 			$uri = str_replace($this->httpPath, '', $_SERVER['REQUEST_URI']);
 			
 			header("Location: ".$protocol.$host.$uri.$to);
-			exit;
+			//exit;
 		}
 
 		/*	1. check if a to route has been set in session
