@@ -107,6 +107,7 @@ abstract class AbstractAuth{
 		$id = $account->id;
 
 		$this->session->put($id);
+		$this->session->put($this->providerName,'authProvider');
 
 		if($remember)
 		{
