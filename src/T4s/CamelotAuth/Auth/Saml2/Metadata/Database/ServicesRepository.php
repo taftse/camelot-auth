@@ -10,6 +10,7 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Database;
 
 
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Interfaces\EntityInterface;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\EndpointType;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\EntityDescriptor;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\IndexedEndpointType;

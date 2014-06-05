@@ -26,7 +26,7 @@ class EntitiesRepository extends AbstractRepository{
         }
 
         $entityModel = $this->getNewModel()->fill([
-            'uid'=>$entity->getEntityID(),
+            'uid' => $entity->getEntityID(),
             ]);
 
         return $entityModel;

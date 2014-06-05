@@ -10,7 +10,7 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Eloquent;
 
 
-use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\ServiceInterface;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Interfaces\ServiceInterface;
 use T4s\CamelotAuth\Models\Eloquent\EloquentModel;
 
 class Service extends EloquentModel implements ServiceInterface

@@ -7,9 +7,9 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Database;
+namespace T4s\CamelotAuth\Database\Eloquent;
 
 
-interface CertificateInterface {
+class EloquentDriver {
 
 } 

@@ -15,13 +15,16 @@ use Illuminate\Database\Eloquent\Model;
 abstract class EloquentModel extends Model
 {
 
-    public function __construct($table = null)
+    public function __construct()
     {
-        if(!is_null($table))
+        /*if(!is_null($table))
         {
             $this->table = $table;
-        }
+        }*/
     }
 
-
+    public function setTable($table)
+    {
+        $this->table = $table;
+    }
 } 

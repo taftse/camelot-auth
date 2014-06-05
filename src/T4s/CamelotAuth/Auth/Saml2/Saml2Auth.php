@@ -25,11 +25,11 @@ class Saml2Auth extends AbstractAuth
 {
     protected $metadataStore = null;
 
-    public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,MessagingInterface $messaging,$path)
+    public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,$path)
     {
 
 
-        parent::__construct($provider,$config,$session,$cookie,$database,$messaging,$path);
+        parent::__construct($provider,$config,$session,$cookie,$database,$path);
 
 
         $this->database->setModels($this->config->get('saml2.models'));

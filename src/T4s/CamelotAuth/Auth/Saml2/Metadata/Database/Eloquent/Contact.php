@@ -10,7 +10,7 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Eloquent;
 
 
-use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\ContactInterface;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Interfaces\ContactInterface;
 use T4s\CamelotAuth\Models\Eloquent\EloquentModel;
 
 class Contact extends EloquentModel implements ContactInterface

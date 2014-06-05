@@ -30,6 +30,23 @@ class KeyDescriptor implements SAMLElementInterface
         $this->keyInfo = $keyInfo;
     }
 
+    public function getCertificate($sanitised = false)
+    {
+        if($sanitised == true)
+        {
+        return "-----BEGIN CERTIFICATE-----
+".chunk_split(trim(str_replace(PHP_EOL,'',trim($this->keyInfo))),64)."-----END CERTIFICATE-----";
+        }
+
+        return chunk_split(trim(str_replace(PHP_EOL,'',trim($this->keyInfo))),64);
+
+    }
+
+    public  function getUse()
+    {
+        return $this->use;
+    }
+
     public function toXML(\DOMElement $parentElement)
     {
         $descriptor = $parentElement->ownerDocument->createElementNS(Saml2Constants::Namespace_Metadata,'md:KeyDescriptor');
@@ -69,7 +86,7 @@ class KeyDescriptor implements SAMLElementInterface
             switch($node->localName)
             {
                 case "KeyInfo":
-                    $this->keyInfo = $node;
+                    $this->keyInfo = $this->getKeyInfo($node);
                     break;
                 case "EncryptionMethod":
                     // @todo implemnt xenc:EncriptionMethodType
@@ -77,5 +94,15 @@ class KeyDescriptor implements SAMLElementInterface
                     break;
             }
         }
+    }
+
+    public function getKeyInfo(\DOMElement $node)
+    {
+      //  var_dump($node);
+        echo "<pre>";
+       $list =  $node->ownerDocument->getElementsByTagName('X509Certificate');
+        var_dump($list->item(0));
+
+       return $list->item(0)->nodeValue;
     }
 } 

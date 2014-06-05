@@ -106,14 +106,13 @@ abstract class AbstractAuth{
 
 
 
-	public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,MessagingInterface $messaging,$path)
+	public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,$path)
 	{
 		$this->provider 	= $provider; // auth provider (string)
 		$this->config 		= $config;
 		$this->session 		= $session;
 		$this->cookie 		= $cookie;
 		$this->database 	= $database;
-		$this->messaging	= $messaging;
 		$this->path 		= $path; // check path
 
 		// load the account repository

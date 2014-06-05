@@ -62,6 +62,21 @@ abstract class RoleDescriptor implements SAMLElementInterface
         $this->descriptorType = $descriptorType;
     }
 
+    public function getCertificates()
+    {
+        if(is_null($this->keyDescriptors))
+        {
+            return null;
+        }
+
+        foreach($this->keyDescriptors as $keys)
+        {
+                $certificates[] = $keys;
+        }
+
+        return $certificates;
+    }
+
     public function toXML(\DOMElement $parentElement)
     {
         $descriptor = $parentElement->ownerDocument->createElementNS(Saml2Constants::Namespace_Metadata,'md:'.$this->descriptorType);

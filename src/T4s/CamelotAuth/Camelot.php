@@ -38,12 +38,6 @@ class Camelot{
      */
     protected $config;
 
-    /**
-     * The Messaging driver
-     *
-     * @var T4s\CamelotAuth\Messaging\MessagingInterface
-     */
-    protected $messaging;
 
     /**
     * The event dispatcher instance.
@@ -75,12 +69,11 @@ class Camelot{
 
 
 
-    public function __construct(SessionInterface $session,CookieInterface $cookie,ConfigInterface $config,MessagingInterface $messaging,$path)
+    public function __construct(SessionInterface $session,CookieInterface $cookie,ConfigInterface $config,$path)
     {
         $this->session = $session;
         $this->cookie = $cookie;
         $this->config = $config;
-        $this->messaging = $messaging;
         $this->path = $path;
 
         $this->supported_drivers = $this->config->get('camelot.provider_routing'); 
@@ -194,7 +187,6 @@ class Camelot{
             $this->session,
             $this->cookie,
             $this->database,
-            $this->messaging,
             $this->path
             );
 

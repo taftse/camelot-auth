@@ -40,12 +40,12 @@ abstract class AbstractRepository {
 
     public function getAll()
     {
-        return $this->model->all();
+        return $this->getNewModel()->all();
     }
 
     public function getById($id)
     {
-        return $this->model->find($id);
+        return $this->getNewModel()->find($id);
     }
 
     public function delete($model)
@@ -59,7 +59,7 @@ abstract class AbstractRepository {
         if ($model->getDirty()) {
             return $model->save();
         } else {
-            return $model::touch();
+            return $model->touch();
         }
     }
 
@@ -70,6 +70,9 @@ abstract class AbstractRepository {
      */
     public function getNewModel()
     {
-        return new $this->model($this->table);
+
+       $model = new $this->model();
+       $model->setTable($this->table);
+        return $model;
     }
 } 

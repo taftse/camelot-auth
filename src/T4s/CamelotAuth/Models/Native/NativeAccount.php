@@ -1,7 +1,7 @@
 <?php namespace T4s\CamelotAuth\Models\Native;
 
 use T4s\CamelotAuth\Models\Native\NativeModel;
-use T4s\CamelotAuth\Database\Native\DatabaseInterface;
+use T4s\CamelotAuth\Database\DatabaseInterface;
 
 class NativeAccount extends NativeModel implements AccountInterface
 {
@@ -9,6 +9,6 @@ class NativeAccount extends NativeModel implements AccountInterface
 
 	public function __construct(DatabaseInterface $db)
 	{
-		parent::__construct(DatabaseInterface $db);
+		parent::__construct($db);
 	}
 }

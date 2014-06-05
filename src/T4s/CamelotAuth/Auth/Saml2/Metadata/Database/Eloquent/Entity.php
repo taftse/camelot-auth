@@ -10,7 +10,7 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Eloquent;
 
 
-use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\EntityInterface;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Interfaces\EntityInterface;
 use T4s\CamelotAuth\Models\Eloquent\EloquentModel;
 
 class Entity extends EloquentModel implements EntityInterface
