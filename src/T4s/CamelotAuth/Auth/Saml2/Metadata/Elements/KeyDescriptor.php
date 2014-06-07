@@ -98,11 +98,19 @@ class KeyDescriptor implements SAMLElementInterface
 
     public function getKeyInfo(\DOMElement $node)
     {
-      //  var_dump($node);
-        echo "<pre>";
-       $list =  $node->ownerDocument->getElementsByTagName('X509Certificate');
-        var_dump($list->item(0));
+        foreach($node->childNodes as $node)
+        {
+            if($node->localName == "X509Data")
+            {
+                foreach($node->childNodes as $node)
+                {
+                    if($node->localName == "X509Certificate")
+                    {
+                        return $node->nodeValue;
+                    }
+                }
+            }
+        }
 
-       return $list->item(0)->nodeValue;
     }
 } 
