@@ -20,7 +20,7 @@ class Attribute implements SAMLElementInterface{
 
     protected $friendlyName = null;
 
-    protected $value = [ ];
+    protected $attributeValue = [ ];
 
     public  function  toXML(\DOMElement $parentNode)
     {
