@@ -46,6 +46,42 @@ class ContactPerson implements SAMLElementInterface
         $this->surName = $surName;
     }
 
+
+    public function getGivenName()
+    {
+        return $this->givenName;
+    }
+
+    public function getSurName()
+    {
+        return $this->surName;
+    }
+
+    public function getTelephoneNumber()
+    {
+        return $this->telephoneNumber;
+    }
+
+    public function getEmailAddress()
+    {
+        return $this->emailAddress;
+    }
+
+    public function getExtension()
+    {
+        return $this->extensions;
+    }
+
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
     public function toXML(\DOMElement $parentElement)
     {
         $contactPerson = $parentElement->ownerDocument->createElementNS(Saml2Constants::Namespace_Metadata,'md:ContactPerson');

@@ -15,5 +15,11 @@ use T4s\CamelotAuth\Models\Eloquent\EloquentModel;
 
 class Contact extends EloquentModel implements ContactInterface
 {
+    protected $table = 'saml2_contacts';
 
-} 
+    protected  $fillable = ['entity_id','first_name','last_name','phone','email','type','extension','company'];
+
+    public $timestamps = true;
+}
+
+

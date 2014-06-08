@@ -101,6 +101,14 @@ class MetadataDatabase implements MetadataInterface
                     $this->certificatesRepository->createOrUpdateCertificate($entityModel,$certificate)->save();
                 }
             }
+
+            if(!is_null($entity->getContacts()))
+            {
+                foreach ($entity->getContacts() as $contact)
+                {
+                    $this->contactsRepository->createOrUpdateContact($entityModel,$contact)->save();
+                }
+            }
         }
     }
 

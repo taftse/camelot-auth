@@ -17,7 +17,7 @@ class Certificate extends EloquentModel implements CertificateInterface
 {
     protected $table = 'saml2_certificates';
 
-    protected $fillable = ['entity_id','type','data','default','fingerprint','subject',''];
+    protected $fillable = ['entity_id','type','data','default','fingerprint','subject'];
 
     public  $timestamps = true;
 } 

@@ -107,6 +107,11 @@ class EntityDescriptor implements SAMLElementInterface
         return $certificates;
     }
 
+    public function getContacts()
+    {
+        return $this->contacts;
+    }
+
     public function addRoleDescriptor(RoleDescriptor $role)
     {
         $this->descriptors[] = $role;
