@@ -116,4 +116,9 @@ class MetadataDatabase implements MetadataInterface
     {
 
     }
+
+    public function isValidEnitity($entityID)
+    {
+       // if($this->entityRepository->where('entityID'))
+    }
 } 

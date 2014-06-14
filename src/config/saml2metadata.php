@@ -15,5 +15,9 @@ return array(
         "",
     ),
 
-    "metadata" => array(),
+    "metadata" => [
+        'https://login.tools4schools.ie' =>[
+
+        ],
+    ],
 );

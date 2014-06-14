@@ -29,4 +29,13 @@ class MetadataConfig implements MetadataInterface{
     {
 
     }
+
+    public function isValidEnitity($entityID)
+    {
+       if(isset($this->config->get('saml2metadata:metadata')[$entityID]))
+       {
+           return true;
+       }
+        return false;
+    }
 } 
