@@ -40,7 +40,7 @@ class CamelotAuthServiceProvider extends ServiceProvider {
 
 			$camelot =  new Camelot(
 				new IlluminateSession($app['session.store']),
-				new IlluminateCookie($app['cookie']),
+				new IlluminateCookie($app['request'],$app['cookie']),
 				new LaravelConfig($app['config']),
 				$app['request']->path()
 				);
