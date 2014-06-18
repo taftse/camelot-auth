@@ -33,18 +33,18 @@ AA=='       ],
             'IDPSSODescriptor' =>[
                 'SingleSignOnService' => [
                     [
-                     0 =>   [
+                        0 =>   [
                             'Binding'   =>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
                             'Location'  =>'http://login.tools4schools.ie/saml2/'
-                            ],
-                     1 =>   [
+                        ],
+                        1 =>   [
                             'Binding'   =>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
                             'Location'  =>'http://login.tools4schools.ie/saml2/'
-                            ],
-                     2 =>   [
+                        ],
+                        2 =>   [
                             'Binding'   =>'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
                             'Location'  =>'http://login.tools4schools.ie/saml2/'
-                            ],
+                        ],
                     ],
                 ],
             ]

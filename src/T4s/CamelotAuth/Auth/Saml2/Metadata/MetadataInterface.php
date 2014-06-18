@@ -17,4 +17,6 @@ interface MetadataInterface {
     public function generateMetadata();
 
     public function isValidEnitity($entityID);
+
+    public function getEntity($entityID);
 } 

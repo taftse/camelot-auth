@@ -7,10 +7,9 @@ use T4s\CamelotAuth\Database\DatabaseInterface;
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
-use T4s\CamelotAuth\Messaging\MessagingInterface;
 use T4s\CamelotAuth\Events\DispatcherInterface;
 
-use T4s\CamelotAuth\Auth\Saml2\Messages\AuthnRequestMessage;
+use T4s\CamelotAuth\Auth\Saml2\Core\Messages\AuthnRequest;
 use T4s\CamelotAuth\Auth\Saml2\Messages\ResponseMessage;
 
 use T4s\CamelotAuth\Auth\Saml2\bindings\Binding;
@@ -20,9 +19,9 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 {
 
 
-	public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,MessagingInterface $messaging,$path)
+	public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,$path)
 	{
-		parent::__construct($provider,$config,$session,$cookie,$database,$messaging,$path);
+		parent::__construct($provider,$config,$session,$cookie,$database,$path);
 	}
 
 	public function authenticate(array $credentials = null, $remember = false,$login = true)
@@ -83,7 +82,7 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 		$idpMetadata = $this->metadataStore->getEntity($this->provider);
 	
 		// create a new AuthRequest and send it to a idp
-		$authnMessage = new AuthnRequestMessage($idpMetadata,$this->getMetadata());
+		$authnMessage = new AuthnRequest($idpMetadata,$this->getMyMetadata());
 
 		$authnMessage->setAssertionConsumingServiceURL($this->callbackUrl.'/AssertionConsumingService');
 		// where should we redirect the user after a successfull login 
@@ -101,7 +100,7 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 		// if its a artifact response then we need to have the keys so lets inject them here
 		if($binding instanceof HTTPHTTPArtifactBinding)
 		{
-			$b->setSPMetadata($this->getMetadata());
+			$binding->setSPMetadata($this->getMetadata());
 		}
 		// lets get the response message
 		$response = $binding->receive();

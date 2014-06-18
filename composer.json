@@ -20,8 +20,6 @@
     "require-dev":{
         "mockery/mockery":"dev-master",
         "phpunit/phpunit":"3.7.*",
-        "kodova/hamcrest-php": "dev-master",
-
         "illuminate/cookie": "4.x",
         "illuminate/session": "4.x"
     },

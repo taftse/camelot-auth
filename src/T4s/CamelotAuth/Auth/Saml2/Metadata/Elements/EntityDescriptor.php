@@ -10,29 +10,14 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
+use T4s\CamelotAuth\Auth\Saml2\Exceptions\UnknownAttributeException;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
 class EntityDescriptor implements SAMLElementInterface
 {
     // attributes
-    /**
-     * @var
-     */
-    protected $entityID;
 
-    /**
-     * @var null
-     */
-    protected $id = null;
-
-    /**
-     * @var null
-     */
-    protected  $validUntil = null;
-    /**
-     * @var null
-     */
-    protected  $cacheDuration = null;
+    protected $attributes = [];
 
     // elements
 
@@ -72,12 +57,60 @@ class EntityDescriptor implements SAMLElementInterface
         {
             return $this->importXML($entityId);
         }
-        $this->entityID = $entityId;
+        else if(is_array($entityId))
+        {
+            $entityId['entityID'] = $entityId;
+            return $this->importArray($entityId);
+        }
     }
 
     public function getEntityID()
     {
-        return $this->entityID;
+        return $this->attributes['entityID'];
+    }
+
+    public function descriptorExists($descriptorType)
+    {
+        return array_key_exists($descriptorType,$this->descriptors);
+    }
+
+    public function getDescriptor($descriptorType)
+    {
+        if(!$this->descriptorExists($descriptorType))
+        {
+            throw new \Exception("This Entity does not have a descriptor type of ". $descriptorType);
+        }
+        return $this->descriptors[$descriptorType];
+    }
+
+    public function getAttribute($attribute,$default = null)
+    {
+        if(isset($this->attributes[$attribute]))
+        {
+            return $this->attributes[$attribute];
+        }
+        if(is_null($default))
+        {
+            throw new UnknownAttributeException($attribute);
+        }
+        return $default;
+    }
+
+    public function getValidatedValue($attributeName,$validOptions,$default)
+    {
+        $returnedAttribute = $this->getAttribute($attributeName,$default);
+
+        if($returnedAttribute === $default)
+        {
+            return $returnedAttribute;
+        }
+
+        if(!in_array($returnedAttribute, $validOptions))
+        {
+            throw new \Exception("The ".$attributeName." attribute returned an value (".$returnedAttribute.") which is not contained in the array of valid options");
+        }
+
+        return $returnedAttribute;
     }
 
     public function getServices()
@@ -122,21 +155,21 @@ class EntityDescriptor implements SAMLElementInterface
         $entityDescriptor = $parentElement->ownerDocument->createElementNS(Saml2Constants::Namespace_Metadata,'md:EntityDescriptor');
         $parentElement->appendChild($entityDescriptor);
 
-        $entityDescriptor->setAttribute('entityID',$this->entityID);
+        $entityDescriptor->setAttribute('entityID',$this->attributes['entityID']);
 
         if(!is_null($this->id))
         {
-            $entityDescriptor->setAttribute('ID',$this->id);
+            $entityDescriptor->setAttribute('ID',$this->attributes['id']);
         }
 
         if(!is_null($this->validUntil))
         {
-            $entityDescriptor->setAttribute('validUntil',$this->validUntil);
+            $entityDescriptor->setAttribute('validUntil',$this->attributes['validUntil']);
         }
 
         if(!is_null($this->cacheDuration))
         {
-            $entityDescriptor->setAttribute('cacheDuration',$this->cacheDuration);
+            $entityDescriptor->setAttribute('cacheDuration',$this->attributes['cacheDuration']);
         }
 
         if(!is_null($this->signature))
@@ -186,21 +219,21 @@ class EntityDescriptor implements SAMLElementInterface
         {
             throw new \Exception("This EntiryDescriptor is missing the required entityID attribute");
         }
-        $this->entityID = $node->getAttribute('entityID');
+        $this->attributes['entityID'] = $node->getAttribute('entityID');
 
         if($node->hasAttribute('ID'))
         {
-            $this->id = $node->getAttribute('ID');
+            $this->attributes['id'] = $node->getAttribute('ID');
         }
 
         if($node->hasAttribute('validUntil'))
         {
-            $this->validUntil = $node->getAttribute('validUntil');
+            $this->attributes['validUntil'] = $node->getAttribute('validUntil');
         }
 
         if($node->hasAttribute('cacheDuration'))
         {
-            $this->cacheDuration = $node->getAttribute('cacheDuration');
+            $this->attributes['cacheDuration'] = $node->getAttribute('cacheDuration');
         }
 
         foreach($node->childNodes as $node)
@@ -242,6 +275,30 @@ class EntityDescriptor implements SAMLElementInterface
                     // perfect location for a event me thinks
                     break;
             }
+        }
+    }
+
+    public function importArray(array $configArray)
+    {
+        if(!isset($configArray['entityID']))
+        {
+            throw new \Exception("This EntiryDescriptor is missing the required entityID attribute");
+        }
+        $this->attributes['entityID'] = $configArray['entityID'];
+
+        if(isset($configArray['ID']))
+        {
+            $this->attributes['id'] = $configArray['ID'];
+        }
+
+        if(isset($configArray['validUntil']))
+        {
+            $this->attributes['validUntil'] = $configArray['validUntil'];
+        }
+
+        if(isset($configArray['cacheDuration']))
+        {
+            $this->attributes['cacheDuration'] = $configArray['cacheDuration'];
         }
     }
 } 

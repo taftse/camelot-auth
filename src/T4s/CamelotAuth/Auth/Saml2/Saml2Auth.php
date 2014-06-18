@@ -37,6 +37,11 @@ class Saml2Auth extends AbstractAuth
         $this->metadataStore =  $this->loadMetadataStore();
     }
 
+    protected function getMyMetadata()
+    {
+        return $this->metadataStore->getEntity($this->config->get('myEntityID'));
+    }
+
     protected function loadMetadataStore()
     {
         switch($this->config->get('saml2.metadataStore'))

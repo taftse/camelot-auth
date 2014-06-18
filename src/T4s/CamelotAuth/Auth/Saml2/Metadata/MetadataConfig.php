@@ -9,6 +9,7 @@
 
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
 
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\EntityDescriptor;
 use T4s\CamelotAuth\Config\ConfigInterface;
 
 class MetadataConfig implements MetadataInterface{
@@ -32,10 +33,15 @@ class MetadataConfig implements MetadataInterface{
 
     public function isValidEnitity($entityID)
     {
-       if(isset($this->config->get('saml2metadata:metadata')[$entityID]))
+       if(isset($this->config->get('saml2metadata.metadata')[$entityID]))
        {
            return true;
        }
         return false;
+    }
+
+    public function getEntity($entityID)
+    {
+        return new EntityDescriptor($this->config->get('saml2metadata.metadata')[$entityID]);
     }
 } 
