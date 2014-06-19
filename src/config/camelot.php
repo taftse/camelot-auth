@@ -9,11 +9,11 @@ return array(
         | This option controls the database driver that will be utilized.
         | This drivers manages the retrieval of the users details
         |
-        | Supported: "database", "Eloquent"
+        | Supported: "MySql", "Eloquent"
         |
         */
 
-        'database_driver' => 'Eloquent',
+        'storageDriver' => 'Eloquent',
 
         /*
         |--------------------------------------------------------------------------
@@ -26,10 +26,22 @@ return array(
         */
 
         'models' => [
-                        'account' => ['model'=>'Models\Eloquent\Account', 'table'=>'account'],
+                        'account' => 'Models\Eloquent\Account',
                     ],
 
+        /*
+        |--------------------------------------------------------------------------
+        | Authentication Table
+        |--------------------------------------------------------------------------
+        |
+        | you can change the table used by the storage driver
+        |
+        |
+        */
 
+        'tables' => [
+                        'account' => 'accounts',
+                    ],
         /*
         |--------------------------------------------------------------------------
         | Default Authentication Driver

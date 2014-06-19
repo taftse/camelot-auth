@@ -7,7 +7,7 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Database;
 
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Database\DatabaseInterface;
@@ -121,4 +121,24 @@ class MetadataDatabase implements MetadataInterface
     {
        // if($this->entityRepository->where('entityID'))
     }
+
+    public function getEntityDescriptor($entityID)
+    {
+       $entity =  $this->entityRepository->where('entityID','=',$entityID)->first();
+       if(is_null($entity))
+       {
+           throw new \Exception("unknown Entity ".$entityID);
+       }
+
+       return new DatabaseEntityDescriptor(
+                        $entity,
+                        $this->serviceLocationRepository,
+                        $this->certificatesRepository,
+                        $this->contactsRepository
+        );
+    }
+
+
+
+
 } 

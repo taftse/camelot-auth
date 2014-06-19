@@ -7,9 +7,10 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata;
+namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Config;
 
-use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\EntityDescriptor;
+
+use T4s\CamelotAuth\Auth\Saml2\Metadata\MetadataInterface;
 use T4s\CamelotAuth\Config\ConfigInterface;
 
 class MetadataConfig implements MetadataInterface{
@@ -40,8 +41,23 @@ class MetadataConfig implements MetadataInterface{
         return false;
     }
 
-    public function getEntity($entityID)
+    /*public function getEntity($entityID)
     {
-        return new EntityDescriptor($this->config->get('saml2metadata.metadata')[$entityID]);
+        return new EntityDescriptor();
     }
+*/
+
+
+    public function getEntityDescriptor($entityID)
+    {
+        if(!$this->isValidEnitity($entityID))
+        {
+            throw new \Exception("unknown Entity ".$entityID);
+        }
+
+        return new ConfigEntityDescriptor($entityID,$this->config->get('saml2metadata.metadata')[$entityID],$this->config);
+    }
+
+
+
 } 

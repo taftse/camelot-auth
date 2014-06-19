@@ -11,28 +11,29 @@ namespace T4s\CamelotAuth\Auth\Saml2;
 
 use T4s\CamelotAuth\Auth\AbstractAuth;
 
-use T4s\CamelotAuth\Database\DatabaseInterface;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Config\MetadataConfig;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Storage\MetadataStorage;
+
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
-use T4s\CamelotAuth\Messaging\MessagingInterface;
 use T4s\CamelotAuth\Events\DispatcherInterface;
+use T4s\CamelotAuth\Storage\StorageDriver;
 
-use T4s\CamelotAuth\Auth\Saml2\Metadata\MetadataDatabase;
-use T4s\CamelotAuth\Auth\Saml2\Metadata\MetadataConfig;
 
 class Saml2Auth extends AbstractAuth
 {
     protected $metadataStore = null;
 
-    public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,$path)
+    public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,StorageDriver $storage,$path)
     {
 
 
-        parent::__construct($provider,$config,$session,$cookie,$database,$path);
+        parent::__construct($provider,$config,$session,$cookie,$storage,$path);
+
+        $this->storage->setTables($this->config->get('saml2.tables'));
 
 
-        $this->database->setModels($this->config->get('saml2.models'));
 
         $this->metadataStore =  $this->loadMetadataStore();
     }
@@ -50,7 +51,8 @@ class Saml2Auth extends AbstractAuth
                 return new MetadataConfig($this->config);
                 break;
             case 'database':
-                return new MetadataDatabase($this->config,$this->database);
+                return new MetadataStorage($this->storage);
+                break;
         }
     }
 

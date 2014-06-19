@@ -12,11 +12,11 @@ class CreateSaml2EntitiesTable extends Migration {
 	 */
 	public function up()
 	{
-        Schema::create('saml2_entities', function($table)
+        Schema::create('saml2_entities', function(Blueprint $table)
         {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->string('uid');
+            $table->string('entityid');
             $table->string('name_id_format')->nullable();
             $table->string('support_url')->nullable();
             $table->string('home_url')->nullable();
@@ -24,6 +24,8 @@ class CreateSaml2EntitiesTable extends Migration {
             $table->boolean('approved')->default(false);
             $table->boolean('active')->default(false);
             $table->string('description')->nullable();
+            $table->timestamp('validuntill')->nullable();
+            $table->timestamp('cacheduration')->nullable();
             $table->timestamps();
 
         });

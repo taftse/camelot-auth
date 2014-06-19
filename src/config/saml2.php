@@ -23,23 +23,22 @@ return array(
      */
 
     // eloquent
-    ///*
     'models' => [
-                    'entity'                => ['model'=>'Auth\Saml2\Metadata\Database\Eloquent\Entity', 'table'=>'saml2_entities'],
-                    'services'              => ['model'=>'Auth\Saml2\Metadata\Database\Eloquent\Service', 'table'=>'saml2_services'],
-                    'certificate'           => ['model'=>'Auth\Saml2\Metadata\Database\Eloquent\Certificate', 'table'=>'saml2_certificates'],
-                    'contacts'              => ['model'=>'Auth\Saml2\Metadata\Database\Eloquent\Contact', 'table'=>'saml2_contacts'],
+                    'entity'                => 'Auth\Saml2\Metadata\Storage\Eloquent\Entity',
+                    'services'              => 'Auth\Saml2\Metadata\Storage\Eloquent\Service',
+                    'certificate'           => 'Auth\Saml2\Metadata\Storage\Eloquent\Certificate',
+                    'contacts'              => 'Auth\Saml2\Metadata\Storage\Eloquent\Contact',
                 ],
-    //*/
 
-    /*
+
+
     'tables' => [
-        'entity'                => 'saml2_entities',
-        'serviceLocation'       => 'saml2_service_locations',
-        'certificate'           => 'saml2_certificates',
-        'contacts'              => 'saml2_contacts',
+                    'entity'                => 'saml2_entities',
+                    'serviceLocation'       => 'saml2_services',
+                    'certificate'           => 'saml2_certificates',
+                    'contacts'              => 'saml2_contacts',
     ],
-    //*/
+
 
 	);
 

@@ -57,11 +57,12 @@ class EntityDescriptor implements SAMLElementInterface
         {
             return $this->importXML($entityId);
         }
-        else if(is_array($entityId))
+        /*else if(is_array($entityId))
         {
             $entityId['entityID'] = $entityId;
             return $this->importArray($entityId);
-        }
+        }*/
+        $entityId['entityID'] = $entityId;
     }
 
     public function getEntityID()
@@ -280,25 +281,25 @@ class EntityDescriptor implements SAMLElementInterface
 
     public function importArray(array $configArray)
     {
-        if(!isset($configArray['entityID']))
+        if(!isset($configArray['entityid']))
         {
             throw new \Exception("This EntiryDescriptor is missing the required entityID attribute");
         }
-        $this->attributes['entityID'] = $configArray['entityID'];
+        $this->attributes['entityID'] = $configArray['entityid'];
 
-        if(isset($configArray['ID']))
+        if(isset($configArray['id']))
         {
-            $this->attributes['id'] = $configArray['ID'];
+            $this->attributes['id'] = $configArray['id'];
         }
 
-        if(isset($configArray['validUntil']))
+        if(isset($configArray['validuntil']))
         {
-            $this->attributes['validUntil'] = $configArray['validUntil'];
+            $this->attributes['validUntil'] = $configArray['validuntil'];
         }
 
-        if(isset($configArray['cacheDuration']))
+        if(isset($configArray['cacheduration']))
         {
-            $this->attributes['cacheDuration'] = $configArray['cacheDuration'];
+            $this->attributes['cacheDuration'] = $configArray['cacheduration'];
         }
     }
 } 

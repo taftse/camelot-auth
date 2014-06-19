@@ -7,10 +7,10 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Eloquent;
+namespace T4s\CamelotAuth\Auth\Saml2\Storage\Eloquent;
 
 
-use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Interfaces\ServiceInterface;
+use T4s\CamelotAuth\Auth\Saml2\Storage\ServiceInterface;
 use T4s\CamelotAuth\Models\Eloquent\EloquentModel;
 
 class Service extends EloquentModel implements ServiceInterface

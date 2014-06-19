@@ -7,10 +7,10 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Eloquent;
+namespace T4s\CamelotAuth\Auth\Saml2\Storage\Eloquent;
 
 
-use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Interfaces\CertificateInterface;
+use T4s\CamelotAuth\Auth\Saml2\Storage\CertificateInterface;
 use T4s\CamelotAuth\Models\Eloquent\EloquentModel;
 
 class Certificate extends EloquentModel implements CertificateInterface

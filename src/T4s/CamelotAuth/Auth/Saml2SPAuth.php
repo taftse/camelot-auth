@@ -14,14 +14,15 @@ use T4s\CamelotAuth\Auth\Saml2\Messages\ResponseMessage;
 
 use T4s\CamelotAuth\Auth\Saml2\bindings\Binding;
 use T4s\CamelotAuth\Auth\Saml2\bindings\HTTPRedirectBinding;
+use T4s\CamelotAuth\Storage\StorageDriver;
 
 class Saml2SPAuth extends Saml2Auth implements AuthInterface
 {
 
 
-	public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,$path)
+	public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,StorageDriver $storage,$path)
 	{
-		parent::__construct($provider,$config,$session,$cookie,$database,$path);
+		parent::__construct($provider,$config,$session,$cookie,$storage,$path);
 	}
 
 	public function authenticate(array $credentials = null, $remember = false,$login = true)
@@ -79,7 +80,7 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 	protected function sendAuthenticationRequest()
 	{
 		// lets start by getting the idp metadata
-		$idpMetadata = $this->metadataStore->getEntity($this->provider);
+		$idpMetadata = $this->storage->get('entity')->getEntity($this->provider);
 	
 		// create a new AuthRequest and send it to a idp
 		$authnMessage = new AuthnRequest($idpMetadata,$this->getMyMetadata());

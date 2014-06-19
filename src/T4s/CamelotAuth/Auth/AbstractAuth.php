@@ -22,6 +22,7 @@ use T4s\CamelotAuth\Exceptions\UserNotFoundException;
 use T4s\CamelotAuth\Exceptions\AccountPendingActivationException;
 use T4s\CamelotAuth\Exceptions\AccountSuspendedException;
 use T4s\CamelotAuth\Exceptions\AccountNotActiveException;
+use T4s\CamelotAuth\Storage\StorageDriver;
 
 abstract class AbstractAuth{
 
@@ -49,16 +50,11 @@ abstract class AbstractAuth{
 	/**
 	 * The data handeler interface
 	 *
-	 * @var \T4s\CamelotAuth\database\databaseInterface
+	 * @var \T4s\CamelotAuth\Storage\Driver
 	 */
-	protected $database;
+	protected $storage;
 
-	 /**
-	 * The account handeler interface
-	 *
-	 * @var \T4s\CamelotAuth\repository\AccountRepositoryInterface
-	 */
-	protected $accountProvider;
+
 
 	/**
 	 * The event dispatcher instance
@@ -106,18 +102,15 @@ abstract class AbstractAuth{
 
 
 
-	public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,$path)
+	public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,StorageDriver $storage,$path)
 	{
 		$this->provider 	= $provider; // auth provider (string)
 		$this->config 		= $config;
 		$this->session 		= $session;
 		$this->cookie 		= $cookie;
-		$this->database 	= $database;
+		$this->storage   	= $storage;
 		$this->path 		= $path; // check path
 
-		// load the account repository
-        $modelData = $this->config->get('camelot.models');
-		$this->accountProvider =  $this->database->loadRepository('Repositories\AccountRepository','account',$modelData['account']['table']);
 
 		$this->registrationFields = $this->config->get('camelot.required_account_details');
 

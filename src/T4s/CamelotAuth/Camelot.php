@@ -25,11 +25,11 @@ class Camelot{
     protected $cookie;
 
     /**
-     * The Database Driver
+     * The Storage Driver
      *
-     * @var T4s\CamelotAuth\Database\DatabaseInterface
+     * @var T4s\CamelotAuth\Storage\StorageDriver
      */
-    protected $database;
+    protected $storage;
 
     /**
      * The Config driver
@@ -78,7 +78,7 @@ class Camelot{
 
         $this->supported_drivers = $this->config->get('camelot.provider_routing'); 
 
-        $this->database = $this->loadDatabaseDriver($this->config->get('camelot.database_driver'));
+        $this->storage = $this->loadStorageDriver($this->config->get('camelot.storageDriver'));
 
 
     }
@@ -132,10 +132,10 @@ class Camelot{
     }
 
 
-    protected function loadDatabaseDriver($driverName)
+    protected function loadStorageDriver($driverName)
     {
-        $databaseDriverClass = 'T4s\CamelotAuth\Database\\'.ucfirst($driverName).'Database';
-        return new $databaseDriverClass($this->config);
+        $storageDriverClass = 'T4s\CamelotAuth\Storage\\'.ucfirst($driverName).'Driver';
+        return new $storageDriverClass($this->config);
     }
 
 
@@ -186,7 +186,7 @@ class Camelot{
             $this->config,
             $this->session,
             $this->cookie,
-            $this->database,
+            $this->storage,
             $this->path
             );
 

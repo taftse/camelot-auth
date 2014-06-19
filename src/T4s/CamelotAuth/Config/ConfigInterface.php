@@ -1,4 +1,6 @@
-<?php namespace T4s\CamelotAuth\Config;
+<?php
+
+namespace T4s\CamelotAuth\Config;
 
 interface ConfigInterface
 {

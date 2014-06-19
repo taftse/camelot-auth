@@ -7,10 +7,10 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Eloquent;
+namespace T4s\CamelotAuth\Auth\Saml2\Storage\Eloquent;
 
 
-use T4s\CamelotAuth\Auth\Saml2\Metadata\Database\Interfaces\EntityInterface;
+use T4s\CamelotAuth\Auth\Saml2\Storage\EntityInterface;
 use T4s\CamelotAuth\Models\Eloquent\EloquentModel;
 
 class Entity extends EloquentModel implements EntityInterface
@@ -18,12 +18,12 @@ class Entity extends EloquentModel implements EntityInterface
 
     protected $table = 'saml2_entities';
 
-    protected $fillable = ['uid'];
+    protected $fillable = ['entityid'];
 
     public $timestamps = true;
 
     public function getEntityID()
     {
-        return $this->id;
+        return $this->entityid;
     }
 } 
