@@ -57,11 +57,11 @@ class EntityDescriptor implements SAMLElementInterface
         {
             return $this->importXML($entityId);
         }
-        /*else if(is_array($entityId))
+        else if(is_array($entityId))
         {
-            $entityId['entityID'] = $entityId;
+
             return $this->importArray($entityId);
-        }*/
+        }
         $entityId['entityID'] = $entityId;
     }
 

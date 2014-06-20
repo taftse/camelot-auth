@@ -14,7 +14,7 @@ use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\EntityDescriptor;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\SAMLElementInterface;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
-class AuthnRequest extends RequestAbstractType implements SAMLElementInterface
+class AuthnRequest extends RequestAbstractType
 {
     /**
      * elements
@@ -128,7 +128,7 @@ class AuthnRequest extends RequestAbstractType implements SAMLElementInterface
     protected $signRequest = false;
 
 
-    public function __contruct($message = null,EntityDescriptor $spMetadata = null)
+    public function __construct($message = null,EntityDescriptor $spMetadata = null)
     {
         parent::__construct('AuthnRequest',$message);
 
@@ -167,5 +167,16 @@ class AuthnRequest extends RequestAbstractType implements SAMLElementInterface
         $this->destination = $destination['Location'];
         $this->issuer = $spMetadata->getEntityID();
 
+    }
+
+
+    public function setAssertionConsumingServiceURL($url)
+    {
+        $this->assertionConsumerServiceURL = $url;
+    }
+
+    public function getAssertionConsumingServiceURL()
+    {
+        return $this->assertionConsumerServiceURL;
     }
 } 

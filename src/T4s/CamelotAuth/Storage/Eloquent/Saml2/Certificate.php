@@ -7,13 +7,12 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Saml2\Storage\Eloquent;
-
+namespace T4s\CamelotAuth\Storage\Eloquent\Saml2;
 
 use T4s\CamelotAuth\Auth\Saml2\Storage\CertificateInterface;
-use T4s\CamelotAuth\Models\Eloquent\EloquentModel;
 
-class Certificate extends EloquentModel implements CertificateInterface
+
+class Certificate implements CertificateInterface
 {
     protected $table = 'saml2_certificates';
 

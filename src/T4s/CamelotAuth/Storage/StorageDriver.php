@@ -15,7 +15,7 @@ abstract class StorageDriver {
      */
     protected $config;
 
-    protected $tables = [];
+    protected $models = [ ];
 
 
     protected $storages = [ ];
@@ -33,21 +33,22 @@ abstract class StorageDriver {
 
     abstract  function createStorage($storage);
 
+
     /**
-     * Set the tables to be used by the storage driver
+     * Set the models to be used by the database driver
      *
-     * @param array $tables
+     * @param array $models
      * @return T4s\CamelotAuth\Storage\StorageDriver
      */
-    public function setTables(array $tables)
+    public function setModels(array $models)
     {
-        $this->tables = array_merge($this->tables,$tables);
+        $this->models = array_merge($this->models,$models);
 
         return $this;
     }
 
-    public function getTables()
+    public function getModels()
     {
-        return $this->tables;
+       return $this->models;
     }
 } 

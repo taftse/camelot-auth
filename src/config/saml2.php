@@ -11,10 +11,10 @@ return array(
     | Supported: "database", "config"
     |
     */
-	'metadataStore' => 'database',
+	'metadataStore' => 'config',//'database',
 
 
-    'myEntityID' => 'https://idp.tools4schools.org',
+    'myEntityID' => 'https://dashboard.pay4school.local',
 
     /**
      *  what tables/models should be used
@@ -24,21 +24,21 @@ return array(
 
     // eloquent
     'models' => [
-                    'entity'                => 'Auth\Saml2\Metadata\Storage\Eloquent\Entity',
-                    'services'              => 'Auth\Saml2\Metadata\Storage\Eloquent\Service',
-                    'certificate'           => 'Auth\Saml2\Metadata\Storage\Eloquent\Certificate',
-                    'contacts'              => 'Auth\Saml2\Metadata\Storage\Eloquent\Contact',
+                    'entity'                => ['model' => 'Saml2\Entity',      'table' => 'saml2_entities'],
+                    'services'              => ['model' => 'Saml2\Service',     'table' => 'saml2_services'],
+                    'certificate'           => ['model' => 'Saml2\Certificate', 'table' => 'saml2_certificates'],
+                    'contacts'              => ['model' => 'Saml2\Contact',     'table' => 'saml2_contacts'],
                 ],
 
 
 
-    'tables' => [
-                    'entity'                => 'saml2_entities',
+  /*  'tables' => [
+                    'entity'                => ,
                     'serviceLocation'       => 'saml2_services',
                     'certificate'           => 'saml2_certificates',
                     'contacts'              => 'saml2_contacts',
     ],
-
+*/
 
 	);
 

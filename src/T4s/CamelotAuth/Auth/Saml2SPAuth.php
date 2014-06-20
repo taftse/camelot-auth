@@ -1,19 +1,18 @@
 <?php namespace T4s\CamelotAuth\Auth;
 
+use T4s\CamelotAuth\Auth\Saml2\Bindings\Binding;
+use T4s\CamelotAuth\Auth\Saml2\Bindings\HTTPArtifactBinding;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Auth;
-use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
-use T4s\CamelotAuth\Database\DatabaseInterface;
+
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Events\DispatcherInterface;
 
 use T4s\CamelotAuth\Auth\Saml2\Core\Messages\AuthnRequest;
-use T4s\CamelotAuth\Auth\Saml2\Messages\ResponseMessage;
 
-use T4s\CamelotAuth\Auth\Saml2\bindings\Binding;
-use T4s\CamelotAuth\Auth\Saml2\bindings\HTTPRedirectBinding;
+use T4s\CamelotAuth\Auth\Saml2\Bindings\HTTPRedirectBinding;
 use T4s\CamelotAuth\Storage\StorageDriver;
 
 class Saml2SPAuth extends Saml2Auth implements AuthInterface
@@ -80,8 +79,8 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 	protected function sendAuthenticationRequest()
 	{
 		// lets start by getting the idp metadata
-		$idpMetadata = $this->storage->get('entity')->getEntity($this->provider);
-	
+		$idpMetadata = $this->metadataStore->getEntityDescriptor($this->provider);//$this->storage->get('entity')->getEntity($this->provider);
+
 		// create a new AuthRequest and send it to a idp
 		$authnMessage = new AuthnRequest($idpMetadata,$this->getMyMetadata());
 
@@ -99,7 +98,7 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 		$binding = Binding::getBinding();
 
 		// if its a artifact response then we need to have the keys so lets inject them here
-		if($binding instanceof HTTPHTTPArtifactBinding)
+		if($binding instanceof HTTPArtifactBinding)
 		{
 			$binding->setSPMetadata($this->getMetadata());
 		}

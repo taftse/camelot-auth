@@ -12,12 +12,11 @@ namespace T4s\CamelotAuth\Auth\Saml2;
 use T4s\CamelotAuth\Auth\AbstractAuth;
 
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Config\MetadataConfig;
-use T4s\CamelotAuth\Auth\Saml2\Metadata\Storage\MetadataStorage;
+use T4s\CamelotAuth\Auth\Saml2\Storage\MetadataStorage;
 
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
-use T4s\CamelotAuth\Events\DispatcherInterface;
 use T4s\CamelotAuth\Storage\StorageDriver;
 
 
@@ -31,7 +30,7 @@ class Saml2Auth extends AbstractAuth
 
         parent::__construct($provider,$config,$session,$cookie,$storage,$path);
 
-        $this->storage->setTables($this->config->get('saml2.tables'));
+        $this->storage->setModels($this->config->get('saml2.models'));
 
 
 
@@ -40,7 +39,7 @@ class Saml2Auth extends AbstractAuth
 
     protected function getMyMetadata()
     {
-        return $this->metadataStore->getEntity($this->config->get('myEntityID'));
+        return $this->metadataStore->getEntityDescriptor($this->config->get('saml2.myEntityID'));
     }
 
     protected function loadMetadataStore()

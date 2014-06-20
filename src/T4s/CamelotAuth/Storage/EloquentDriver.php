@@ -14,32 +14,32 @@ use T4s\CamelotAuth\Config\ConfigInterface;
 
 class EloquentDriver extends StorageDriver
 {
-    protected $models = [ ];
+
 
 
     public function __construct(ConfigInterface $config)
     {
         $this->config = $config;
-        $this->setTables($this->config->get('camelot.tables'));
+        //$this->setTables($this->config->get('camelot.tables'));
         $this->setModels($this->config->get('camelot.models'));
-    }
-
-    /**
-    * Set the models to be used by the database driver
-    *
-    * @param array $models
-    * @return T4s\CamelotAuth\Storage\StorageDriver
-    */
-    public function setModels(array $models)
-    {
-        $this->models = array_merge($this->models,$models);
-
-        return $this;
     }
 
     public function createStorage($storage)
     {
+        $modelFile = __DIR__.'/Eloquent/'.$this->models[$storage]['model'].'.php';
+        if(!file_exists($modelFile))
+        {
+            throw new \Exception('Cannot Find Storage model "'.$modelFile.'" Driver');
+        }
+        include_once $modelFile;
 
+        $model = "T4s\CamelotAuth\Storage\Eloquent\\".$this->models[$storage]['model'];
+
+        if(!class_exists($model,false))
+        {
+            throw new \RuntimeException('Storage model "'.$model.'" is not supported');
+        }
+        return new $model();
     }
 
     /**
