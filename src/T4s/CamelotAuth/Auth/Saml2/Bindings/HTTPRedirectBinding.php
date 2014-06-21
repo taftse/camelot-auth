@@ -45,7 +45,9 @@ class HTTPRedirectBinding extends Binding
         {
             $this->destination = $message->getDestination();
         }
-
+        echo '<pre/>';
+        var_dump($message);
+        die;
         $messageString = $message->toXML();
         $messageString = $message->getXMLMessage()->saveXML($messageString);
 

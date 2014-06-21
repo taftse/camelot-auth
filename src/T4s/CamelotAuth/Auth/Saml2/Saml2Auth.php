@@ -94,4 +94,13 @@ or where a vendor of a SAML product or services wishes to make contact with the 
 
        // return $this->metadataStore->getEntity($this->config->get('saml2.myEntityID'));
     }
+
+    public function getRelayState()
+    {
+        if(isset($_REQUEST['RelayState']))
+        {
+            return $_REQUEST['RelayState'];
+        }
+        return $this->session->get('url.intended_url',$this->config->get('camelot.login_success_route'));
+    }
 } 

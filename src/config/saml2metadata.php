@@ -31,21 +31,21 @@ YLLpGr7vWTT7gVaCBsiQsbteo9noBXaoAooeJYf4S/VuD3LH4Sjn0o9V+/Un/4JZ
 dkrhHtfUW/Qc2eBcuttZN2+Z9Uahx6soxYCsgTFrHSq12u6RAgMBAAEwAwYBAAMB
 AA=='       ],
             'IDPSSODescriptor' =>[
+                'protocolSupportEnumeration' => \T4s\CamelotAuth\Auth\Saml2\Saml2Constants::Namespace_SAMLProtocol,
                 'SingleSignOnService' => [
-                    [
-                        0 =>   [
-                            'Binding'   =>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-                            'Location'  =>'http://login.tools4schools.ie/saml2/'
-                        ],
-                        1 =>   [
-                            'Binding'   =>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
-                            'Location'  =>'http://login.tools4schools.ie/saml2/'
-                        ],
-                        2 =>   [
-                            'Binding'   =>'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
-                            'Location'  =>'http://login.tools4schools.ie/saml2/'
-                        ],
+                    0 =>   [
+                        'Binding'   =>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+                        'Location'  =>'http://login.tools4schools.ie/saml2/'
                     ],
+                    1 =>   [
+                        'Binding'   =>'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+                        'Location'  =>'http://login.tools4schools.ie/saml2/'
+                    ],
+                    2 =>   [
+                        'Binding'   =>'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
+                        'Location'  =>'http://login.tools4schools.ie/saml2/'
+                    ],
+
                 ],
             ]
         ],
@@ -63,7 +63,10 @@ AoGBAN0f5UDHxn/KGyEdhsr55cnVthzJvVdFBvyMU0PvjIjrFYI7uzB7q2vRAWUK
 YLLpGr7vWTT7gVaCBsiQsbteo9noBXaoAooeJYf4S/VuD3LH4Sjn0o9V+/Un/4JZ
 dkrhHtfUW/Qc2eBcuttZN2+Z9Uahx6soxYCsgTFrHSq12u6RAgMBAAEwAwYBAAMB
 AA=='       ],
-            'SPSSODescriptor' =>[],
+            'SPSSODescriptor' =>[
+                'protocolSupportEnumeration' => \T4s\CamelotAuth\Auth\Saml2\Saml2Constants::Namespace_SAMLProtocol,
+
+            ],
         ],
     ],
 );

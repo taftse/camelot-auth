@@ -34,13 +34,17 @@ class MetadataStorage
 
     public function getEntityDescriptor($entityID)
     {
-        $this->storage->get('entity')->getEntity($entityID);
-        if(is_null($entityID))
+        $entity =  $this->storage->get('entity')->getEntity($entityID);
+        if(is_null($entity))
         {
             throw new \Exception("unknown Entity ".$entityID);
         }
 
-        return new EntityDescriptor($entityID);
+        var_dump($entity);
+        echo 'bla';
+        die();
+
+        return new EntityDescriptor($entity);
     }
 
 }

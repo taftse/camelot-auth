@@ -126,6 +126,65 @@ class EntityDescriptor implements SAMLElementInterface
         return $services;
     }
 
+    public function getEndpoints($endpointType)
+    {
+        $endpoints = [];
+        foreach($this->getServices() as $endpoint)
+        {
+
+            if(isset($endpoint[$endpointType]))
+            {
+                $endpoints[] = $endpoint[$endpointType];
+            }
+        }
+
+        return $endpoints;
+    }
+
+
+    public function getDefaultEndpoint($endpointType,$allowedEndpointBinding = null,$default = null)
+    {
+        $endpoints = $this->getEndpoints($endpointType);
+        $firstAllowed = null;
+        $firstNotFalse = null;
+
+
+        foreach ($endpoints as $endpoint) {
+            if(!is_null($allowedEndpointBinding) && !in_array($endpoint->getBinding(),$allowedEndpointBinding))
+            {
+                continue;
+            }
+
+            if($endpoint instanceof IndexedEndpointType)
+            {
+                if($endpoint->isDefault())
+                {
+                    return $endpoint;
+                }
+
+                if(is_null($firstAllowed))
+                {
+                    $firstAllowed = $endpoint;
+                }
+            }
+            else if(is_null($firstNotFalse))
+            {
+                $firstNotFalse = $endpoint;
+            }
+        }
+
+        if(!is_null($firstNotFalse))
+        {
+            return $firstNotFalse;
+        }
+        else if(!is_null($firstAllowed))
+        {
+            return $firstAllowed;
+        }
+
+    }
+
+
     public function getCertificates()
     {
         $certificates = [];
@@ -301,5 +360,47 @@ class EntityDescriptor implements SAMLElementInterface
         {
             $this->attributes['cacheDuration'] = $configArray['cacheduration'];
         }
+
+        foreach($configArray as $key=>$value)
+        {
+            switch($key)
+            {
+                case "Signature":
+                    $this->signature = $value;
+                    break;
+                case "Extensions":
+                    $this->extensions = $value;
+                    break;
+                case "IDPSSODescriptor":
+                    $this->descriptors[] = new IDPSSODescriptor($value);
+                    break;
+                case "SPSSODescriptor":
+                    $this->descriptors[] = new SPSSODescriptor($value);
+                    break;
+                case "AuthnAuthorityDescriptor":
+                    $this->descriptors[] = new AuthnAuthorityDescriptor($value);
+                    break;
+                case "AttributeAuthorityDescriptor":
+                    $this->descriptors[] = new AttributeAuthorityDescriptor($value);
+                    break;
+                case "PDPDescriptor":
+                    $this->descriptors[] = new PDPDescriptor($value);
+                    break;
+                case "AffiliationDescriptor":
+                    $this->descriptors[] = new AffiliationDescriptor($value);
+                    break;
+                case "Organization":
+                    $this->organization = new Organization($value);
+                    break;
+                case "ContactPerson":
+                    $this->contacts[] = new ContactPerson($value);
+                    break;
+                case "AdditionalMetadataLocation":
+                    $this->aditionalMetadataLocations[] = new AdditionalMetadataLocation($value);
+                    // perfect location for a event me thinks
+                    break;
+            }
+        }
+
     }
 } 

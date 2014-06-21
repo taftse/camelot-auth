@@ -29,6 +29,6 @@ class Entity implements EntityInterface
 
     public function getEntity($entityID)
     {
-       return $this->where('entityID', '=', $entityID)->first();
+       return $this->where('entityID', '=', $entityID)->with('service','certificate','contact')->first();
     }
 } 

@@ -28,9 +28,12 @@ class IndexedEndpointType extends EndpointType
 
 	public function __construct($binding,$location = null,$index = null,$isDefault = false,$responseLocation = null)
 	{
-        if($binding instanceof \DOMElement)
-        {
+        if($binding instanceof \DOMElement) {
             return $this->importXML($binding);
+        }
+        else if(is_array($binding))
+        {
+            return $this->importArray($binding);
         }
 
 		parent::__construct($binding,$location,$responseLocation);
@@ -77,6 +80,22 @@ class IndexedEndpointType extends EndpointType
         if($node->hasAttribute('isDefault'))
         {
             $this->isDefault = (bool)$node->getAttribute('isDefault');
+        }
+    }
+
+    public function importArray(array $array)
+    {
+        parent::importArray($array);
+
+        if(!isset($array['index']))
+        {
+            throw new \Exception("This IndexedEndpoint is missing the required index attribute");
+        }
+        $this->index = $array['index'];
+
+        if(isset($array['isDefault']))
+        {
+            $this->isDefault = (bool)$array['isDefault'];
         }
     }
 }

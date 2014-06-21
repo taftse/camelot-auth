@@ -40,13 +40,18 @@ class IDPSSODescriptor extends SSODescriptor implements SAMLElementInterface
      */
     protected $attributes = null;
 
-    public function __construct(\DOMElement $metadatNode = null)
+    public function __construct($metadatNode = null)
     {
         parent::__construct('IDPSSODescriptor');
 
-        if(!is_null($metadatNode))
+        if($metadatNode instanceof \DOMElement)
         {
             return $this->importXML($metadatNode);
+        }
+        else if(is_array($metadatNode))
+        {
+
+            return $this->importArray($metadatNode);
         }
     }
 
@@ -185,5 +190,49 @@ class IDPSSODescriptor extends SSODescriptor implements SAMLElementInterface
                     break;
             }
         }
+    }
+
+    public function importArray(array $array)
+    {
+        parent::importArray($array);
+
+        if(isset($array['WantAuthnRequestSigned']))
+        {
+            $this->wantAuthnRequestSigned = $array['WantAuthnRequestSigned'];
+        }
+
+        foreach($array as $key=>$value)
+        {
+
+            switch($key)
+            {
+                case "SingleSignOnService":
+                    foreach($value as $type=> $endpoint)
+                    {
+                        $this->singleSignOnService[] = new EndpointType($endpoint);
+                    }
+                    break;
+                case "NameIDMappingService":
+                    foreach($value as $type=> $endpoint)
+                    {
+                        $this->nameIDMappingService[] = new EndpointType($endpoint);
+                    }
+                    break;
+                case "AssertionIDRequestService":
+                    foreach($value as $type=> $endpoint)
+                    {
+                        $this->assertionIDRequestService[] = new EndpointType($endpoint);
+                    }
+                    break;
+                case "AttributeProfile":
+                    $this->attributeProfile[] = $value;
+                    break;
+                case "Attribute":
+                    // @todo create Attribute Elemnt
+                    //$this->attributes[] = new Attribute;
+                    break;
+            }
+        }
+
     }
 } 

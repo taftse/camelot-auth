@@ -147,6 +147,12 @@ class AuthnRequest extends RequestAbstractType
         }
     }
 
+
+    public function signRequest()
+    {
+        return $this->signRequest;
+    }
+
     public function importMetadataSettings(EntityDescriptor $idpMetadata,EntityDescriptor $spMetadata)
     {
         $this->nameIDPolicy = array(
@@ -164,7 +170,7 @@ class AuthnRequest extends RequestAbstractType
         } else {
             $destination = $idpMetadata->getDefaultEndpoint('SingleSignOnService', array(Saml2Constants::Binding_HTTP_Redirect));
         }
-        $this->destination = $destination['Location'];
+        $this->destination = $destination->getLocation();
         $this->issuer = $spMetadata->getEntityID();
 
     }

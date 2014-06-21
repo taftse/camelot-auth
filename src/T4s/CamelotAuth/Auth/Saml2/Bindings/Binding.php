@@ -27,6 +27,7 @@ abstract class Binding
 
     public static function getBinding()
     {
+
         switch($_SERVER['REQUEST_METHOD']){
             case 'GET':
                 if(array_key_exists('SAMLRequest',$_GET)|| array_key_exists('SAMLResponse',$_GET))
@@ -60,6 +61,8 @@ abstract class Binding
                 }
                 break;
         }
+
+        throw new \InvalidArgumentException("no valid saml messages recieved");
     }
 
     abstract public function send(AbstractMessage $message);

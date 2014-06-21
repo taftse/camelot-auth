@@ -40,6 +40,10 @@ class EndpointType
         {
             return $this->importXML($binding);
         }
+        else if(is_array($binding))
+        {
+            return $this->importArray($binding);
+        }
 
 		$this->binding 			= $binding;
 		$this->location 		= $location;
@@ -91,4 +95,24 @@ class EndpointType
             $this->responseLocation = $node->getAttribute('ResponseLocation');
         }
 	}
+
+    public function importArray(array $array)
+    {
+        if(!isset($array['Binding']))
+        {
+            throw new \Exception("This Endpoint is missing the required Binding attribute");
+        }
+        $this->binding = $array['Binding'];
+
+        if(!isset($array['Location']))
+        {
+            throw new \Exception("This Endpoint is missing the required Location attribute");
+        }
+        $this->location = $array['Location'];
+
+        if(isset($array['ResponseLocation']))
+        {
+            $this->responseLocation = $array['ResponseLocation'];
+        }
+    }
 }

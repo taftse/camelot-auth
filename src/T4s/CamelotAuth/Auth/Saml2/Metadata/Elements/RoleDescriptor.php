@@ -189,4 +189,55 @@ abstract class RoleDescriptor implements SAMLElementInterface
         }
     }
 
+    public function importArray(array $array)
+    {
+        if(isset($array['ID']))
+        {
+            $this->id = $array['ID'];
+        }
+
+        if(isset($array['validUntil']))
+        {
+            $this->validUntil = $array['validUntil'];
+        }
+
+        if(isset($array['cacheDuration']))
+        {
+            $this->cacheDuration = $array['cacheDuration'];
+        }
+
+        if(!isset($array['protocolSupportEnumeration']))
+        {
+            throw new \Exception("This ".$this->descriptorType." is missing the required protocolSupportEnumeration attribute");
+        }
+        $this->protocolSupportEnumeration = $array['protocolSupportEnumeration'];
+
+        if(isset($array['errorURL']))
+        {
+            $this->errorURL = $array['errorURL'];
+        }
+
+        foreach($array as $key=>$value)
+        {
+            switch($key)
+            {
+                case "Signature":
+                    $this->signature = $value;
+                    break;
+                case "Extensions":
+                    $this->extensions = $value;
+                    break;
+                case "KeyDescriptor":
+                    $this->keyDescriptors[] = new KeyDescriptor($value);
+                    break;
+                case "Organization":
+                    $this->organisation = new Organization($value);
+                    break;
+                case "ContactPerson":
+                    $this->contacts[] = new ContactPerson($value);
+                    break;
+            }
+        }
+    }
+
 } 

@@ -85,10 +85,13 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 		$authnMessage = new AuthnRequest($idpMetadata,$this->getMyMetadata());
 
 		$authnMessage->setAssertionConsumingServiceURL($this->callbackUrl.'/AssertionConsumingService');
-		// where should we redirect the user after a successfull login 
-		//$request->setRelayState($this->getRelayState());
+
 
 		$request = new HTTPRedirectBinding();
+
+        // where should we redirect the user after a successfull login
+
+        $request->setRelayState($this->getRelayState());
 
 		$request->send($authnMessage);
 	}
@@ -102,6 +105,9 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 		{
 			$binding->setSPMetadata($this->getMetadata());
 		}
+        echo '<pre/>';
+        var_dump($binding);
+        die;
 		// lets get the response message
 		$response = $binding->receive();
 		if(!($response instanceof ResponseMessage))

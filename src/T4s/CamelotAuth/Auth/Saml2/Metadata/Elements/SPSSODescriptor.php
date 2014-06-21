@@ -24,13 +24,18 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
      */
     protected $attributeConsumingService = null;
 
-    public function __construct(\DOMElement $metadatNode= null )
+    public function __construct($metadatNode= null )
     {
         parent::__construct('SPSSODescriptor');
 
-        if(!is_null($metadatNode))
+        if($metadatNode instanceof \DOMElement)
         {
             return $this->importXML($metadatNode);
+        }
+        else if(is_array($metadatNode))
+        {
+
+            return $this->importArray($metadatNode);
         }
     }
 
@@ -112,5 +117,37 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
                     break;
             }
         }
+    }
+
+    public function importArray(array $array)
+    {
+        parent::importArray($array);
+
+        if(isset($array['AuthnRequestsSigned']))
+        {
+            $this->authnRequestsSigned = $array['AuthnRequestsSigned'];
+        }
+
+        if(isset($array['WantAssertionSigned']))
+        {
+            $this->wantAssertionSigned = $array['WantAssertionSigned'];
+        }
+
+        foreach($array as $key=>$value)
+        {
+
+            switch($key)
+            {
+                case "AssertionConsumerService":
+                    foreach($value as $type=> $endpoint) {
+                        $this->assertionConsumerService[] = new IndexedEndpointType($endpoint);
+                    }
+                    break;
+                case "AttributeConsumingService":
+                    $this->attributeConsumingService[] = new AttributeConsumingService($value);
+                    break;
+            }
+        }
+       // die;
     }
 } 
