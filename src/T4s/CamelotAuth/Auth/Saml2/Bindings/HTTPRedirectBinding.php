@@ -45,9 +45,7 @@ class HTTPRedirectBinding extends Binding
         {
             $this->destination = $message->getDestination();
         }
-        echo '<pre/>';
-        var_dump($message);
-        die;
+
         $messageString = $message->toXML();
         $messageString = $message->getXMLMessage()->saveXML($messageString);
 
@@ -73,7 +71,7 @@ class HTTPRedirectBinding extends Binding
             $msg .= '&Signature='.urlencode(base64_encode($signature));
         }
 
-        if(is_null($this->destination) ||$this->destination = '' || preg_match("/\\s/",$this->destination))
+        if(is_null($this->destination) || $this->destination == '' || preg_match("/\\s/",$this->destination))
         {
             throw new \Exception("No destination set for this request");
         }
@@ -87,7 +85,7 @@ class HTTPRedirectBinding extends Binding
 
     public function receive()
     {
-        if( array_key_exists('SAMLResponse',$_GET))
+        if(array_key_exists('SAMLResponse',$_GET))
         {
             $message = $_GET['SAMLResponse'];
         }

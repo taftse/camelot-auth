@@ -8,6 +8,7 @@
  */
 namespace T4s\CamelotAuth\Auth;
 
+use T4s\CamelotAuth\Auth\Saml2\Bindings\Binding;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Auth;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
@@ -53,11 +54,16 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 		}
 		else if(strpos($this->path,'SingleSignOnService'))
 		{
-		//	return $this->handleAuthnRequest();
+			return $this->handleAuthnRequest();
 		}
 
 		//return $this->handleNewSSORequest();
 	}
 
+    protected function handleAuthnRequest()
+    {
+        $binding = Binding::getBinding();
 
+        $request = $binding->receive();
+    }
 }
