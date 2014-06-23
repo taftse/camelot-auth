@@ -55,7 +55,7 @@ return array(
         |
         |
         */
-        'default_provider' => 'local',
+        'default_provider' => 'OneloginSP',    //'local',
 
         /*
         |--------------------------------------------------------------------------

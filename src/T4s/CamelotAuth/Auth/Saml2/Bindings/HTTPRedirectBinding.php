@@ -14,21 +14,21 @@ use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
 class HTTPRedirectBinding extends Binding
 {
-    protected $parematers = [ ];
+    protected $paramaters = [ ];
 
     protected $signingCertificate = null;
 
     public function setRelayState($relayState)
     {
-        $this->parematers['RelayState'] = $relayState;
+        $this->paramaters['RelayState'] = $relayState;
     }
 
 
     public function getRelayState()
     {
-        if(isset($this->parematers['RelayState']))
+        if(isset($this->paramaters['RelayState']))
         {
-            return $this->parematers['RelayState'];
+            return $this->paramaters['RelayState'];
         }
 
         return null;
@@ -62,7 +62,7 @@ class HTTPRedirectBinding extends Binding
         }
 
         $msg .= urlencode($messageString);
-        $msg .= http_build_query($this->parematers);
+        $msg .= http_build_query($this->paramaters);
 
         if($message->signRequest() && !is_null($this->signingCertificate))
         {

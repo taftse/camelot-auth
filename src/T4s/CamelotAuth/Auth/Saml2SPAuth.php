@@ -2,6 +2,7 @@
 
 use T4s\CamelotAuth\Auth\Saml2\Bindings\Binding;
 use T4s\CamelotAuth\Auth\Saml2\Bindings\HTTPArtifactBinding;
+use \T4s\CamelotAuth\Auth\Saml2\Core\Messages\Response;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Auth;
 
 
@@ -105,12 +106,10 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 		{
 			$binding->setSPMetadata($this->getMetadata());
 		}
-        echo '<pre/>';
-        var_dump($binding);
-        die;
+
 		// lets get the response message
 		$response = $binding->receive();
-		if(!($response instanceof ResponseMessage))
+		if(!($response instanceof Response))
 		{
 			throw new \Exception("The Assertion Consuming Service has recieved an invalid message");
 		}
@@ -124,8 +123,9 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 
 		
 		
-		var_dump($response->getNameId());
-
-		var_dump($response->getAttributes());
+		//var_dump($response->getNameId());
+        echo '<pre/>';
+		var_dump($response->getAssertions());
 	}
 }
+

@@ -40,6 +40,11 @@ return array(
     ],
 */
 
+    'certificate' => [
+        'public'    => '',
+        'private'   => '',
+    ]
+
 	);
 
 

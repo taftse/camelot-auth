@@ -9,6 +9,11 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Core\Messages;
 
 
+use T4s\CamelotAuth\Auth\Saml2\Core\Elements\ArtifactResolve;
+use T4s\CamelotAuth\Auth\Saml2\Core\Elements\ArtifactResponse;
+use T4s\CamelotAuth\Auth\Saml2\Core\Elements\AttributeQuery;
+use T4s\CamelotAuth\Auth\Saml2\Core\Elements\LogoutRequest;
+use T4s\CamelotAuth\Auth\Saml2\Core\Elements\LogoutResponse;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
 abstract class AbstractMessage
@@ -83,7 +88,7 @@ abstract class AbstractMessage
 
         if($message instanceof \DOMElement)
         {
-            return $this->importXML($message);
+           $this->importXML($message);
         }
     }
 
@@ -137,7 +142,6 @@ abstract class AbstractMessage
 
         //$this->validateSignature($node);
 
-
     }
 
     public function getDestination()
@@ -153,5 +157,43 @@ abstract class AbstractMessage
     public function getIssuer()
     {
         return $this->issuer;
+    }
+
+    public static function getMessageFromXML(\DOMElement $message)
+    {
+        if($message->namespaceURI  != Saml2Constants::Namespace_SAMLProtocol)
+        {
+            throw new \Exception("Unknown saml request namespace ".$message->namespaceURI);
+        }
+
+        switch($message->localName)
+        {
+            case 'AttributeQuery':
+                return new AttributeQuery($message);
+                break;
+            case 'AuthnRequest':
+                return new AuthnRequest($message);
+                break;
+            case 'LogoutResponse':
+                return new LogoutResponse($message);
+                break;
+            case 'LogoutRequest':
+                return new LogoutRequest($message);
+                break;
+            case 'Response':
+                return new Response($message);
+                break;
+            case 'ArtifactResponse':
+                return new ArtifactResponse($message);
+                break;
+            case 'ArtifactResolve':
+                return new ArtifactResolve($message);
+                break;
+
+            default:
+                throw new \Exception("Unknown message type ".$message->localName);
+                break;
+
+        }
     }
 }

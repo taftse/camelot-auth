@@ -12,7 +12,7 @@ namespace T4s\CamelotAuth\Auth\Saml2\Core\Elements;
 
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\SAMLElementInterface;
 
-class EncryptedAttribut implements SAMLElementInterface
+class EncryptedAttribute implements SAMLElementInterface
 {
     /**
      * elements

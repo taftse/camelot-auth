@@ -10,34 +10,30 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Core\Elements;
 
 
+use T4s\CamelotAuth\Auth\Saml2\Core\Messages\AbstractMessage;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\SAMLElementInterface;
 
-class StatusResponse implements SAMLElementInterface
+class StatusResponse  extends AbstractMessage
 {
     /**
      * Attributes
      */
 
-    /**
-     * @var
-     */
-    protected $id;
+
 
     protected $inResponseTo = null;
 
-    protected $version = "2.0";
 
-    protected $issueInstant;
 
-    protected $destination  = null;
 
-    protected $consent = null;
+
+
 
     /**
      * elements
      */
 
-    protected $issuer = null;
+
 
     protected $signature = null;
 
@@ -45,13 +41,15 @@ class StatusResponse implements SAMLElementInterface
 
     protected $status = null;
 
-    public function toXML(\DOMElement $parentElement)
+    public function toXML()
     {
 
     }
 
     public function importXML(\DOMElement $node)
     {
-
+        parent::importXML($node);
     }
+
+
 } 
