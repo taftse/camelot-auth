@@ -62,7 +62,7 @@ class HTTPRedirectBinding extends Binding
         }
 
         $msg .= urlencode($messageString);
-        $msg .= http_build_query($this->paramaters);
+        $msg .= '&'.http_build_query($this->paramaters);
 
         if($message->signRequest() && !is_null($this->signingCertificate))
         {
@@ -118,4 +118,4 @@ class HTTPRedirectBinding extends Binding
 
         return $message;
     }
-} 
+}
