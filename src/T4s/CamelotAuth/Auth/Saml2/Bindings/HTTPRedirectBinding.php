@@ -87,11 +87,11 @@ class HTTPRedirectBinding extends Binding
     {
         if(array_key_exists('SAMLResponse',$_GET))
         {
-            $message = $_GET['SAMLResponse'];
+            $message = urldecode($_GET['SAMLResponse']);
         }
         else if(array_key_exists('SAMLRequest',$_GET))
         {
-            $message = $_GET['SAMLRequest'];
+            $message = urldecode($_GET['SAMLRequest']);
         }
         else
         {
