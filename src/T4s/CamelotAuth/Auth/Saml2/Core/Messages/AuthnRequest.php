@@ -185,4 +185,18 @@ class AuthnRequest extends RequestAbstractType
     {
         return $this->assertionConsumerServiceURL;
     }
+
+    public function getForceAuthn()
+    {
+        return $this->forceAuthn;
+    }
+
+    public function setForceAuthn($forceAuthn)
+    {
+        if(!is_bool($forceAuthn))
+        {
+           throw new \Exception('incorrect data type: you can only set ForceAuthn to true or false');
+        }
+        $this->forceAuthn = $forceAuthn;
+    }
 } 

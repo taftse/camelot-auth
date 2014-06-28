@@ -116,6 +116,21 @@ class HTTPRedirectBinding extends Binding
                 break;
         }
 
+        $document = new \DOMDocument();
+        $document->loadXML($message);
+
+        $message = AbstractMessage::getMessageFromXML($document->firstChild);
+
+        if(array_key_exists('RelayState',$_GET))
+        {
+            $message->setRelayState($_GET['RelayState']);
+        }
+
+        if(array_key_exists('Signature',$_GET))
+        {
+            // complete certificate validation
+        }
+
         return $message;
     }
 }

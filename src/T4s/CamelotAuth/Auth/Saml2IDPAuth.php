@@ -9,6 +9,7 @@
 namespace T4s\CamelotAuth\Auth;
 
 use T4s\CamelotAuth\Auth\Saml2\Bindings\Binding;
+use T4s\CamelotAuth\Auth\Saml2\Core\Messages\AuthnRequest;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Auth;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
@@ -64,6 +65,27 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
     {
         $binding = Binding::getBinding();
 
-        $request = $binding->receive();
+        $requestMessage = $binding->receive();
+
+        if(!($requestMessage instanceof AuthnRequest))
+        {
+            throw new \Exception('Wrong message type recieved exspecting an AuthnRequest Message');
+        }
+
+
+        if(!$this->storage->get('metadata')->isValidEnitity($requestMessage->getIssuer()))
+        {
+            throw new \Exception('unknown EntityID : this IDP does not have a trust relationship with entityID '.$requestMessage->getIssuer());
+        }
+
+
+        if($requestMessage->getForceAuthn()|| $this->check() == false)
+        {
+            // we need to (re)authenticate the user
+
+
+            // redirect to login uri
+            // send with a state object containing redirect to url,method and request message
+        }
     }
 }
