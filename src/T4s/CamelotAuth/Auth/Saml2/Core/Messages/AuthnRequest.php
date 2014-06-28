@@ -153,6 +153,15 @@ class AuthnRequest extends RequestAbstractType
         return $this->signRequest;
     }
 
+    public function setRequestedAuthnContext($authnContext)
+    {
+        $this->requestedAuthContext = $authnContext;
+    }
+    public function getRequestedAuthnContext()
+    {
+        return $this->requestedAuthContext;
+    }
+
     public function importMetadataSettings(EntityDescriptor $idpMetadata,EntityDescriptor $spMetadata)
     {
         $this->nameIDPolicy = array(

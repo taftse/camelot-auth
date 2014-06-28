@@ -9,15 +9,22 @@
 namespace T4s\CamelotAuth\Auth;
 
 use T4s\CamelotAuth\Auth\Saml2\Bindings\Binding;
+use T4s\CamelotAuth\Auth\Saml2\Core\Elements\Assertion;
+use T4s\CamelotAuth\Auth\Saml2\Core\Elements\AuthnStatement;
+use T4s\CamelotAuth\Auth\Saml2\Core\Elements\Conditions;
+use T4s\CamelotAuth\Auth\Saml2\Core\Elements\SubjectConfirmation;
+use T4s\CamelotAuth\Auth\Saml2\Core\Elements\SubjectConfirmationData;
 use T4s\CamelotAuth\Auth\Saml2\Core\Messages\AuthnRequest;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\EndpointType;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Auth;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
-use T4s\CamelotAuth\Database\DatabaseInterface;
+use T4s\CamelotAuth\Auth\Saml2\Saml2State;
+
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
-use T4s\CamelotAuth\Messaging\MessagingInterface;
+
 use T4s\CamelotAuth\Events\DispatcherInterface;
 
 use T4s\CamelotAuth\Auth\Saml2\Metadata\IndexedEndpointType;
@@ -78,14 +85,70 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
             throw new \Exception('unknown EntityID : this IDP does not have a trust relationship with entityID '.$requestMessage->getIssuer());
         }
 
+        $state = new Saml2State($requestMessage);
 
-        if($requestMessage->getForceAuthn()|| $this->check() == false)
+
+        if($requestMessage->getForceAuthn())
         {
             // we need to (re)authenticate the user
 
 
             // redirect to login uri
+            $state->setAttribute('forceAuth',true);
             // send with a state object containing redirect to url,method and request message
+            $state->setCallaback($this,'sendResponse');
+
         }
+        else if($this->check() == false)
+        {
+
+        }
+
+        $this->sendResponse($state);
+    }
+
+    public function sendResponse(Saml2State $state)
+    {
+
+    }
+
+    public function createAssertion(Saml2State $state,EndpointType $acsEndpoint)
+    {
+        //if sp wants assertions signed sign the assertion
+        $assertion = new Assertion();
+        $assertion->setIssuer($this->provider);
+
+        $condition = new Conditions();
+        $condition->setValidAudience([$state->getMessage()->getIssuer()]);
+        $condition->setNotBefore(time() -30);
+        $condition->setNotOnOrAfter(time() + $this->config->get('saml2.assertionLifetime'));
+
+        $assertion->addConditions($condition);
+
+        $authnStatement = new AuthnStatement();
+        $authnStatement->setAuthnContext(Saml2Constants::AuthnContext_Password);
+        if(!is_null($state->getMessage()->getRequestedAuthnContext()))
+        {
+            $authnStatement->setAuthnContext($state->getMessage()->getRequestedAuthnContext());
+        }
+        $authnStatement->setSessionNotOnOrAfter(time()+ $this->config->get('sessionLifetime') * 60);
+
+        $assertion->addAuthnStatement($authnStatement);
+
+        $subjectConfirmation = new SubjectConfirmation();
+        $subjectConfirmationData = new SubjectConfirmationData();
+        $subjectConfirmationData->setNotOnOrAfter(time() + $this->config->get('saml2.assertionLifetime'));
+        $subjectConfirmationData->setRecipient($acsEndpoint->getLoction());
+        $subjectConfirmationData->setInResponseTo($state->getMessage()->getID());
+
+        if($acsEndpoint->getBinding === Saml2Constants::Binding_HOK_SSO)
+        {
+            $subjectConfirmation->setMethod(Saml2Constants::);
+        }else{
+            $subjectConfirmation->setMethod(Saml2Constants::);
+        }
+
+
+
     }
 }

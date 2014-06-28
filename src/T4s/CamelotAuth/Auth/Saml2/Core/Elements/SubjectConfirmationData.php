@@ -28,4 +28,15 @@ class SubjectConfirmationData implements  SAMLElementInterface
     protected $inResponseTo = null;
 
     protected $address = null;
+
+    public function setNotOnOrAfter($notOnOrAfter)
+    {
+        $this->notOnOrAfter = $notOnOrAfter;
+    }
+
+    public function setInResponseTo($inResponseTo)
+    {
+        $this->inResponseTo = $inResponseTo;
+    }
+
 } 

@@ -36,4 +36,19 @@ class Conditions implements SAMLElementInterface
     protected $oneTimeUse = null;
 
     protected $proxyRestriction = null;
+
+    public function setValidAudience(array $audienceRestriction)
+    {
+        $this->audienceRestriction = $audienceRestriction;
+    }
+
+    public function setNotBefore($notBefore = null)
+    {
+        $this->notBefore = $notBefore;
+    }
+
+    public function setNotOnOrAfter($notOnOrAfter = null)
+    {
+        $this->notOnOrAfter = $notOnOrAfter;
+    }
 } 

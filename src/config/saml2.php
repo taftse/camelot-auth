@@ -16,6 +16,8 @@ return array(
 
     'myEntityID' => 'https://dashboard.pay4school.local',
 
+
+    'assertionLifetime' => 300,
     /**
      *  what tables/models should be used
      *

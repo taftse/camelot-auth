@@ -159,6 +159,11 @@ abstract class AbstractMessage
         return $this->issuer;
     }
 
+    public function getID()
+    {
+        return $this->id;
+    }
+
     public static function getMessageFromXML(\DOMElement $message)
     {
         if($message->namespaceURI  != Saml2Constants::Namespace_SAMLProtocol)

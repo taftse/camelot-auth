@@ -118,7 +118,7 @@ class Assertion implements SAMLElementInterface
                    //$this->conditions = new Conditions($node);
                    break;
                case 'AuthnStatement':
-                   //$this->authnStatement = new AuthnStatement($node);
+                   $this->authnStatement = new AuthnStatement($node);
                    break;
                case 'AttributeStatement':
                    $this->attributeStatement = new AttributeStatement($node);
@@ -164,4 +164,24 @@ class Assertion implements SAMLElementInterface
         return $xpath->query('/samlp:Response'.$xpathQuery);
     }
 
+
+    public function setIssuer($issuer)
+    {
+        $this->issuer = $issuer;
+    }
+
+    public function getIssuer()
+    {
+        return $this->issuer;
+    }
+
+    public function addConditions(Conditions $conditions)
+    {
+        $this->conditions = $conditions;
+    }
+
+    public function addAuthnStatement(AuthnStatement $authnStatement)
+    {
+        $this->authnStatement = $authnStatement;
+    }
 } 

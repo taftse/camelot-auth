@@ -34,4 +34,14 @@ class SubjectConfirmation implements SAMLElementInterface
      * @var null
      */
     protected $subjectConfirmationData = null;
+
+    public function setSubjectConfirmationData(SubjectConfirmationData $subjectConfirmationData)
+    {
+        $this->subjectConfirmationData = $subjectConfirmationData;
+    }
+
+    public function setMethod($method)
+    {
+        $this->method = $method;
+    }
 } 

@@ -42,6 +42,12 @@ return array(
         'tables' => [
                         'account' => 'accounts',
                     ],
+
+
+        // session lifetime in minutes
+        'sessionLifetime' = 120,
+
+
         /*
         |--------------------------------------------------------------------------
         | Default Authentication Driver
