@@ -20,5 +20,9 @@ class User extends Model implements UserInterface
 
     public $timestamps = true;
 
+    public function getPersistantID()
+    {
+        return $this->attribute['persistent_id'];
+    }
 
 } 

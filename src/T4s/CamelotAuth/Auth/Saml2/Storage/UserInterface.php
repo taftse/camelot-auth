@@ -10,9 +10,9 @@ namespace T4s\CamelotAuth\Auth\Saml2\Storage;
 
 
 interface UserInterface {
-    public function getAccount();
+    //public function getAccount();
 
-    public function getEntity();
+    //public function getEntity();
 
     public function getPersistantID();
 
