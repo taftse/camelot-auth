@@ -10,10 +10,11 @@
 namespace T4s\CamelotAuth\Storage\Eloquent\Saml2;
 
 
+use Illuminate\Database\Eloquent\Model;
 use T4s\CamelotAuth\Auth\Saml2\Storage\EntityInterface;
 
 
-class Entity implements EntityInterface
+class Entity extends Model implements EntityInterface
 {
 
     protected $table = 'saml2_entities';

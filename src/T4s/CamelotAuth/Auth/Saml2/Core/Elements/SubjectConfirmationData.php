@@ -39,4 +39,8 @@ class SubjectConfirmationData implements  SAMLElementInterface
         $this->inResponseTo = $inResponseTo;
     }
 
+    public function setRecipient($recipient)
+    {
+        $this->recipient = $recipient;
+    }
 } 

@@ -23,4 +23,9 @@ class Subject implements SAMLElementInterface
      * @var null|array
      */
     protected $subjectConfirmation = null;
+
+    public function addSubjectConfirmation(SubjectConfirmation $subjectConfirmation)
+    {
+        $this->subjectConfirmation[] = $subjectConfirmation;
+    }
 } 

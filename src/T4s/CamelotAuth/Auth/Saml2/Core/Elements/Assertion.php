@@ -184,4 +184,13 @@ class Assertion implements SAMLElementInterface
     {
         $this->authnStatement = $authnStatement;
     }
+
+    public function addSubjectConfirmation(SubjectConfirmation $subjectConfirmation)
+    {
+        if(is_null($this->subject))
+        {
+            $this->subject = new Subject();
+        }
+        $this->subject->addSubjectConfirmation($subjectConfirmation);
+    }
 } 
