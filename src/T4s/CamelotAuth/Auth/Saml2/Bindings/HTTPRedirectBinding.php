@@ -123,12 +123,12 @@ class HTTPRedirectBinding extends Binding
 
         $message = AbstractMessage::getMessageFromXML($document->firstChild);
 
-        if(array_key_exists('RelayState',$_GET))
+        if(array_key_exists('RelayState',$get))
         {
-            $message->setRelayState($_GET['RelayState']);
+            $message->setRelayState($get['RelayState']);
         }
 
-        if(array_key_exists('Signature',$_GET))
+        if(array_key_exists('Signature',$get))
         {
             // complete certificate validation
         }

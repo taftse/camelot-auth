@@ -71,6 +71,8 @@ abstract class AbstractMessage
 
     protected $messageType;
 
+    protected $relayState = null;
+
 
     public function __construct($messageType,$message = null)
     {
@@ -90,6 +92,16 @@ abstract class AbstractMessage
         {
            $this->importXML($message);
         }
+    }
+
+    public function getRelayState()
+    {
+        return $this->relayState;
+    }
+
+    public function setRelayState($relayState)
+    {
+        $this->relayState = $relayState;
     }
 
     public function toXML()
