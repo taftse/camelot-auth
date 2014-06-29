@@ -18,13 +18,6 @@ use T4s\CamelotAuth\Storage\StorageDriver;
 
 class Saml2SPAuth extends Saml2Auth implements AuthInterface
 {
-
-
-	public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,StorageDriver $storage,$path)
-	{
-		parent::__construct($provider,$config,$session,$cookie,$storage,$path);
-	}
-
 	public function authenticate(array $credentials = null, $remember = false,$login = true)
 	{
 

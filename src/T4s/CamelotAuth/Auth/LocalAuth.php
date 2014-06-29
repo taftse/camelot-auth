@@ -1,6 +1,5 @@
 <?php namespace T4s\CamelotAuth\Auth;
 
-use T4s\CamelotAuth\Auth\LocalAuth;
 use T4s\CamelotAuth\Auth\LocalAuth\Throttler;
 
 use T4s\CamelotAuth\Session\SessionInterface;
