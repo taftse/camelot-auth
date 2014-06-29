@@ -45,7 +45,7 @@ return array(
 
 
         // session lifetime in minutes
-        'sessionLifetime' = 120,
+        'sessionLifetime' => 120,
 
 
         /*

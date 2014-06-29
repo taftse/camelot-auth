@@ -109,7 +109,9 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 
     public function sendResponse(Saml2State $state)
     {
-
+        $acsEndpoint = $this->getEndpoint();
+        // create assertion
+        $message = $this->createAssertion($state,$acsEndpoint);
     }
 
     public function createAssertion(Saml2State $state,EndpointType $acsEndpoint)
@@ -144,11 +146,16 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
         if($acsEndpoint->getBinding() === Saml2Constants::Binding_HOK_SSO)
         {
             $subjectConfirmation->setMethod(Saml2Constants::SubjectConfirmation_HolderOfKey);
+
+            //@todo complete HOK Code
         }else{
             $subjectConfirmation->setMethod(Saml2Constants::SubjectConfirmation_Bearer);
         }
 
         $assertion->addSubjectConfirmation($subjectConfirmation);
+
+
+
 
     }
 }
