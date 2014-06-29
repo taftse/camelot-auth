@@ -130,7 +130,7 @@ class HTTPRedirectBinding extends Binding
 
         if(array_key_exists('Signature',$get))
         {
-            // complete certificate validation
+            //@todo complete certificate validation
         }
 
         return $message;

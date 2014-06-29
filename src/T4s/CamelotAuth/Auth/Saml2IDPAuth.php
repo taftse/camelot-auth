@@ -80,7 +80,7 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
         }
 
 
-        if(!$this->storage->get('metadata')->isValidEnitity($requestMessage->getIssuer()))
+        if(!$this->metadataStore->isValidEnitity($requestMessage->getIssuer()))
         {
             throw new \Exception('unknown EntityID : this IDP does not have a trust relationship with entityID '.$requestMessage->getIssuer());
         }

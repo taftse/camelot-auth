@@ -42,6 +42,8 @@ class Saml2AttributeResolver
     public function getAttributes($requestedAttributes)
     {
 
-        //todo implement attribute release policy
+        //@todo implement attribute release policy
+
+
     }
 }
