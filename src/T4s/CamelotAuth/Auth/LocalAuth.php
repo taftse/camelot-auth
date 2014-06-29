@@ -2,14 +2,13 @@
 
 use T4s\CamelotAuth\Auth\LocalAuth;
 use T4s\CamelotAuth\Auth\LocalAuth\Throttler;
-use T4s\CamelotAuth\Event\DispatcherInterface;
+
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Config\ConfigInterface;
-use T4s\CamelotAuth\Database\DatabaseInterface;
-use T4s\CamelotAuth\Messaging\MessagingInterface;
 
-use T4s\CamelotAuth\Models\UserInterface;
+
+
 
 use T4s\CamelotAuth\Auth\LocalAuth\Exceptions\LoginRequiredExeption;
 use T4s\CamelotAuth\Auth\LocalAuth\Exceptions\PasswordRequiredExeption;
@@ -18,7 +17,7 @@ use T4s\CamelotAuth\Exceptions\UserNotFoundException;
 use T4s\CamelotAuth\Exceptions\AccountPendingActivationException;
 use T4s\CamelotAuth\Exceptions\AccountSuspendedException;
 use T4s\CamelotAuth\Exceptions\AccountNotActiveException;
-
+use T4s\CamelotAuth\Storage\StorageDriver;
 
 
 class LocalAuth extends AbstractAuth implements AuthInterface{
@@ -42,11 +41,11 @@ class LocalAuth extends AbstractAuth implements AuthInterface{
 
 
 
-		public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,DatabaseInterface $database,MessagingInterface $messaging,$path)
+		public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,StorageDriver $storage,$path)
 		{
-			parent::__construct($provider,$config,$session,$cookie,$database,$messaging,$path);
+			parent::__construct($provider,$config,$session,$cookie,$storage,$path);
 
-			$this->userProvider =  $this->database->loadRepository('User',$this->config->get('localcamelot.model'));
+			//$this->userProvider =  $this->database->loadRepository('User',$this->config->get('localcamelot.model'));
 
 			$this->hasher = $this->loadHasher($this->config->get('localcamelot.hasher'));
 			//$this->throttler  = $this->database->loadRepository('Throttler',$this->config->get('localcamelot.throttler_model'));
