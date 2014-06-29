@@ -85,13 +85,15 @@ class HTTPRedirectBinding extends Binding
 
     public function receive()
     {
-        if(array_key_exists('SAMLResponse',$_GET))
+        $get = $this->parseQueryString();
+
+        if(array_key_exists('SAMLResponse',$get))
         {
-            $message = urldecode($_GET['SAMLResponse']);
+            $message = $get['SAMLResponse'];
         }
-        else if(array_key_exists('SAMLRequest',$_GET))
+        else if(array_key_exists('SAMLRequest',$get))
         {
-            $message = urldecode($_GET['SAMLRequest']);
+            $message = $get['SAMLRequest'];
         }
         else
         {
@@ -99,9 +101,9 @@ class HTTPRedirectBinding extends Binding
         }
 
         $encoding = Saml2Constants::Binding_Encoding_DEFLATE;
-        if(array_key_exists('SAMLEncoding',$_GET))
+        if(array_key_exists('SAMLEncoding',$get))
         {
-            $encoding = $_GET['SAMLEncoding'];
+            $encoding = $get['SAMLEncoding'];
         }
 
         $message = base64_decode($message);
@@ -132,5 +134,44 @@ class HTTPRedirectBinding extends Binding
         }
 
         return $message;
+    }
+
+
+    protected function parseQueryString()
+    {
+        $return =[];
+        $query ='';
+        $relayState ='';
+        $algarithm ='';
+        foreach(explode('&',$_SERVER['QUERY_STRING']) as $get)
+        {
+            $temp = explode('=',$get,2);
+            $name = $temp[0];
+            $value = '';
+            if(count($temp) ===2)
+            {
+                $value = $temp[1];
+            }
+
+            $name = urldecode($name);
+            $return[$name] = urldecode($value);
+            switch($name)
+            {
+                case 'SAMLRequest':
+                case 'SAMLResponse':
+                    $query = $name .'='.$value;
+                    break;
+                case 'RelayState':
+                    $relayState = '&RelayState='.$value;
+                    break;
+                case 'SigAlg':
+                    $algarithm = '&SigAlg='.$value;
+                    break;
+            }
+        }
+
+        $return['SignedQuery'] = $query.$relayState.$algarithm;
+
+        return $return;
     }
 }

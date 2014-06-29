@@ -39,9 +39,9 @@ class Saml2AttributeResolver
         $this->config = $config;
     }
 
-    public function getAttributes($spEntityID)
+    public function getAttributes($requestedAttributes)
     {
 
-        var_dump($entity);
+        //todo implement attribute release policy
     }
 }

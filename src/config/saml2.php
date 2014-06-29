@@ -51,13 +51,22 @@ return [
     // this links saml attributes to the data providers
     'attributes' => [
                         //email
-                        'mail'      => ['storage' => 'database', 'model'=>'account', 'field'=>'email'],
+                        'mail'      => ['source' => 'storage', 'model'=>'account', 'field'=>'email'],
                         //surname
-                        'surname'   => ['storage' => 'database', 'model'=>'account', 'field'=>'last_name'],
+                        'surname'   => ['source' => 'storage', 'model'=>'account', 'field'=>'last_name'],
                         //givenName
-                        'givenName' => ['storage' => 'database', 'model'=>'account', 'field'=>'first_name'],
+                        'givenName' => ['source' => 'storage', 'model'=>'account', 'field'=>'first_name'],
                         //
                         ''
+        ],
+
+    'authsources' =>[
+            'storage' => [
+
+            ],
+            'config' => [
+                'file' =>''
+            ]
         ],
 	];
 
