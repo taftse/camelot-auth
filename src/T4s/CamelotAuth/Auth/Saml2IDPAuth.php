@@ -156,8 +156,9 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 
         $assertion->addSubjectConfirmation($subjectConfirmation);
 
+
         // add attributes
-        $attributes = $this->getAttributes();
+        $attributes = $this->getAttributes($state->getMessage()->getIssuer());
 
         // set nameID
 
@@ -165,8 +166,10 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 
     }
 
-    protected function getAttributes()
+    protected function getAttributes($entityID)
     {
-        $this->storage->get('account')->
+        $entity = $this->metadataStore->getEntityDescriptor($entityID);
+        var_dump($entity);
+        //$this->attributeResolver->getAttributes);
     }
 }

@@ -90,13 +90,10 @@ AA=='       ],
                     'ServiceName' => ['en' =>'Pay4School school payment solution'],
                     'RequestedAttribute' => [
                         0 => [
-                            'NameFormat'     => '',
-                            'Name'           => '',
-                            'FriendlyName'   => '',
+                            'NameFormat'     => 'mail',
+                            'Name'           => 'urn:oid:0.9.2342.19200300.100.1.3',
+                            'FriendlyName'   => 'email',
                             'isRequired'     => '',
-                            'AttributeValue' => [
-                                '',
-                            ],
                         ],
                     ],
                 ],

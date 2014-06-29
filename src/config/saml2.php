@@ -51,13 +51,13 @@ return [
     // this links saml attributes to the data providers
     'attributes' => [
                         //email
-                        'urn:oid:0.9.2342.19200300.100.1.3' => [''],
+                        'mail'      => ['storage' => 'database', 'model'=>'account', 'field'=>'email'],
                         //surname
-                        'urn:oid:2.5.4.4'                   => [''],
+                        'surname'   => ['storage' => 'database', 'model'=>'account', 'field'=>'last_name'],
                         //givenName
-                        'urn:oid:2.5.4.42'                  => [''],
-
-
+                        'givenName' => ['storage' => 'database', 'model'=>'account', 'field'=>'first_name'],
+                        //
+                        ''
         ],
 	];
 

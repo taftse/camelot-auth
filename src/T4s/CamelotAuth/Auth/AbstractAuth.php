@@ -52,9 +52,14 @@ abstract class AbstractAuth{
 	 */
 	protected $storage;
 
+    /**
+     * The configuration handler interface
+     *
+     * @var \T4s\CamelotAuth\Config\ConfigInterface
+     */
+    protected  $config;
 
-
-	/**
+    /**
 	 * The event dispatcher instance
 	 *
 	 * @var \T4s\CamelotAuth\Event\DispatcherInterface
