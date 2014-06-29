@@ -14,7 +14,7 @@ class AttributeConsumingService implements SAMLElementInterface
 {
     protected $index;
 
-    protected  $isDefault = false;
+    protected $isDefault = false;
 
     protected $serviceNames = array();
 

@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 	/*
     |--------------------------------------------------------------------------
     | Default Metadata Storage
@@ -30,6 +30,7 @@ return array(
                     'services'              => ['model' => 'Saml2\Service',     'table' => 'saml2_services'],
                     'certificate'           => ['model' => 'Saml2\Certificate', 'table' => 'saml2_certificates'],
                     'contacts'              => ['model' => 'Saml2\Contact',     'table' => 'saml2_contacts'],
+                    'saml2user'             => ['model' => 'Saml2\User',        'table' => 'saml2_users'],
                 ],
 
 
@@ -45,9 +46,20 @@ return array(
     'certificate' => [
         'public'    => '',
         'private'   => '',
-    ]
+    ],
 
-	);
+    // this links saml attributes to the data providers
+    'attributes' => [
+                        //email
+                        'urn:oid:0.9.2342.19200300.100.1.3' => [''],
+                        //surname
+                        'urn:oid:2.5.4.4'                   => [''],
+                        //givenName
+                        'urn:oid:2.5.4.42'                  => [''],
+
+
+        ],
+	];
 
 
 

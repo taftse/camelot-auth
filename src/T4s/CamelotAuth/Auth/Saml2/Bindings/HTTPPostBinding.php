@@ -21,6 +21,9 @@ class HTTPPostBinding extends Binding
             $this->destination = $message->getDestination();
         }
 
+        $messageString = $message->toXML();
+        $messageString = $message->getXMLMessage()->saveXML($messageString);
+
 
     }
 

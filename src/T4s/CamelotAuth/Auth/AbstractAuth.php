@@ -9,19 +9,17 @@
 
 namespace T4s\CamelotAuth\Auth;
 
-use T4s\CamelotAuth\Database\DatabaseInterface;
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
-use T4s\CamelotAuth\Messaging\MessagingInterface;
-use T4s\CamelotAuth\Events\DispatcherInterface;
 
-use T4s\CamelotAuth\Models\AccountInterface;
+use T4s\CamelotAuth\Events\DispatcherInterface;
 
 use T4s\CamelotAuth\Exceptions\UserNotFoundException;
 use T4s\CamelotAuth\Exceptions\AccountPendingActivationException;
 use T4s\CamelotAuth\Exceptions\AccountSuspendedException;
 use T4s\CamelotAuth\Exceptions\AccountNotActiveException;
+use T4s\CamelotAuth\Storage\AccountInterface;
 use T4s\CamelotAuth\Storage\StorageDriver;
 
 abstract class AbstractAuth{
@@ -50,7 +48,7 @@ abstract class AbstractAuth{
 	/**
 	 * The data handeler interface
 	 *
-	 * @var \T4s\CamelotAuth\Storage\Driver
+	 * @var \T4s\CamelotAuth\Storage\StorageDriver
 	 */
 	protected $storage;
 
@@ -164,7 +162,9 @@ abstract class AbstractAuth{
 
 	public function user()
 	{
-		if($this->loggedOut) return;
+		if($this->loggedOut) {
+            return null;
+        }
 
 		if(!is_null($this->account))
 		{
@@ -175,7 +175,7 @@ abstract class AbstractAuth{
 
 		if(!is_null($id))
 		{
-			return $this->account = $this->accountProvider->getByID($id);
+			return $this->account = $this->storage->get('Account')->getByID($id);
 		}
 
 	}

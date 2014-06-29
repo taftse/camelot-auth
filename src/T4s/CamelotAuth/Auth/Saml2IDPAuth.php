@@ -112,6 +112,8 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
         $acsEndpoint = $this->getEndpoint();
         // create assertion
         $message = $this->createAssertion($state,$acsEndpoint);
+
+        $acsEndpoint->send($message);
     }
 
     public function createAssertion(Saml2State $state,EndpointType $acsEndpoint)
@@ -154,8 +156,17 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 
         $assertion->addSubjectConfirmation($subjectConfirmation);
 
+        // add attributes
+        $attributes = $this->getAttributes();
+
+        // set nameID
 
 
 
+    }
+
+    protected function getAttributes()
+    {
+        $this->storage->get('account')->
     }
 }
