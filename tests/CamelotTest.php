@@ -27,7 +27,7 @@ class CamelotTest extends PHPUnit_Framework_TestCase
 		$this->cookie 		= m::mock('T4s\CamelotAuth\Cookie\CookieInterface');
 		$this->config 		= m::mock('T4s\CamelotAuth\Config\ConfigInterface');
 		$this->messaging 	= m::mock('T4s\CamelotAuth\Messaging\MessagingInterface');
-		$this->path 		= m::mock(\stringValue());
+		//$this->path 		= m::mock(\stringValue());
 		
 		$this->routingarray = array(
                 'Foo'       => array('driver'=>'bar'),
