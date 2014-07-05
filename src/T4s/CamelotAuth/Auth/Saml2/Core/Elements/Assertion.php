@@ -76,6 +76,85 @@ class Assertion implements SAMLElementInterface
 
     public function toXML(\DOMElement $parentElement)
     {
+        $assertion = $parentElement->ownerDocument->createElementNS(Saml2Constants::Namespace_SAML,'saml:Assertion');
+        $parentElement->appendChild($assertion);
+
+        $assertion->setAttribute('ID',$this->id);
+        $assertion->setAttribute('Version',$this->version);
+        $assertion->setAttribute('IssueInstant',date('Y-m-d\TH:i:s\Z',$this->issueInstant));
+
+        if(!is_null($this->issuer))
+        {
+            $n = $assertion->ownerDocument->createElementNS(Saml2Constants::Namespace_SAML,'saml:Issuer');
+            $n->appendChild($assertion->ownerDocument->createTextNode($this->issuer));
+            $assertion->appendChild($n);
+        }
+
+        if(!is_null($this->signature))
+        {
+            foreach ($this->signature as $signature)
+            {
+                $signature->toXML($assertion);
+            }
+        }
+
+        if(!is_null($this->subject))
+        {
+            foreach($this->subject as $subject)
+            {
+                $subject->toXML($assertion);
+            }
+        }
+
+        if(!is_null($this->conditions))
+        {
+            foreach($this->conditions as $conditions)
+            {
+                $conditions->toXML($assertion);
+            }
+        }
+
+        if(!is_null($this->advice))
+        {
+            foreach($this->advice as $advice)
+            {
+                $advice->toXML($assertion);
+            }
+        }
+
+        if(!is_null($this->statement))
+        {
+            foreach($this->statement as $statement)
+            {
+                $statement->toXML($assertion);
+            }
+        }
+
+        if(!is_null($this->authnStatement))
+        {
+            foreach($this->authnStatement as $authnStatement)
+            {
+                $authnStatement->toXML($assertion);
+            }
+        }
+
+        if(!is_null($this->authzDecisionStatement))
+        {
+            foreach($this->authzDecisionStatement as $authzDecisionStatement)
+            {
+                $authzDecisionStatement->toXML($assertion);
+            }
+        }
+
+        if(!is_null($this->attributeStatement))
+        {
+            foreach($this->attributeStatement as $attributeStatement)
+            {
+                $attributeStatement->toXML($assertion);
+            }
+        }
+
+        return $assertion;
 
     }
 

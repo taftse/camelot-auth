@@ -87,5 +87,40 @@ class AuthnStatement extends Statement implements SAMLElementInterface
         $this->sessionNotOnOrAfter = $sessionNotOnOrAfter;
     }
 
+    public function toXML(\DOMElement $parentElement)
+    {
+        $authnStatement = $parentElement->ownerDocument->createElementNS(Saml2Constants::Namespace_SAML,'saml:AuthnStatement');
+        $parentElement->appendChild($authnStatement);
+
+        $authnStatement->setAttribute('AuthnInstant',date('Y-m-d\TH:i:s\Z',$this->authnInstant));
+
+        if(!is_null($this->sessionIndex))
+        {
+            $authnStatement->setAttribute('SessionIndex',$this->sessionIndex);
+        }
+
+        if(!is_null($this->sessionNotOnOrAfter))
+        {
+            $authnStatement->setAttribute('SessionNotOnOrAfter',date('Y-m-d\TH:i:s\Z',$this->sessionNotOnOrAfter));
+        }
+
+        $this->authnContext->toXML($authnStatement);
+
+        if(!is_null($this->subjectLocality))
+        {
+            foreach($this->subjectLocality as $subjectLocality)
+            {
+                $subjectLocality->toXML($authnStatement);
+            }
+        }
+
+        return $authnStatement;
+    }
+
+    public function importXML(\DOMElement $node)
+    {
+        throw new \Exception('unfinished function AuthnStatement->importXML()');
+    }
+
 
 }

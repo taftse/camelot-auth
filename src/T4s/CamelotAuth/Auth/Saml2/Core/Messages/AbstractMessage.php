@@ -126,6 +126,7 @@ abstract class AbstractMessage
             $root->appendChild($n);
         }
 
+
         return $root;
     }
 

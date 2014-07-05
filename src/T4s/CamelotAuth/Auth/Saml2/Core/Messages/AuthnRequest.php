@@ -248,4 +248,9 @@ class AuthnRequest extends RequestAbstractType
         }
         $this->forceAuthn = $forceAuthn;
     }
+
+    public function toXML(\DOMElement $root)
+    {
+        parent::toXML($root);
+    }
 } 

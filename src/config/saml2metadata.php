@@ -76,7 +76,7 @@ AA=='       ],
                     0 => [
                         'isDefault' => true,
                         'index'     => 0,
-                        'Binding'   => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Post',
+                        'Binding'   => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
                         'Location'  => 'https://dashboard.pay4schools.local/login/acs',
                     ],
                     1 => [

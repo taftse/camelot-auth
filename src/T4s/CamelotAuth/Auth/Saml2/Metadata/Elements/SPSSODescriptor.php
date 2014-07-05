@@ -34,7 +34,6 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
         }
         else if(is_array($metadatNode))
         {
-
             return $this->importArray($metadatNode);
         }
     }
@@ -153,6 +152,6 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
                     break;
             }
         }
-       // die;
+
     }
 } 
