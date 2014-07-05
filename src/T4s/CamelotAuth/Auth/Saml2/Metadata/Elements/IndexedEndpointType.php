@@ -24,9 +24,9 @@ class IndexedEndpointType extends EndpointType
 	 *
 	 * @var boolean
 	 */
-	protected $isDefault = false;
+	protected $isDefault = null;
 
-	public function __construct($binding,$location = null,$index = null,$isDefault = false,$responseLocation = null)
+	public function __construct($binding,$location = null,$index = null,$isDefault = null,$responseLocation = null)
 	{
         if($binding instanceof \DOMElement) {
             return $this->importXML($binding);
@@ -52,13 +52,18 @@ class IndexedEndpointType extends EndpointType
         return $this->isDefault;
     }
 
+    public function hasDefault()
+    {
+        return !is_null($this->isDefault);
+    }
+
 	public function toXML(\DOMElement $parentElement)
 	{
 		$node = parrent::toXML($parentElement);
 
         $node->setAttribute('index',$this->index);
 
-        if($this->isDefault != false)
+        if($this->isDefault === true)
         {
             $node->setAttribute('isDefault','true');
         }

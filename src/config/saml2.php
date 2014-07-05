@@ -1,5 +1,7 @@
 <?php
 
+use \T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
+
 return [
 	/*
     |--------------------------------------------------------------------------

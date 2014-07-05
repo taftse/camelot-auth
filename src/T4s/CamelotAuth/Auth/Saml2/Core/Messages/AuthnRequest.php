@@ -162,6 +162,46 @@ class AuthnRequest extends RequestAbstractType
         return $this->requestedAuthContext;
     }
 
+    public function getAssertionConsumerServiceURL()
+    {
+        return $this->assertionConsumerServiceURL;
+    }
+
+    public function setAssertionConsumerServiceURL($endpoint = null)
+    {
+        $this->assertionConsumerServiceURL = $endpoint;
+    }
+
+    public function getProtocolBinding()
+    {
+        return $this->protocolBinding;
+    }
+
+    public function setProtocolBinding($binding = null)
+    {
+        $this->protocolBinding = $binding;
+    }
+
+    public function  getAssertionConsumerServiceIndex()
+    {
+        return $this->assertionConsumerServiceIndex;
+    }
+
+    public function  setAssertionConsumerServiceIndex($index)
+    {
+        $this->assertionConsumerServiceIndex = $index;
+    }
+
+    public function  getAttributeConsumingServiceIndex()
+    {
+        return $this->attributeConsumingServiceIndex;
+    }
+
+    public function  setAttributeConsumingServiceIndex($index)
+    {
+        $this->attributeConsumingServiceIndex = $index;
+    }
+
     public function importMetadataSettings(EntityDescriptor $idpMetadata,EntityDescriptor $spMetadata)
     {
         $this->nameIDPolicy = array(

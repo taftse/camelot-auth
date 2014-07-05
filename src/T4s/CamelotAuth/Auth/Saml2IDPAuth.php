@@ -27,16 +27,8 @@ use T4s\CamelotAuth\Cookie\CookieInterface;
 
 use T4s\CamelotAuth\Events\DispatcherInterface;
 
-use T4s\CamelotAuth\Auth\Saml2\Metadata\IndexedEndpointType;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\IndexedEndpointType;
 
-/*use T4s\CamelotAuth\Auth\Saml2\Messages\AuthnRequestMessage;
-use T4s\CamelotAuth\Auth\Saml2\Messages\ResponseMessage;
-
-use T4s\CamelotAuth\Auth\Saml2\bindings\Binding;
-use T4s\CamelotAuth\Auth\Saml2\bindings\HTTPRedirectBinding;
-use T4s\CamelotAuth\Auth\Saml2\bindings\HTTPPostBinding;
-use T4s\CamelotAuth\Auth\Saml2\bindings\HTTPArtifactBinding;
-*/
 
 class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 {
@@ -109,7 +101,7 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 
     public function sendResponse(Saml2State $state)
     {
-        $acsEndpoint = $this->getEndpoint();
+        $acsEndpoint = $this->getEndpoint('AssertionConsumerService');
         // create assertion
         $message = $this->createAssertion($state,$acsEndpoint);
 
@@ -171,5 +163,71 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
         $entity = $this->metadataStore->getEntityDescriptor($entityID);
         var_dump($entity);
         //$this->attributeResolver->getAttributes);
+    }
+
+    protected function getEndpoint($endpointType,$url = null,$binding = null,$index = null)
+    {
+        $supportedBindings = [];
+        $firstFalse = null;
+        $firstNotFalse = null;
+
+        $idpMetadata = $this->metadataStore->getEntityDescriptor($this->config->get('saml2.myEntityID'));
+
+            foreach($idpMetadata->getEndpoints($endpointType) as $endpoint)
+            {
+                $supportedBindings = $endpoint->getBinding();
+            }
+
+        $spMetadata  = $this->metadataStore->getEntityDescriptor($this->provider);
+        foreach($spMetadata->getEndpoints($endpointType) as $endpoint)
+        {
+            if(!is_null($url) && $endpoint->getLocation() !== $url)
+            {
+                continue;
+            }
+
+            if(!is_null($binding) && $endpoint->getBinding() !== $binding)
+            {
+                continue;
+            }
+
+
+            if(!is_null($index) && $endpoint instanceof IndexedEndpointType && $endpoint->getIndex() !== $index)
+            {
+                continue;
+            }
+
+            if(!in_array($endpoint->getBinding(),$supportedBindings,TRUE))
+            {
+                continue;
+            }
+
+            if($endpoint->hasDefault())
+            {
+                if($endpoint->isDefault())
+                {
+                    return $endpoint;
+                }
+
+                if(is_null($firstFalse))
+                {
+                    $firstFalse = $endpoint;
+                }
+            }else if(is_null($firstNotFalse)){
+                $firstNotFalse = $endpoint;
+            }
+
+        }
+
+        if(!is_null($firstNotFalse))
+        {
+            return $firstNotFalse;
+        }
+        else if(!is_null($firstFalse))
+        {
+            return $firstFalse;
+        }
+
+        return $spMetadata->getDefaultEndpoint($endpointType,$supportedBindings);
     }
 }
