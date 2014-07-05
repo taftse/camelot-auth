@@ -70,7 +70,7 @@ class AuthnStatement extends Statement implements SAMLElementInterface
 
     public function setAuthnContext($authnContext)
     {
-        if(!array_key_exists($authnContext,$this->authnContextOptions))
+        if(!in_array($authnContext,$this->authnContextOptions,TRUE))
         {
             throw new \Exception("unsupported AuthnContext: ".$authnContext);
         }
