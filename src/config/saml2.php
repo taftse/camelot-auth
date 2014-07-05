@@ -15,7 +15,6 @@ return [
     */
 	'metadataStore' => 'config',//'database',
 
-
     'myEntityID' => 'https://dashboard.pay4school.local',
 
     'serviceDescription' => 'Saml Provider Description',

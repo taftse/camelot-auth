@@ -44,13 +44,16 @@ class Saml2Auth extends AbstractAuth
 
     protected function loadMetadataStore()
     {
+        var_dump(get_class($this));
+        die;
+
         switch($this->config->get('saml2.metadataStore'))
         {
             case 'config':
-                return new MetadataConfig($this->config,'',$this->callbackUrl);
+                return new MetadataConfig($this->config,get_class($this),$this->callbackUrl);
                 break;
             case 'database':
-                return new MetadataStorage($this->config,$this->storage,'',$this->callbackUrl);
+                return new MetadataStorage($this->config,get_class($this),$this->storage,$this->callbackUrl);
                 break;
         }
     }
