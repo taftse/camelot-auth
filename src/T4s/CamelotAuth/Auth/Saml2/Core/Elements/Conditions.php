@@ -105,4 +105,4 @@ class Conditions implements SAMLElementInterface
     {
         throw new \Exception('unfinished function Conditions->importXML()');
     }
-} 
+}

@@ -39,7 +39,7 @@ class Saml2Auth extends AbstractAuth
 
     protected function getMyMetadata()
     {
-        return $this->metadataStore->getMyMetadat();
+        return $this->metadataStore->getMyMetadata();
     }
 
     protected function loadMetadataStore()
