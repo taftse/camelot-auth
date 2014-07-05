@@ -86,8 +86,8 @@ abstract class AbstractMetadata
         $spDescriptor->addNameIDFormat(Saml2Constants::NameID_Persistent);
 
         // assertion consuming service
-        $spDescriptor->addAssertionConsumingService(1,Saml2Constants::Binding_HTTP_POST,$this->callbackURL.'/ACS');
-        $spDescriptor->addAssertionConsumingService(2,Saml2Constants::Binding_HTTP_Artifact,$this->callbackURL.'/ACS');
+        $spDescriptor->addAssertionConsumerService(1,Saml2Constants::Binding_HTTP_POST,$this->callbackURL.'/ACS');
+        $spDescriptor->addAssertionConsumerService(2,Saml2Constants::Binding_HTTP_Artifact,$this->callbackURL.'/ACS');
         //$spDescriptor->addAssertionConsumingService(3,Saml2Constants::Binding_,$this->callbackURL.'/ACS');
         $acs = new AttributeConsumingService(0,$this->config->get('saml2.serviceDescription'));
 

@@ -25,12 +25,6 @@ use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
 use T4s\CamelotAuth\Auth\Saml2\Saml2State;
 
-use T4s\CamelotAuth\Config\ConfigInterface;
-use T4s\CamelotAuth\Session\SessionInterface;
-use T4s\CamelotAuth\Cookie\CookieInterface;
-
-use T4s\CamelotAuth\Events\DispatcherInterface;
-
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\IndexedEndpointType;
 
 
@@ -108,7 +102,7 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
     public function sendResponse(Saml2State $state)
     {
 
-        $acsEndpoint = $this->getEndpoint('AssertionConsumingService',$this->supportedBindings);
+        $acsEndpoint = $this->getEndpoint('AssertionConsumerService',$this->supportedBindings);
         // create assertion
         $message = $this->createAssertion($state,$acsEndpoint);
 

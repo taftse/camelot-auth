@@ -81,7 +81,7 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
         return $descriptor;
     }
 
-    public function addAssertionConsumingService($index,$binding= null,$location = null,$responseLocation= null)
+    public function addAssertionConsumerService($index,$binding= null,$location = null,$responseLocation= null)
     {
         if(!$index instanceof EndpointType)
         {
