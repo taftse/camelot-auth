@@ -35,7 +35,7 @@ abstract class AbstractMetadata
 
         if(!is_array($entityType))
         {
-            $entityType[] = $entityType;
+            $entityType = [$entityType];
         }
 
         foreach($entityType as $entity)
@@ -90,7 +90,9 @@ abstract class AbstractMetadata
         $spDescriptor->addAssertionConsumingService(2,Saml2Constants::Binding_HTTP_Artifact,$this->callbackURL.'/ACS');
         //$spDescriptor->addAssertionConsumingService(3,Saml2Constants::Binding_,$this->callbackURL.'/ACS');
         $acs = new AttributeConsumingService(0,$this->config->get('saml2.serviceDescription'));
-        $attributeDetails = $this->config->get('saml2attributes');
+
+        $attributeDetails = $this->config->get('saml2attributes.attributes');
+
         foreach ($this->config->get('saml2.requestedAttributes') as $friendlyName =>$attribute)
         {
             $required = $attribute['required'];

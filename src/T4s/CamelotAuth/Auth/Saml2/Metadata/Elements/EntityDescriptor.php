@@ -62,7 +62,7 @@ class EntityDescriptor implements SAMLElementInterface
 
             return $this->importArray($entityId);
         }
-        $entityId['entityID'] = $entityId;
+        $this->attributes['entityID'] = $entityId;
     }
 
     public function getEntityID()

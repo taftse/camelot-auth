@@ -51,14 +51,26 @@ return [
         'private'   => '',
     ],
 
+    // this specifies which attributes the sp is requesting
+    'requestedAttributes' => [
+                        //email
+                        'mail'      => ['required' => true],
+                        //surname
+                        'surname'   => ['required' => true],
+                        //givenName
+                        'givenName' => ['required' => true],
+                        //home phone number
+                        'homePhone' => ['required' => false],
+        ],
+
     // this links saml attributes to the data providers
     'attributes' => [
                         //email
-                        'mail'      => ['required' => true,'source' => 'storage', 'model'=>'account', 'field'=>'email'],
+                        'mail'      => ['source' => 'storage', 'model'=>'account', 'field'=>'email'],
                         //surname
-                        'surname'   => ['required' => false,'source' => 'storage', 'model'=>'account', 'field'=>'last_name'],
+                        'surname'   => ['source' => 'storage', 'model'=>'account', 'field'=>'last_name'],
                         //givenName
-                        'givenName' => ['required' => true,'source' => 'storage', 'model'=>'account', 'field'=>'first_name'],
+                        'givenName' => ['source' => 'storage', 'model'=>'account', 'field'=>'first_name'],
                         //
                         ''
         ],

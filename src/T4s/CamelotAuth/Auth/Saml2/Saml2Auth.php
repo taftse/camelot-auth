@@ -39,21 +39,21 @@ class Saml2Auth extends AbstractAuth
 
     protected function getMyMetadata()
     {
-        return $this->metadataStore->getEntityDescriptor($this->config->get('saml2.myEntityID'));
+        return $this->metadataStore->getMyMetadat();
     }
 
     protected function loadMetadataStore()
     {
-        var_dump(get_class($this));
-        die;
+
+       $type = substr(join('', array_slice(explode('\\', get_class($this)), -1)),5,-4);
 
         switch($this->config->get('saml2.metadataStore'))
         {
             case 'config':
-                return new MetadataConfig($this->config,get_class($this),$this->callbackUrl);
+                return new MetadataConfig($this->config,$type,$this->callbackUrl);
                 break;
             case 'database':
-                return new MetadataStorage($this->config,get_class($this),$this->storage,$this->callbackUrl);
+                return new MetadataStorage($this->config,$type,$this->storage,$this->callbackUrl);
                 break;
         }
     }
