@@ -52,7 +52,7 @@ abstract class AbstractMetadata
         }
 
     }
-    public function getMyMetadat()
+    public function getMyMetadata()
     {
         return $this->myMetadata;
     }

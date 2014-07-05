@@ -73,7 +73,7 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 
         if(!($requestMessage instanceof AuthnRequest))
         {
-            throw new \Exception('Wrong message type recieved exspecting an AuthnRequest Message');
+            throw new \Exception('Wrong message type received expecting an AuthnRequest Message');
         }
 
 
@@ -82,6 +82,7 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
             throw new \Exception('unknown EntityID : this IDP does not have a trust relationship with entityID '.$requestMessage->getIssuer());
         }
 
+        $this->provider = $requestMessage->getIssuer();
         $state = new Saml2State($requestMessage);
 
 
@@ -106,7 +107,8 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 
     public function sendResponse(Saml2State $state)
     {
-        $acsEndpoint = $this->getEndpoint('AssertionConsumerService');
+
+        $acsEndpoint = $this->getEndpoint('AssertionConsumingService',$this->supportedBindings);
         // create assertion
         $message = $this->createAssertion($state,$acsEndpoint);
 
@@ -171,18 +173,11 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
         //$this->attributeResolver->getAttributes);
     }
 
-    protected function getEndpoint($endpointType,$url = null,$binding = null,$index = null)
+    protected function getEndpoint($endpointType,$supportedBindings,$url = null,$binding = null,$index = null)
     {
-        $supportedBindings = [];
+
         $firstFalse = null;
         $firstNotFalse = null;
-
-        $idpMetadata = $this->metadataStore->getEntityDescriptor($this->config->get('saml2.myEntityID'));
-
-            foreach($idpMetadata->getEndpoints($endpointType) as $endpoint)
-            {
-                $supportedBindings = $endpoint->getBinding();
-            }
 
         $spMetadata  = $this->metadataStore->getEntityDescriptor($this->provider);
         foreach($spMetadata->getEndpoints($endpointType) as $endpoint)
@@ -239,7 +234,7 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 
     public function getBinding(EndpointType $endpoint)
     {
-        switch($acsEndpoint->getBinding())
+        switch($endpoint->getBinding())
         {
             case Saml2Constants::Binding_HTTP_POST:
                 $binding = new HTTPPostBinding();
