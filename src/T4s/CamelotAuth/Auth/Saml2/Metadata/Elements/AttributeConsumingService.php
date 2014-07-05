@@ -20,7 +20,7 @@ class AttributeConsumingService implements SAMLElementInterface
 
     protected $serviceDescriptions = null;
 
-    protected $requestedAttributes = array();
+    protected $requestedAttributes = [];
 
     public function __construct($index = null,$serviceDescription = null)
     {
@@ -31,6 +31,11 @@ class AttributeConsumingService implements SAMLElementInterface
 
         $this->index = $index;
         $this->serviceDescriptions = $serviceDescription;
+    }
+
+    public function addrequestedAttribute($oid = null,$format = null,$friendlyName = null, $required = false)
+    {
+        $this->requestedAttributes[] = new RequestedAttribute($oid,$format,$friendlyName,$required);
     }
 
     public function toXML(\DOMElement $parentNode)

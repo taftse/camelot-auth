@@ -70,6 +70,8 @@ class Saml2Constants
 
     const Binding_SOAP				    		    = 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP';
 
+    const Binding_PAOS				    		    = 'urn:oasis:names:tc:SAML:2.0:bindings:PAOS';
+
     const Binding_HOK_SSO				    	    = 'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser';
 
     const Binding_Encoding_DEFLATE		    	    = 'urn:oasis:names:tc:SAML:2.0:bindings:URL-Encoding:DEFLATE';

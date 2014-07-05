@@ -47,10 +47,10 @@ class Saml2Auth extends AbstractAuth
         switch($this->config->get('saml2.metadataStore'))
         {
             case 'config':
-                return new MetadataConfig($this->config);
+                return new MetadataConfig($this->config,'',$this->callbackUrl);
                 break;
             case 'database':
-                return new MetadataStorage($this->storage);
+                return new MetadataStorage($this->config,$this->storage,'',$this->callbackUrl);
                 break;
         }
     }

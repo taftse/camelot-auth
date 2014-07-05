@@ -21,13 +21,14 @@ class KeyDescriptor implements SAMLElementInterface
      */
     protected $encryptionMethods = null;
 
-    public function __construct($keyInfo = null)
+    public function __construct($keyInfo = null, $use = null)
     {
         if($keyInfo instanceof \DOMElement)
         {
             return $this->importXML($keyInfo);
         }
         $this->keyInfo = $keyInfo;
+        $this->use = $use;
     }
 
     public function getCertificate($sanitised = false)

@@ -16,12 +16,16 @@ class RequestedAttribute extends Attribute implements SAMLElementInterface
 {
     protected $isRequired = false;
 
-    public function __construct(\DOMElement $xml = null)
+    public function __construct($oid = null,$format = null,$friendlyName = null, $required = false)
     {
-        if(!is_null($xml))
+        if(!is_null($oid) && $oid instanceof \DOMElement)
         {
-            return $this->importXML($xml);
+            return $this->importXML($oid);
         }
+        $this->name = $oid;
+        $this->nameFormat = $format;
+        $this->friendlyName = $friendlyName;
+        $this->isRequired = $required;
     }
 
     public function toXML(\DOMElement $parentNode)

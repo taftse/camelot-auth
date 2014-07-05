@@ -10,18 +10,20 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Config;
 
 
+use T4s\CamelotAuth\Auth\Saml2\Metadata\AbstractMetadata;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\AttributeConsumingService;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\EntityDescriptor;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\IDPSSODescriptor;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\KeyDescriptor;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\SPSSODescriptor;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\MetadataInterface;
+use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 use T4s\CamelotAuth\Config\ConfigInterface;
+use T4s\CamelotAuth\Storage\Eloquent\Saml2\Certificate;
 
-class MetadataConfig implements MetadataInterface{
+class MetadataConfig extends AbstractMetadata implements MetadataInterface{
 
-    protected $config;
 
-    public function __construct(ConfigInterface $config)
-    {
-        $this->config = $config;
-    }
 
     public function importMetadata()
     {
@@ -59,7 +61,10 @@ class MetadataConfig implements MetadataInterface{
         $entityDetails['entityid'] = $entityID;
         return new EntityDescriptor($entityDetails);
     }
+}
 
 
 
-} 
+
+
+

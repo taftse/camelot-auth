@@ -9,15 +9,19 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Storage;
 
 
+use T4s\CamelotAuth\Auth\Saml2\Metadata\AbstractMetadata;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\EntityDescriptor;
+use T4s\CamelotAuth\Auth\Saml2\Metadata\MetadataInterface;
+use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Storage\StorageDriver;
 
-class MetadataStorage
+class MetadataStorage extends AbstractMetadata implements MetadataInterface
 {
     protected $storage;
 
-    public function __construct(StorageDriver $storage)
+    public function __construct(ConfigInterface $config, StorageDriver $storage, $entityType,$callbackURL)
     {
+        parent::__construct($config,$entityType,$callbackURL);
         $this->storage = $storage;
     }
 

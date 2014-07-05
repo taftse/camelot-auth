@@ -9,6 +9,10 @@
 namespace T4s\CamelotAuth\Auth;
 
 use T4s\CamelotAuth\Auth\Saml2\Bindings\Binding;
+use T4s\CamelotAuth\Auth\Saml2\Bindings\HTTPArtifactBinding;
+use T4s\CamelotAuth\Auth\Saml2\Bindings\HTTPPostBinding;
+use T4s\CamelotAuth\Auth\Saml2\Bindings\HTTPRedirectBinding;
+use T4s\CamelotAuth\Auth\Saml2\Bindings\SOAPBinding;
 use T4s\CamelotAuth\Auth\Saml2\Core\Elements\Assertion;
 use T4s\CamelotAuth\Auth\Saml2\Core\Elements\AuthnStatement;
 use T4s\CamelotAuth\Auth\Saml2\Core\Elements\Conditions;
@@ -47,12 +51,13 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 			$this->provider = $credentials['entityID'];
 		}
 		// check if the entity provider is valid
-		
-		if(strpos($this->path,'SingleLogoutService'))
+		// single logout service
+		if(strpos($this->path,'SLS'))
 		{
 			//return $this->handleSingleLogoutRequest();
 		}
-		else if(strpos($this->path,'SingleSignOnService'))
+        // single sign on service
+		else if(strpos($this->path,'SSO'))
 		{
 			return $this->handleAuthnRequest();
 		}
@@ -105,7 +110,8 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
         // create assertion
         $message = $this->createAssertion($state,$acsEndpoint);
 
-        $acsEndpoint->send($message);
+        $acsBinding = $this->getBinding($acsEndpoint);
+        $acsBinding->send($message);
     }
 
     public function createAssertion(Saml2State $state,EndpointType $acsEndpoint)
@@ -229,5 +235,37 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
         }
 
         return $spMetadata->getDefaultEndpoint($endpointType,$supportedBindings);
+    }
+
+    public function getBinding(EndpointType $endpoint)
+    {
+        switch($acsEndpoint->getBinding())
+        {
+            case Saml2Constants::Binding_HTTP_POST:
+                $binding = new HTTPPostBinding();
+                break;
+            case Saml2Constants::Binding_HTTP_Redirect:
+                $binding = new HTTPRedirectBinding();
+                break;
+            case Saml2Constants::Binding_HTTP_Artifact:
+                $binding = new HTTPArtifactBinding();
+                break;
+
+            case Saml2Constants::Binding_HOK_SSO:
+
+                break;
+
+            case Saml2Constants::Binding_Encoding_DEFLATE:
+
+                break;
+
+            case Saml2Constants::Binding_SOAP:
+                $binding = new SOAPBinding();
+                break;
+        }
+
+        $binding->setDestination($endpoint->getLocation());
+
+        return $binding;
     }
 }

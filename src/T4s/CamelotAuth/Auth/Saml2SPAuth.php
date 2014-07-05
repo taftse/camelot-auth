@@ -42,7 +42,7 @@ class Saml2SPAuth extends Saml2Auth implements AuthInterface
 		}
 
 
-		if(strpos($this->path,'AssertionConsumingService') !== false)
+		if(strpos($this->path,'ACS') !== false)
 		{
 			// handle assertion message
 			return $this->handleAsertionConsumingServiceRequest();

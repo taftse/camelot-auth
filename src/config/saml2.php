@@ -18,6 +18,8 @@ return [
 
     'myEntityID' => 'https://dashboard.pay4school.local',
 
+    'serviceDescription' => 'Saml Provider Description',
+
 
     'assertionLifetime' => 300,
     /**
@@ -53,11 +55,11 @@ return [
     // this links saml attributes to the data providers
     'attributes' => [
                         //email
-                        'mail'      => ['source' => 'storage', 'model'=>'account', 'field'=>'email'],
+                        'mail'      => ['required' => true,'source' => 'storage', 'model'=>'account', 'field'=>'email'],
                         //surname
-                        'surname'   => ['source' => 'storage', 'model'=>'account', 'field'=>'last_name'],
+                        'surname'   => ['required' => false,'source' => 'storage', 'model'=>'account', 'field'=>'last_name'],
                         //givenName
-                        'givenName' => ['source' => 'storage', 'model'=>'account', 'field'=>'first_name'],
+                        'givenName' => ['required' => true,'source' => 'storage', 'model'=>'account', 'field'=>'first_name'],
                         //
                         ''
         ],

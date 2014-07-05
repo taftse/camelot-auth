@@ -139,6 +139,11 @@ abstract class SSODescriptor extends RoleDescriptor implements SAMLElementInterf
         $this->manageNameIDService[] = $binding;
     }
 
+    public function addNameIDFormat($format)
+    {
+        $this->nameIDFormat[] = $format;
+    }
+
     public function importXML(\DOMElement $node)
     {
         parent::importXML($node);

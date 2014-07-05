@@ -91,6 +91,11 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
         $this->assertionConsumerService[] = $index;
     }
 
+    public function addAttributeConsumingService(AttributeConsumingService $acs)
+    {
+        $this->attributeConsumingService[] = $acs;
+    }
+
     public function importXML(\DOMElement $node)
     {
         parent::importXML($node);
