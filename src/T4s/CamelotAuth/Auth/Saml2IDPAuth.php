@@ -8,6 +8,7 @@
  */
 namespace T4s\CamelotAuth\Auth;
 
+
 use T4s\CamelotAuth\Auth\Saml2\Bindings\Binding;
 use T4s\CamelotAuth\Auth\Saml2\Bindings\HTTPArtifactBinding;
 use T4s\CamelotAuth\Auth\Saml2\Bindings\HTTPPostBinding;
@@ -27,6 +28,10 @@ use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 use T4s\CamelotAuth\Auth\Saml2\Saml2State;
 
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\IndexedEndpointType;
+use T4s\CamelotAuth\Config\ConfigInterface;
+use T4s\CamelotAuth\Cookie\CookieInterface;
+use T4s\CamelotAuth\Session\SessionInterface;
+use T4s\CamelotAuth\Storage\StorageDriver;
 
 
 class Saml2IDPAuth extends Saml2Auth implements AuthInterface
@@ -38,7 +43,7 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 
     protected $attributeResolver = null;
 
-    public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,StorageDriver $storage,$path)
+    public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie, StorageDriver $storage,$path)
     {
         parent::__construct($provider,$config,$session, $cookie, $storage,$path);
 
