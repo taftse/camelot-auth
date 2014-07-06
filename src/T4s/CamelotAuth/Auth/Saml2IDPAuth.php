@@ -139,6 +139,7 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
         $subjectConfirmationData->setRecipient($acsEndpoint->getLocation());
         $subjectConfirmationData->setInResponseTo($state->getMessage()->getID());
 
+        $subjectConfirmation->setSubjectConfirmationData($subjectConfirmationData);
         if($acsEndpoint->getBinding() === Saml2Constants::Binding_HOK_SSO)
         {
             $subjectConfirmation->setMethod(Saml2Constants::SubjectConfirmation_HolderOfKey);
