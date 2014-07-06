@@ -47,7 +47,7 @@ class Subject implements SAMLElementInterface
         {
             foreach ($this->subjectConfirmation as $subjectConfirmation )
             {
-                $subject->toXML($subject);
+                $subjectConfirmation->toXML($subject);
             }
         }
 
