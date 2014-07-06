@@ -40,7 +40,7 @@ class AttributeConsumingService implements SAMLElementInterface
         $this->requestedAttributes[] = new RequestedAttribute($oid,$format,$friendlyName,$required);
     }
 
-    public function getReqestedAttributes()
+    public function getRequestedAttributes()
     {
         return $this->requestedAttributes;
     }

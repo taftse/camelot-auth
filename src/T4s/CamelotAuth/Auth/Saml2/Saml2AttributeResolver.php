@@ -51,7 +51,12 @@ class Saml2AttributeResolver
     {
         $entity = $this->metadataStore->getEntityDescriptor($entityID);
         $acs = $entity->getEndpoints('AttributeConsumingService');
-        $requestedAttributes = $acs->getReqestedAttributes();
+        $requestedAttributes = [];
+        foreach($acs as $acService)
+        {
+            $requestedAttributes = array_merge($acService->getRequestedAttributes(),$requestedAttributes);
+        }
+
 
         var_dump($requestedAttributes);
         die;
