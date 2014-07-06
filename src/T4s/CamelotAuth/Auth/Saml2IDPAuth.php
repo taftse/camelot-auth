@@ -20,6 +20,7 @@ use T4s\CamelotAuth\Auth\Saml2\Core\Elements\SubjectConfirmation;
 use T4s\CamelotAuth\Auth\Saml2\Core\Elements\SubjectConfirmationData;
 use T4s\CamelotAuth\Auth\Saml2\Core\Messages\AuthnRequest;
 use T4s\CamelotAuth\Auth\Saml2\Metadata\Elements\EndpointType;
+use T4s\CamelotAuth\Auth\Saml2\Saml2AttributeResolver;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Auth;
 use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
 
@@ -32,9 +33,18 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 {
 
 
-	public $supportedBindings = [Saml2Constants::Binding_HTTP_POST];
+	protected  $supportedBindings = [Saml2Constants::Binding_HTTP_POST];
 
 
+    protected $attributeResolver = null;
+
+    public function __construct($provider,ConfigInterface $config,SessionInterface $session,CookieInterface $cookie,StorageDriver $storage,$path)
+    {
+        parent::__construct($provider,$config,$session, $cookie, $storage,$path);
+
+        $this->attributeResolver = new Saml2AttributeResolver($this->metadataStore,$config,$storage);
+
+    }
 
 	public function authenticate(array $credentials = null, $remember = false,$login = true)
 	{
@@ -153,19 +163,12 @@ class Saml2IDPAuth extends Saml2Auth implements AuthInterface
 
 
         // add attributes
-        $attributes = $this->getAttributes($state->getMessage()->getIssuer());
+        $attributes = $this->attributeResolver->getRequestedAttributes($state->getMessage()->getIssuer());
 
         // set nameID
 
 
 
-    }
-
-    protected function getAttributes($entityID)
-    {
-        $entity = $this->metadataStore->getEntityDescriptor($entityID);
-        var_dump($entity);
-        //$this->attributeResolver->getAttributes);
     }
 
     protected function getEndpoint($endpointType,$supportedBindings,$url = null,$binding = null,$index = null)

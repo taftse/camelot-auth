@@ -24,17 +24,17 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
      */
     protected $attributeConsumingService = null;
 
-    public function __construct($metadatNode= null )
+    public function __construct($metadataNode= null )
     {
         parent::__construct('SPSSODescriptor');
 
-        if($metadatNode instanceof \DOMElement)
+        if($metadataNode instanceof \DOMElement)
         {
-            return $this->importXML($metadatNode);
+            return $this->importXML($metadataNode);
         }
-        else if(is_array($metadatNode))
+        else if(is_array($metadataNode))
         {
-            return $this->importArray($metadatNode);
+            return $this->importArray($metadataNode);
         }
     }
 
@@ -45,6 +45,14 @@ class SPSSODescriptor extends SSODescriptor implements SAMLElementInterface
         foreach($this->assertionConsumerService as $acs)
         {
             $services[]['AssertionConsumerService'] = $acs;
+        }
+
+        if(!is_null($this->attributeConsumingService))
+        {
+            foreach($this->attributeConsumingService as $acs)
+            {
+                $services[]['AttributeConsumingService'] = $acs;
+            }
         }
 
         return $services;

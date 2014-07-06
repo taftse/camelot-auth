@@ -46,4 +46,14 @@ class Saml2AttributeResolver
 
 
     }
+
+    public function getRequestedAttributes($entityID)
+    {
+        $entity = $this->metadataStore->getEntityDescriptor($entityID);
+        $acs = $entity->getEndpoints('AttributeConsumingService');
+        $requestedAttributes = $acs->getReqestedAttributes();
+
+        var_dump($requestedAttributes);
+        die;
+    }
 }

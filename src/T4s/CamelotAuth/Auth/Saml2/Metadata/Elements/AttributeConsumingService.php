@@ -10,6 +10,8 @@
 namespace T4s\CamelotAuth\Auth\Saml2\Metadata\Elements;
 
 
+use T4s\CamelotAuth\Auth\Saml2\Saml2Constants;
+
 class AttributeConsumingService implements SAMLElementInterface
 {
     protected $index;
@@ -33,9 +35,14 @@ class AttributeConsumingService implements SAMLElementInterface
         $this->serviceDescriptions = $serviceDescription;
     }
 
-    public function addrequestedAttribute($oid = null,$format = null,$friendlyName = null, $required = false)
+    public function addRequestedAttribute($oid = null,$format = null,$friendlyName = null, $required = false)
     {
         $this->requestedAttributes[] = new RequestedAttribute($oid,$format,$friendlyName,$required);
+    }
+
+    public function getReqestedAttributes()
+    {
+        return $this->requestedAttributes;
     }
 
     public function toXML(\DOMElement $parentNode)
