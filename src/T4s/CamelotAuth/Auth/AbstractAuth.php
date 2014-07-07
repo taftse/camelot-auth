@@ -138,7 +138,7 @@ abstract class AbstractAuth{
 	{
 		if(!is_null($this->user()))
 		{
-			return true;
+			return $this->user();
 		}
 		
 		if($redirect)
@@ -146,7 +146,7 @@ abstract class AbstractAuth{
 			$this->session->put($this->request,'url.intended');
 			return $this->redirectURI($this->config->get('camelot.login_uri'));
 		}
-		return false;
+		return null;
 	}
 
 	/**
