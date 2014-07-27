@@ -7,7 +7,7 @@ Camelot auth is A Modular based Authentication library
 
 
 
-## Instalation
+## Installation
 
 Camelot-Auth is provided as a Composer package which can be installed by adding the package to your composer.json file:
 
