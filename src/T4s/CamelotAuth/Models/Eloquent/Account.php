@@ -11,7 +11,7 @@ class Account extends Model implements AccountInterface
 	protected $fillable = array('first_name', 'last_name', 'email', 
 	 							 'email_verified', 'address_1', 'address_2',
 	 							 'city', 'zip_code', 'state_code', 'country_iso', 
-	 							 'dob', 'phone', 'gender');
+	 							 'dob', 'phone', 'gender', 'status');
 
 	protected $dates = array('dob');
 

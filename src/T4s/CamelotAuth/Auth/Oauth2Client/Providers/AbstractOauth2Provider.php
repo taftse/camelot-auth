@@ -262,7 +262,7 @@ abstract class AbstractOauth2Provider
 
 			if(!empty($return['error']))
 			{
-				throw new Oauth2Exception($return['error']);
+				throw new \Exception($return['error']);
 			}
 
 			$token['accessToken'] = $return['access_token'];
