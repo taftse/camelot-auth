@@ -125,7 +125,7 @@ class Oauth2ServerAuth extends AbstractAuth implements AuthInterface{
 			return $this->newRequest($this->user(),$client,$params);
 		}
 		
-		if(($session = $this->validateAccessToken($this->user(),$client) )|| $client['auto_aprove'] == true)
+		if(($session = $this->validateAccessToken($this->user(),$client) )|| $client['auto_approve'] == true)
 		{
 			
 			if(!isset($session['access_token']))
