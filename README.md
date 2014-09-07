@@ -37,7 +37,7 @@ Camelot Auth (will) support the following authentication protocols
 * SAML V2 Authentication
 * LDAP (ActiveDirectory) 
 * OpenID
-* Yubii Key
+* YubiKey
 
 because of the driver based design additional authentication protocols can be easily added 
 
