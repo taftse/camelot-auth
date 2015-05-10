@@ -1,7 +1,6 @@
-<?php namespace SE\Providers;
+<?php namespace T4s\CamelotAuth;
 
 use Illuminate\Support\ServiceProvider;
-use T4s\CamelotAuth\src\T4s\CamelotAuth\CamelotManager;
 
 class CamelotServiceProvider extends ServiceProvider {
 

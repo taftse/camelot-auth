@@ -48,6 +48,11 @@ return array(
         */
         'route_location' => 2,
 
+
+
+
+
+
         /*
        |--------------------------------------------------------------------------
        | Route to Driver
@@ -72,8 +77,8 @@ return array(
             'Linkedin'      => array('driver'=>'oauth2Client'),
             'Twitter'       => array('driver'=>'oauth1Client'),
             // 'Saml'          => array('driver'=>'saml2SP'),
-            'OneloginIDP'      => array('driver'=>'saml2IDP', 'provider'=>'https://app.onelogin.com/saml/metadata/343584'),
-            'OneloginSP'      => array('driver'=>'saml2SP', 'provider'=>'https://app.onelogin.com/saml/metadata/297476'),
+            'OneloginIDP'   => array('driver'=>'saml2IDP', 'provider'=>'https://app.onelogin.com/saml/metadata/343584'),
+            'OneloginSP'    => array('driver'=>'saml2SP', 'provider'=>'https://app.onelogin.com/saml/metadata/297476'),
             'Salesforce'    => array('driver'=>'saml2SP', 'provider'=>'https://tools4schools-dev-ed.my.salesforce.com'),
             'Openidp'       => array('driver'=>'saml2SP', 'provider'=>'https://openidp.feide.no'),
             'Saml2'         => array('driver'=>'saml2IDP'),

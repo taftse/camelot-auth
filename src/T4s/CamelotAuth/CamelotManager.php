@@ -1,14 +1,16 @@
-<?php
+<?php namespace T4s\CamelotAuth;
 /**
  * Camelot Auth
   *
  * @author Timothy Seebus <timothyseebus@tools4schools.org>
  * @license http://opensource.org/licences/MIT
  * @package CamelotAuth
- */
+*/
 
-namespace T4s\CamelotAuth\src\T4s\CamelotAuth;
 
+
+use Closure;
+use InvalidArgumentException;
 
 class CamelotManager {
 
@@ -66,7 +68,7 @@ class CamelotManager {
 
         if(! isset($this->drivers[$driver]))
         {
-            $this->drivers[$driver] = $this->createDriver($driver);
+            $this->drivers[$driver] = $this->loadDriver($driver);
         }
 
         return $this->drivers[$driver];
@@ -88,8 +90,6 @@ class CamelotManager {
             }
         }
 
-
-
         return null;
     }
 
@@ -103,11 +103,26 @@ class CamelotManager {
      * @throws \InvalidArgumentException
      */
 
-    protected function createDriver($driver)
+    protected function loadDriver($driverName)
     {
-        $method = 'create'.ucfirst($driver).'Driver';
+        if(isset($this->customCreators[$driverName]))
+        {
+            return $this->callCustomCreator($driverName);
+        }
 
+        $driverClass ='T4s\CamelotAuth\Auth\\'.$driverName.'Auth';
+
+        if(!class_exists($driverClass))
+        {
+            throw new InvalidArgumentException("Driver [$driverName] not supported.");
+        }
+
+        $driver = new $driverClass();
+
+        return $driver;
     }
+
+
 
 
     public function __call($method,$parameters)
