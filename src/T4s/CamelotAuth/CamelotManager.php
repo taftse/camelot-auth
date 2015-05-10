@@ -11,11 +11,17 @@
 
 use Closure;
 use InvalidArgumentException;
+use T4s\CamelotAuth\Config\ConfigInterface;
 
 class CamelotManager {
 
-
+    /**
+     * The Config driver
+     *
+     * @var T4s\CamelotAuth\Config\ConfigInterface
+     */
     protected $config;
+
 
 
     /**
@@ -41,8 +47,9 @@ class CamelotManager {
 
 
 
-    public function __construct($path)
+    public function __construct(ConfigInterface $config, $path)
     {
+        $this->config = $config;
         $this->path = $path;
     }
 
@@ -117,7 +124,9 @@ class CamelotManager {
             throw new InvalidArgumentException("Driver [$driverName] not supported.");
         }
 
-        $driver = new $driverClass();
+        $driver = new $driverClass(
+            $this->config
+        );
 
         return $driver;
     }

@@ -1,6 +1,7 @@
 <?php namespace T4s\CamelotAuth;
 
 use Illuminate\Support\ServiceProvider;
+use T4s\CamelotAuth\Config\IlluminateConfig;
 
 class CamelotServiceProvider extends ServiceProvider {
 
@@ -27,7 +28,10 @@ class CamelotServiceProvider extends ServiceProvider {
             // we will set a variable in the application indicating such. This helps us
             // know that we need to set any queued cookies in the after event later.
             $app['camelot.loaded'] = true;
-            return new CamelotManager($app['request']->path());
+            return new CamelotManager(
+                new IlluminateConfig($app['config']),
+                $app['request']->path()
+            );
         });
 	}
 
