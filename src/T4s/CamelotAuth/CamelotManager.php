@@ -12,6 +12,7 @@
 use Closure;
 use InvalidArgumentException;
 use T4s\CamelotAuth\Config\ConfigInterface;
+use T4s\CamelotAuth\Session\SessionInterface;
 
 class CamelotManager {
 
@@ -22,6 +23,12 @@ class CamelotManager {
      */
     protected $config;
 
+    /**
+     * The Session Driver used by Camelot
+     *
+     * @var T4s\CamelotAuth\Session\SessionInterface;
+     */
+    protected $session;
 
 
     /**
@@ -47,9 +54,10 @@ class CamelotManager {
 
 
 
-    public function __construct(ConfigInterface $config, $path)
+    public function __construct(ConfigInterface $config,SessionInterface $session, $path)
     {
         $this->config = $config;
+        $this->session = $session;
         $this->path = $path;
     }
 
@@ -117,7 +125,7 @@ class CamelotManager {
             return $this->callCustomCreator($driverName);
         }
 
-        $driverClass ='T4s\CamelotAuth\Auth\\'.$driverName.'Auth';
+        $driverClass ='T4s\CamelotAuth\Auth\\'.$driverName.'\\'.$driverName.'Driver';
 
         if(!class_exists($driverClass))
         {
@@ -125,7 +133,8 @@ class CamelotManager {
         }
 
         $driver = new $driverClass(
-            $this->config
+            $this->config,
+            $this->session
         );
 
         return $driver;

@@ -19,12 +19,12 @@ class IlluminateConfig implements  ConfigInterface
 
     public function get($key,$default = null)
     {
-        return $this->config->get('camelot-auth::'.$key, $default);
+        return $this->config->get($key, $default);
     }
 
     public function set($key, $value)
     {
-        return $this->config->set('camelot-auth::'.$key,$value);
+        return $this->config->set($key,$value);
     }
 
 } 
