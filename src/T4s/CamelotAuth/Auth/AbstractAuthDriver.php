@@ -29,6 +29,13 @@ class AbstractAuthDriver implements AuthDriverInterface
     protected $session;
 
     /**
+     * the provider handling the request
+     *
+     * @var string
+     */
+    protected $provider;
+
+    /**
      * Indicated if the logout method has been called
      *
      * @var bool
@@ -39,6 +46,12 @@ class AbstractAuthDriver implements AuthDriverInterface
     {
         $this->config = $config;
         $this->session = $session;
+        $this->storage = $this->loadStorageDriver($this->config->get('camelot.storage_driver'),'local');
+    }
+
+    protected function loadStorageDriver($driverType,$driver)
+    {
+
     }
 
     public function check()
@@ -50,14 +63,29 @@ class AbstractAuthDriver implements AuthDriverInterface
     {
         if ($this->loggedOut) return;
 
-        if(! is_null($this->account))
+        if(is_null($this->account))
         {
-            return $this->account;
+            $accountId = $this->session->get($this->getName());
+
+            $account = null;
+            if(!is_null($accountId))
+            {
+                $this->storage->retreiveByAccountID($accountId);
+            }
         }
 
-        $userId = $this->session->get($this->getName());
 
 
+        return $this->account;
+
+
+    }
+
+
+
+    public function setProvider($provider)
+    {
+        $this->provider = $provider;
     }
 
     /**

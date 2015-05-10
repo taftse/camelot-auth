@@ -52,7 +52,11 @@ class CamelotManager {
      */
     protected $path;
 
-
+    /**
+     * the authentication provider handling the request
+     * @var
+     */
+    protected $provider;
 
     public function __construct(ConfigInterface $config,SessionInterface $session, $path)
     {
@@ -97,11 +101,11 @@ class CamelotManager {
 
         if(isset($segments[$segmentNr-1]))
         {
-            $provider = ucfirst($segments[$segmentNr-1]);
+            $this->provider = ucfirst($segments[$segmentNr-1]);
 
-            if(isset($this->config->get('camelot.provider_routing')[ucfirst($provider)]))
+            if(isset($this->config->get('camelot.provider_routing')[ucfirst($this->provider)]))
             {
-                return $this->config->get('camelot.provider_routing')[ucfirst($provider)]['driver'];
+                return $this->config->get('camelot.provider_routing')[ucfirst($this->provider)]['driver'];
             }
         }
 
@@ -137,15 +141,20 @@ class CamelotManager {
             $this->session
         );
 
+        $driver->setProvider($this->provider);
+
         return $driver;
     }
 
-
-
-
     public function __call($method,$parameters)
     {
-       return call_user_func(array( $this->driver(),$method),$parameters);
+        // lets see if the requested method exists
+        if(method_exists($this->driver(),$method))
+        {
+            return call_user_func_array(array( $this->driver(),$method),$parameters);
+        }
+
+        throw new InvalidArgumentException("Driver does not support method call ".$method);
     }
 
 } 

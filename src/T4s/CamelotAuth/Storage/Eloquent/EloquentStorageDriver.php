@@ -7,12 +7,9 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Oauth2;
+namespace T4s\CamelotAuth\Storage\Eloquent;
 
 
-use T4s\CamelotAuth\Auth\AbstractAuthDriver;
-
-class Oauth2Auth extends AbstractAuthDriver
-{
+class EloquentStorageDriver {
 
 } 

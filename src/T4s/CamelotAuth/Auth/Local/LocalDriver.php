@@ -1,15 +1,9 @@
-<?php
-/**
- * Camelot Auth
-  *
- * @author Timothy Seebus <timothyseebus@tools4schools.org>
- * @license http://opensource.org/licences/MIT
- * @package CamelotAuth
- */
-
-namespace T4s\CamelotAuth\Auth\Local;
+<?php namespace T4s\CamelotAuth\Auth\Local;
 
 
-class LocalDriver {
+use T4s\CamelotAuth\Auth\AbstractAuthDriver;
+
+class LocalDriver extends AbstractAuthDriver
+{
 
 } 
