@@ -63,6 +63,7 @@ class CamelotManager {
         $this->config = $config;
         $this->session = $session;
         $this->path = $path;
+        //$this->storage = $this->loadStorageDriver();
     }
 
     /**
@@ -112,6 +113,16 @@ class CamelotManager {
         return null;
     }
 
+    /**
+     * Call a custom driver creator.
+     *
+     * @param  string  $driver
+     * @return mixed
+     */
+    protected function callCustomCreator($driver)
+    {
+        return $this->customCreators[$driver]($this->config,$this->session,$this->cookie,$this->path);
+    }
 
     /**
      * Create a new driver instance.

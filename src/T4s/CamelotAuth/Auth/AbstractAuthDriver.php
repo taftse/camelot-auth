@@ -1,6 +1,7 @@
 <?php namespace T4s\CamelotAuth\Auth;
 
 
+use T4s\CamelotAuth\CamelotStorageManager;
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 
@@ -46,12 +47,7 @@ class AbstractAuthDriver implements AuthDriverInterface
     {
         $this->config = $config;
         $this->session = $session;
-        $this->storage = $this->loadStorageDriver($this->config->get('camelot.storage_driver'),'local');
-    }
-
-    protected function loadStorageDriver($driverType,$driver)
-    {
-
+        $this->storage = new CamelotStorageManager($this->config);
     }
 
     public function check()

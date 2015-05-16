@@ -48,8 +48,21 @@ return array(
         */
         'route_location' => 2,
 
+        /*
+        |--------------------------------------------------------------------------
+        | Default Storage Driver
+        |--------------------------------------------------------------------------
+        |
+        | This option controls which Storage driver should be used if
+        | none is provided as part of the request
+        |
+        | Supported by default: "eloquent" download additional packages
+        | with drivers to support additional storage methods
+        |
+        |
+        */
 
-
+        'default_storage_driver' =>'eloquent',
 
 
 
