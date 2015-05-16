@@ -10,6 +10,8 @@
 namespace T4s\CamelotAuth\Storage\Eloquent;
 
 
-class EloquentStorageDriver {
+use T4s\CamelotAuth\Storage\AbstractStorageDriver;
+
+class EloquentStorageDriver extends AbstractStorageDriver{
 
 } 

@@ -82,7 +82,7 @@ class StorageManager {
             return $this->callCustomCreator($driverName);
         }
 
-        $driverClass ='T4s\CamelotAuth\Storage\\'.$driverName.'\\'.$driverName.'Driver';
+        $driverClass ='T4s\CamelotAuth\Storage\\'.$driverName.'\\'.$driverName.'StorageDriver';
 
         if(!class_exists($driverClass))
         {
