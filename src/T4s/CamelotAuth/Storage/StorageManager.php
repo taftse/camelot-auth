@@ -12,7 +12,7 @@ namespace T4s\CamelotAuth\Storage;
 
 use T4s\CamelotAuth\Config\ConfigInterface;
 
-class CamelotStorageManager {
+class StorageManager {
 
     /**
      * The Config driver

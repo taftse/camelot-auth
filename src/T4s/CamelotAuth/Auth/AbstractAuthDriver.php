@@ -6,7 +6,7 @@ use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Storage\StorageInterface;
-use T4s\CamelotAuth\Storage\CamelotStorageManager;
+use T4s\CamelotAuth\Storage\StorageManager;
 
 class AbstractAuthDriver implements AuthDriverInterface
 {
@@ -55,7 +55,7 @@ class AbstractAuthDriver implements AuthDriverInterface
     /**
      * and instance of the storage manager
      *
-     * @var CamelotStorageManager
+     * @var StorageManager
      */
     protected $storageManager;
 
@@ -71,7 +71,7 @@ class AbstractAuthDriver implements AuthDriverInterface
         $this->config = $config;
         $this->cookie = $config;
         $this->session = $session;
-        $this->storageManager = new CamelotStorageManager($this->config);
+        $this->storageManager = new StorageManager($this->config);
         $this->storage = $this->storageManager->driver();
     }
 
