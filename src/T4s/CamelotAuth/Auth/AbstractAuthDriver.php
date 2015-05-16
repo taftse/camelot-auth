@@ -8,7 +8,7 @@ use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Storage\StorageInterface;
 use T4s\CamelotAuth\Storage\StorageManager;
 
-class AbstractAuthDriver implements AuthDriverInterface
+abstract class AbstractAuthDriver implements AuthDriverInterface
 {
 
     /**
