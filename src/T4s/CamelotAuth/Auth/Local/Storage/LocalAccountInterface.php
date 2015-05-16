@@ -13,4 +13,6 @@ namespace T4s\CamelotAuth\Auth\Local\Storage;
 interface LocalAccountInterface {
 
     public  function getByCredentials(array $credentials);
+
+    public function validateCredentials($localAccount,$credentials);
 } 

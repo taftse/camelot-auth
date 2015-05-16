@@ -5,6 +5,7 @@ use T4s\CamelotAuth\Auth\AbstractAuthDriver;
 use T4s\CamelotAuth\Auth\AuthDriverInterface;
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
+use T4s\CamelotAuth\Hasher\BcryptHasher;
 use T4s\CamelotAuth\Session\SessionInterface;
 
 class LocalDriver extends AbstractAuthDriver implements AuthDriverInterface
@@ -14,12 +15,26 @@ class LocalDriver extends AbstractAuthDriver implements AuthDriverInterface
     {
         parent::__construct($config,$cookie,$session);
         $this->storage->loadModel('LocalAccount','Local','local');
+        $this->storage->getModel('local')->setHasher(new BcryptHasher());
     }
 
     public function authenticate(array $credentials, $remember = false, $login = true)
     {
         $this->fireAuthenticateEvent($credentials,$remember,$login);
 
-        $this->storage->getModel('local')->getByCredentials($credentials);
+        $this->lastAttempted = $localAccount = $this->storage->getModel('local')->getByCredentials($credentials);
+
+        if($localAccount->validateCredentials($localAccount, $credentials))
+        {
+            if($login == true)
+            {
+                $this->login($localAccount->account,$remember);
+            }
+            return true;
+        }
+        return false;
     }
+
+
+
 } 

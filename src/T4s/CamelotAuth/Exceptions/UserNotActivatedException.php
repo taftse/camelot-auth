@@ -1,15 +1,4 @@
-<?php
-/**
- * Camelot Auth
-  *
- * @author Timothy Seebus <timothyseebus@tools4schools.org>
- * @license http://opensource.org/licences/MIT
- * @package CamelotAuth
- */
-
-namespace T4s\CamelotAuth\Exceptions;
+<?php namespace T4s\CamelotAuth\Exceptions;
 
 
-class UserNotActivatedException {
-
-} 
+class UserNotActivatedException extends \RuntimeException {}

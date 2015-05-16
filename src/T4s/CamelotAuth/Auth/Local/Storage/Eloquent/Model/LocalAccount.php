@@ -14,4 +14,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class LocalAccount extends Model {
 
+
+    public function account()
+    {
+        return $this->hasMany('T4s\CamelotAuth\Storage\Eloquent\Models\Account');
+    }
+
+    public function getPasswordHash()
+    {
+        return $this->attributes['password_hash'];
+    }
 } 
