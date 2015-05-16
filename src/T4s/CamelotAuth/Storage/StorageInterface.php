@@ -12,4 +12,7 @@ namespace T4s\CamelotAuth\Storage;
 
 interface StorageInterface {
 
+    public function loadModel($modelName,$AuthDriver = null,$alias = null);
+
+    public function getModel($modelName);
 } 

@@ -105,6 +105,14 @@ class AbstractAuthDriver implements AuthDriverInterface
         $this->provider = $provider;
     }
 
+
+
+    protected function fireAuthenticateEvent($credentials,$remember,$login)
+    {
+
+    }
+
+
     /**
      * Get a unique identifier for the auth session value.
      *
