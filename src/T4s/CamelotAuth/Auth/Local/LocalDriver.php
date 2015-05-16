@@ -16,6 +16,7 @@ class LocalDriver extends AbstractAuthDriver implements AuthDriverInterface
         parent::__construct($config,$cookie,$session);
         $this->storage->loadModel('LocalAccount','Local','local');
         $this->storage->getModel('local')->setHasher(new BcryptHasher());
+
     }
 
     public function authenticate(array $credentials, $remember = false, $login = true)
@@ -23,6 +24,8 @@ class LocalDriver extends AbstractAuthDriver implements AuthDriverInterface
         $this->fireAuthenticateEvent($credentials,$remember,$login);
 
         $this->lastAttempted = $localAccount = $this->storage->getModel('local')->getByCredentials($credentials);
+
+
 
         if($localAccount->validateCredentials($localAccount, $credentials))
         {

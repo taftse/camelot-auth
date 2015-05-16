@@ -21,7 +21,7 @@ class LocalAccountRepository extends AbstractEloquentRepository implements Local
     }
     public function getByCredentials(array $credentials)
     {
-        $query = $this->make('account');
+        $query = $this->make(['account']);
         foreach($credentials as $key=>$value)
         {
             if(! str_contains($key,'password'))
