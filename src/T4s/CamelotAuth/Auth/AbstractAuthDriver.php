@@ -1,9 +1,12 @@
 <?php namespace T4s\CamelotAuth\Auth;
 
 
-use T4s\CamelotAuth\CamelotStorageManager;
+
 use T4s\CamelotAuth\Config\ConfigInterface;
+use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
+use T4s\CamelotAuth\Storage\StorageInterface;
+use T4s\CamelotAuth\Storage\CamelotStorageManager;
 
 class AbstractAuthDriver implements AuthDriverInterface
 {
@@ -14,13 +17,19 @@ class AbstractAuthDriver implements AuthDriverInterface
      */
     protected $account;
 
-
     /**
      * The configuration handler
      *
      * @var \T4s\CamelotAuth\Config\ConfigInterface
      */
     protected $config;
+
+    /**
+     * The Cookie Driver used by Camelot
+     *
+     * @var T4s\CamelotAuth\Cookie\CookieInterface;
+     */
+    protected $cookie;
 
     /**
      * The Session Driver used by Camelot
@@ -37,17 +46,33 @@ class AbstractAuthDriver implements AuthDriverInterface
     protected $provider;
 
     /**
+     * the default storage driver
+     *
+     * @var StorageInterface
+     */
+    protected $storage;
+
+    /**
+     * and instance of the storage manager
+     *
+     * @var CamelotStorageManager
+     */
+    protected $storageManager;
+
+    /**
      * Indicated if the logout method has been called
      *
      * @var bool
      */
     protected $loggedOut = false;
 
-    public function __construct(ConfigInterface $config,SessionInterface $session)
+    public function __construct(ConfigInterface $config,CookieInterface $cookie,SessionInterface $session)
     {
         $this->config = $config;
+        $this->cookie = $config;
         $this->session = $session;
-        $this->storage = new CamelotStorageManager($this->config);
+        $this->storageManager = new CamelotStorageManager($this->config);
+        $this->storage = $this->storageManager->driver();
     }
 
     public function check()
@@ -57,7 +82,7 @@ class AbstractAuthDriver implements AuthDriverInterface
 
     public function user()
     {
-        if ($this->loggedOut) return;
+        if ($this->loggedOut) return null;
 
         if(is_null($this->account))
         {
@@ -70,11 +95,7 @@ class AbstractAuthDriver implements AuthDriverInterface
             }
         }
 
-
-
         return $this->account;
-
-
     }
 
 

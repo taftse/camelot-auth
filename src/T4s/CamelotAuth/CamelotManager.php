@@ -12,6 +12,7 @@
 use Closure;
 use InvalidArgumentException;
 use T4s\CamelotAuth\Config\ConfigInterface;
+use T4s\CamelotAuth\Cookie\CookieInterface;
 use T4s\CamelotAuth\Session\SessionInterface;
 
 class CamelotManager {
@@ -22,6 +23,13 @@ class CamelotManager {
      * @var T4s\CamelotAuth\Config\ConfigInterface
      */
     protected $config;
+
+    /**
+     * The Cookie Driver used by Camelot
+     *
+     * @var T4s\CamelotAuth\Cookie\CookieInterface;
+     */
+    protected $cookie;
 
     /**
      * The Session Driver used by Camelot
@@ -58,9 +66,10 @@ class CamelotManager {
      */
     protected $provider;
 
-    public function __construct(ConfigInterface $config,SessionInterface $session, $path)
+    public function __construct(ConfigInterface $config,CookieInterface $cookie,SessionInterface $session, $path)
     {
         $this->config = $config;
+        $this->cookie = $cookie;
         $this->session = $session;
         $this->path = $path;
         //$this->storage = $this->loadStorageDriver();
@@ -149,6 +158,7 @@ class CamelotManager {
 
         $driver = new $driverClass(
             $this->config,
+            $this->cookie,
             $this->session
         );
 

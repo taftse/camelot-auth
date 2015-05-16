@@ -7,7 +7,7 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth;
+namespace T4s\CamelotAuth\Storage;
 
 
 use T4s\CamelotAuth\Config\ConfigInterface;

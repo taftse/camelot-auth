@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use T4s\CamelotAuth\Config\IlluminateConfig;
+use T4s\CamelotAuth\Cookie\IlluminateCookie;
 use T4s\CamelotAuth\Session\IlluminateSession;
 
 class CamelotServiceProvider extends ServiceProvider {
@@ -33,6 +34,7 @@ class CamelotServiceProvider extends ServiceProvider {
             $app['camelot.loaded'] = true;
             return new CamelotManager(
                 new IlluminateConfig($app['config']),
+                New IlluminateCookie($app['request'],$app['cookie']),
                 new IlluminateSession($app['session.store']),
                 $app['request']->path()
             );
