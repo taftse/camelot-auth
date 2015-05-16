@@ -21,8 +21,10 @@
         "phpunit/phpunit": "~4.0",
         "illuminate/contracts": "5.0.*",
         "illuminate/config": "5.0.*",
-        "illuminate/session": "5.0.*",
-        "illuminate/http": "5.0.*"
+        "illuminate/database": "5.0.*",
+        "illuminate/http": "5.0.*",
+        "illuminate/session": "5.0.*"
+
     },
 
     "autoload": {

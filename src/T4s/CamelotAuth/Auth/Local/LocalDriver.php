@@ -13,7 +13,7 @@ class LocalDriver extends AbstractAuthDriver implements AuthDriverInterface
     public function __construct(ConfigInterface $config,CookieInterface $cookie,SessionInterface $session)
     {
         parent::__construct($config,$cookie,$session);
-        $this->storage->loadModel('Local','LocalAccount','local');
+        $this->storage->loadModel('LocalAccount','Local','local');
     }
 
     public function authenticate(array $credentials, $remember = false, $login = true)

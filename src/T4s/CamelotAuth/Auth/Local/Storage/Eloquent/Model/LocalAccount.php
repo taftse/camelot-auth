@@ -10,6 +10,8 @@
 namespace T4s\CamelotAuth\Auth\Local\Storage\Eloquent\Model;
 
 
-class Local {
+use Illuminate\Database\Eloquent\Model;
+
+class LocalAccount extends Model {
 
 } 

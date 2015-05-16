@@ -7,9 +7,10 @@
  * @package CamelotAuth
  */
 
-namespace T4s\CamelotAuth\Auth\Local\Storage\Eloquent;
+namespace T4s\CamelotAuth\Auth\Local\Storage;
 
 
-class LocalUserRepository {
+interface LocalAccountInterface {
 
+    public  function getByCredentials(array $credentials);
 } 

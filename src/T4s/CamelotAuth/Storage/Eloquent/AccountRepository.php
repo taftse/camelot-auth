@@ -1,15 +1,12 @@
-<?php
-/**
- * Camelot Auth
-  *
- * @author Timothy Seebus <timothyseebus@tools4schools.org>
- * @license http://opensource.org/licences/MIT
- * @package CamelotAuth
- */
-
-namespace T4s\CamelotAuth\Storage\Eloquent;
+<?php namespace T4s\CamelotAuth\Storage\Eloquent;
 
 
-class AccountRepository {
+use T4s\CamelotAuth\Storage\Eloquent\Models\Account;
 
+class AccountRepository extends AbstractEloquentRepository
+{
+    public function __construct()
+    {
+        parent::__construct(new Account());
+    }
 } 
