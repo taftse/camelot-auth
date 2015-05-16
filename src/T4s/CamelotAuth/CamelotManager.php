@@ -175,7 +175,7 @@ class CamelotManager {
             return call_user_func_array(array( $this->driver(),$method),$parameters);
         }
 
-        throw new InvalidArgumentException("Driver does not support method call ".$method);
+        throw new InvalidArgumentException("Driver [".get_class($this->driver())."] does not support method call ".$method);
     }
 
 } 

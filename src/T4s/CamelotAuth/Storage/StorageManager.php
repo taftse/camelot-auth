@@ -65,6 +65,7 @@ class CamelotStorageManager {
         return $this->drivers[$driver];
     }
 
+
     /**
      * Create a new driver instance.
      *
@@ -93,5 +94,16 @@ class CamelotStorageManager {
         );
 
         return $driver;
+    }
+
+    /**
+     * Call a custom driver creator.
+     *
+     * @param  string  $driver
+     * @return mixed
+     */
+    protected function callCustomCreator($driver)
+    {
+        return $this->customCreators[$driver]($this->config);
     }
 } 
