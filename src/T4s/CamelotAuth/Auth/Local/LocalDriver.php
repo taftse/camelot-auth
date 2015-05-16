@@ -27,7 +27,7 @@ class LocalDriver extends AbstractAuthDriver implements AuthDriverInterface
 
 
 
-        if($localAccount->validateCredentials($localAccount, $credentials))
+        if($this->storage->getModel('local')->validateCredentials($localAccount, $credentials))
         {
             if($login == true)
             {

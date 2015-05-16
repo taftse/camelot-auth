@@ -74,6 +74,7 @@ abstract class AbstractAuthDriver implements AuthDriverInterface
         $this->session = $session;
         $this->storageManager = new StorageManager($this->config);
         $this->storage = $this->storageManager->driver();
+        $this->storage->loadModel('Account');
     }
 
     public function check()
@@ -87,16 +88,16 @@ abstract class AbstractAuthDriver implements AuthDriverInterface
 
         if(is_null($this->account))
         {
-            $accountId = $this->session->get($this->getName());
+            $accountId = $this->session->get($this->getSessionName());
 
             $account = null;
             if(!is_null($accountId))
             {
-                $this->storage->retreiveByAccountID($accountId);
+                $account = $this->storage->getModel('Account')->retreiveByAccountID($accountId);
             }
         }
 
-        return $this->account;
+        return $this->account = $account;
     }
 
 

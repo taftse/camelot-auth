@@ -17,7 +17,7 @@ class LocalAccount extends Model {
 
     public function account()
     {
-        return $this->hasMany('T4s\CamelotAuth\Storage\Eloquent\Models\Account');
+        return $this->belongsTo('T4s\CamelotAuth\Storage\Eloquent\Models\Account');
     }
 
     public function getPasswordHash()
