@@ -54,7 +54,7 @@ class StorageManager {
     {
         if($driver == null)
         {
-           $driver = $this->config->get('camelot.default_driver');
+           $driver = $this->config->get('camelot.storage_driver');
         }
 
         if(! isset($this->drivers[$driver]))
@@ -86,7 +86,7 @@ class StorageManager {
 
         if(!class_exists($driverClass))
         {
-            throw new \InvalidArgumentException("Driver [$driverName] not supported.");
+            throw new \InvalidArgumentException("Storage Driver [$driverName] not supported.");
         }
 
         $driver = new $driverClass(

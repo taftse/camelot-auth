@@ -62,7 +62,7 @@ return array(
         |
         */
 
-        'default_storage_driver' =>'eloquent',
+        'storage_driver' =>'eloquent',
 
 
 
