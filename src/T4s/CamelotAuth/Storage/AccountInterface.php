@@ -15,5 +15,5 @@ interface AccountInterface {
     public  function retreiveByAccountID($id);
 
 
-    public function retreiveByRecaller($cookie);
+    public function retreiveByRecallerToken($id,$token);//retreiveByRecaller($cookie);
 } 

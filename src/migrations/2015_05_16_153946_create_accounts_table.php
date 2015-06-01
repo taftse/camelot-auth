@@ -33,6 +33,7 @@ class CreateAccountsTable extends Migration {
             $table->enum('status',array('pending','active','suspended','deleted'))->default('pending');
             $table->timestamp('last_login')->nullable();
             $table->string('last_ip')->nullable();
+            $table->rememberToken();
             $table->softDeletes();
 			$table->timestamps();
 
