@@ -16,4 +16,9 @@ class Account extends Model{
         }
         return false;
     }
+
+    public function getStatus()
+    {
+        return $this->attributes['status'];
+    }
 } 

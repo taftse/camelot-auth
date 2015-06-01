@@ -4,7 +4,9 @@
 
 use T4s\CamelotAuth\Config\ConfigInterface;
 use T4s\CamelotAuth\Cookie\CookieInterface;
-use T4s\CamelotAuth\Exceptions\UserNotActivatedException;
+use T4s\CamelotAuth\Exceptions\AccountDeletedException;
+use T4s\CamelotAuth\Exceptions\AccountNotActivatedException;
+use T4s\CamelotAuth\Exceptions\AccountSuspendedException;
 use T4s\CamelotAuth\Session\SessionInterface;
 use T4s\CamelotAuth\Storage\StorageInterface;
 use T4s\CamelotAuth\Storage\StorageManager;
@@ -141,7 +143,17 @@ abstract class AbstractAuthDriver implements AuthDriverInterface
     {
         if(!$account->isActivated())
         {
-            throw new UserNotActivatedException('user cannot be logged in as the account has not been activated');
+            switch($account->getStatus())
+            {
+                case 'suspended':
+                    throw new AccountSuspendedException('user cannot be logged in as the account has been suspended');
+                    break;
+                default:
+                    throw new AccountNotActivatedException('user cannot be logged in as the account has not been activated');
+                    break;
+
+            }
+
         }
 
         $this->updateSession($account);

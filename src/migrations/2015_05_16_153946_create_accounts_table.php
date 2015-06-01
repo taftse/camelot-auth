@@ -30,7 +30,7 @@ class CreateAccountsTable extends Migration {
             $table->integer('phone')->nullable();
             $table->boolean('phone_verified')->default(false);
             $table->enum('gender',array('male','female','other'));
-            $table->enum('status',array('pending','active','suspended','deleted'))->default('pending');
+            $table->enum('status',array('pending','active','suspended'))->default('pending');
             $table->timestamp('last_login')->nullable();
             $table->string('last_ip')->nullable();
             $table->rememberToken();
