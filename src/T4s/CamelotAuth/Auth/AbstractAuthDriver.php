@@ -67,6 +67,14 @@ abstract class AbstractAuthDriver implements AuthDriverInterface
      */
     protected $loggedOut = false;
 
+    /**
+     * Indicates if a token user retrieval has been attempted.
+     *
+     * @var bool
+     */
+    protected $tokenRetrievalAttempted = false;
+
+
     public function __construct(ConfigInterface $config,CookieInterface $cookie,SessionInterface $session)
     {
         $this->config = $config;
@@ -84,28 +92,46 @@ abstract class AbstractAuthDriver implements AuthDriverInterface
 
     public function user()
     {
+        // if the user has just logged out rerurn an empty user
         if ($this->loggedOut) return null;
 
+        // if we have just gotten the user then return that and skip this
         if(is_null($this->account))
         {
+            // lets see if we have a session
             $accountId = $this->session->get($this->getSessionName());
 
             $account = null;
+            // if we have a session id then see if we can get the account
             if(!is_null($accountId))
             {
                 $account = $this->storage->getModel('Account')->retreiveByAccountID($accountId);
             }
+
+            // if we didnt find any matching account lets see if we have a rememberMe cookie
+            $cookie = $this->getRecallerCookie();
+            if(is_null($account)&& !is_null($cookie))
+            {
+                $account = $this->getAccountByRecaller($cookie);
+
+                if($account)
+                {
+                    $this->updateSession($account->getAccountIdentifier());
+
+                    $this->fireLoginEvent($account, true);
+                }
+            }
+            $this->account = $account;
         }
 
-        return $this->account = $account;
+        // lets check if the account is active
+
+        return $this->account;
     }
 
 
 
-    public function setProvider($provider)
-    {
-        $this->provider = $provider;
-    }
+
 
 
 
@@ -131,6 +157,53 @@ abstract class AbstractAuthDriver implements AuthDriverInterface
     }
 
 
+    protected function updateSession($id)
+    {
+        $this->session->put($id,$this->getSessionName());
+    }
+
+    protected function getAccountByRecaller($recaller)
+    {
+        if($this->validateRecaller($recaller) && ! $this->tokenRetrievalAttempted)
+        {
+            $this->tokenRetrievalAttempted = true;
+
+            list($id,$token)= explode('|',$recaller,2);
+
+            $account = $this->storage->getModel('Account')->retreiveByToken($id,$token);
+            if(!is_null($account))
+            {
+                $this->viaRecaller = true;
+
+            }
+            return $account;
+        }
+    }
+
+
+    protected  function validateRecaller($recaller)
+    {
+        // if the recaller is not a string or the string does not contain a pipe | return false
+        if(!is_string($recaller)||str_contains($recaller,'|'))
+        {
+            return false;
+        }
+
+        $segments = explode('|', $recaller);
+
+        // if the segemts array contains 2 values
+        // and they both contain a value
+        // then return true else return false
+        return count($segments) == 2 && trim($segments[0]) !== '' && trim($segments[1]) !== '';
+    }
+
+
+
+
+
+    ///////////////////////////////////////////////////////
+    ///                     Events                      ///
+    ///////////////////////////////////////////////////////
     protected function fireAuthenticateEvent($credentials,$remember,$login)
     {
         if(isset($this->events))
@@ -148,17 +221,31 @@ abstract class AbstractAuthDriver implements AuthDriverInterface
         }
     }
 
+    ///////////////////////////////////////////////////////
+    ///              getters and setters                ///
+    ///////////////////////////////////////////////////////
 
-    protected function updateSession($id)
+    protected function getRecallerCookie()
     {
-        $this->session->put($id,$this->getSessionName());
+        return $this->cookie->get($this->getRecallerName());
     }
+
 
     public function setAccount($account)
     {
         $this->account = $account;
 
         $this->loggedOut = false;
+    }
+
+    /**
+     * sets the authentication provider
+     *
+     * @param $provider
+     */
+    public function setProvider($provider)
+    {
+        $this->provider = $provider;
     }
 
     /**

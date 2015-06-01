@@ -15,4 +15,9 @@ class AccountRepository extends AbstractEloquentRepository implements AccountInt
     {
         return $this->make()->where('id',$id)->first();
     }
+
+    public function retreiveByToken($id,$token)
+    {
+        return $this->make()->where('remember_token',$token);
+    }
 } 

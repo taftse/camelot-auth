@@ -13,4 +13,7 @@ namespace T4s\CamelotAuth\Storage;
 interface AccountInterface {
 
     public  function retreiveByAccountID($id);
+
+
+    public function retreiveByRecaller($cookie);
 } 
