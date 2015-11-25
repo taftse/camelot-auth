@@ -29,7 +29,7 @@
 
     "autoload": {
         "psr-4": {
-            "T4s\\CamelotAuth\\": "src/T4s/CamelotAuth"
+            "T4S\\CamelotAuth\\": "src/"
         }
     },
 
