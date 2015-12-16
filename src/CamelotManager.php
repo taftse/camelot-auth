@@ -149,7 +149,7 @@ class CamelotManager {
             return $this->callCustomCreator($driverName);
         }
 
-        $driverClass ='T4s\CamelotAuth\Auth\\'.$driverName.'\\'.$driverName.'Driver';
+        $driverClass ='T4S\CamelotAuth\Auth\\'.$driverName.'\\'.$driverName.'Driver';
 
         if(!class_exists($driverClass))
         {

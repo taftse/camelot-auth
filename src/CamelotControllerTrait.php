@@ -37,4 +37,6 @@ trait CamelotControllerTrait {
         return property_exists($this, 'loginPath') ? $this->loginPath : '/auth/login';
     }
 
+
+
 } 

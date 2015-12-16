@@ -5,6 +5,8 @@ use T4S\CamelotAuth\Auth\AbstractAuthDriver;
 use T4S\CamelotAuth\Auth\AuthDriverInterface;
 use T4S\CamelotAuth\Config\ConfigInterface;
 use T4S\CamelotAuth\Cookie\CookieInterface;
+use T4S\CamelotAuth\Exceptions\AccountDeletedException;
+use T4S\CamelotAuth\Exceptions\AccountNotFoundException;
 use T4S\CamelotAuth\Hasher\BcryptHasher;
 use T4S\CamelotAuth\Session\SessionInterface;
 
@@ -25,7 +27,10 @@ class LocalDriver extends AbstractAuthDriver implements AuthDriverInterface
 
         $this->lastAttempted = $localAccount = $this->storage->getModel('local')->getByCredentials($credentials);
 
-
+        if(is_null($localAccount))
+        {
+            throw new AccountNotFoundException('Account Username or Password incorrect');
+        }
 
         if($this->storage->getModel('local')->validateCredentials($localAccount, $credentials))
         {

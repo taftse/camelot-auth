@@ -10,8 +10,8 @@
 namespace T4S\CamelotAuth\Storage\Eloquent;
 
 
-use T4s\CamelotAuth\Storage\AbstractStorageDriver;
-use T4s\CamelotAuth\Storage\StorageInterface;
+use T4S\CamelotAuth\Storage\AbstractStorageDriver;
+use T4S\CamelotAuth\Storage\StorageInterface;
 
 class EloquentStorageDriver extends AbstractStorageDriver implements StorageInterface
 {
@@ -27,7 +27,7 @@ class EloquentStorageDriver extends AbstractStorageDriver implements StorageInte
             $authDriver = 'Auth\\'.$authDriver.'\\';
         }
 
-        $modelClass ='T4s\CamelotAuth\\'.$authDriver.'Storage\Eloquent\\'.$modelName.'Repository';
+        $modelClass ='T4S\CamelotAuth\\'.$authDriver.'Storage\Eloquent\\'.$modelName.'Repository';
         if(!class_exists($modelClass))
         {
             throw new \InvalidArgumentException("Model [$modelName] not supported.");

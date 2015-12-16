@@ -89,7 +89,7 @@ return array(
             'Github'        => array('driver'=>'oauth2Client'),
             'Linkedin'      => array('driver'=>'oauth2Client'),
             'Twitter'       => array('driver'=>'oauth1Client'),
-            // 'Saml'          => array('driver'=>'saml2SP'),
+            //'Saml'          => array('driver'=>'saml2SP'),
             'OneloginIDP'   => array('driver'=>'saml2IDP', 'provider'=>'https://app.onelogin.com/saml/metadata/343584'),
             'OneloginSP'    => array('driver'=>'saml2SP', 'provider'=>'https://app.onelogin.com/saml/metadata/297476'),
             'Salesforce'    => array('driver'=>'saml2SP', 'provider'=>'https://tools4schools-dev-ed.my.salesforce.com'),
